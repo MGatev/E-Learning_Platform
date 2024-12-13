@@ -29,9 +29,9 @@ public class AuthController {
         return "register";
     }
 
-    @GetMapping("/hi")
-    public String hi(Model model) {
-        return "hi";
+    @GetMapping("/home")
+    public String home(Model model) {
+        return "home";
     }
 
     @PostMapping("/register")
