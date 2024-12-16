@@ -1,5 +1,6 @@
 package course.spring.elearningplatform.dto;
 
+import course.spring.elearningplatform.entity.Group;
 import course.spring.elearningplatform.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -31,4 +32,6 @@ public class UserDto {
     private String email;
 
     private Set<String> roles;
+
+    private Set<Group> groups;
 }
