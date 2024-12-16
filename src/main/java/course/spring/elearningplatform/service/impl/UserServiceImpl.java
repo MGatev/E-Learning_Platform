@@ -9,6 +9,7 @@ import course.spring.elearningplatform.exception.DuplicateUsernameException;
 import course.spring.elearningplatform.repository.UserRepository;
 import course.spring.elearningplatform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
+
     @Override
     public User createUser(UserDto userDto) {
         if (userRepository.existsByUsername(userDto.getUsername())) {
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
     @Override

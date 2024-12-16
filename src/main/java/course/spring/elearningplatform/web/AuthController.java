@@ -1,6 +1,8 @@
 package course.spring.elearningplatform.web;
 
 import course.spring.elearningplatform.dto.UserDto;
+import course.spring.elearningplatform.exception.DuplicateEmailException;
+import course.spring.elearningplatform.exception.DuplicateUsernameException;
 import course.spring.elearningplatform.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import static org.springframework.validation.BindingResult.MODEL_KEY_PREFIX;
 
 @Controller
 public class AuthController {
@@ -40,8 +40,14 @@ public class AuthController {
             return "register";
         }
 
-        userService.createUser(userDto);
-        return "redirect:/login";
+        try {
+            userService.createUser(userDto);
+        } catch (DuplicateUsernameException | DuplicateEmailException ex) {
+            model.addAttribute("error", ex.getMessage());
+            return "register";
+        }
+
+        return "redirect:/login?success";
     }
 
     @GetMapping("/login")
