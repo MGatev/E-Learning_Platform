@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ArticleService {
   Article createArticle(ArticleDto article);
-  List<Article> getAllArticles();
+  List<Article> getAllArticlesForAGroup(Long groupId);
   Article deleteArticleById(Long id);
 }
