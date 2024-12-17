@@ -1,5 +1,6 @@
 package course.spring.elearningplatform.entity;
 
+import jakarta.persistence.*;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
