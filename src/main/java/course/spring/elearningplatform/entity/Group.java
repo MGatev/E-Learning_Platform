@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +22,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Data
+@Table(name = "learning_groups")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Group {
   @Id
@@ -32,7 +34,7 @@ public class Group {
   private String imageUrl;
 
   @ManyToMany(fetch = FetchType.EAGER)
-  @CollectionTable(name = "group_members", joinColumns = @JoinColumn(name = "group_id"))
+  @CollectionTable(name = "group_members")
   private Set<User> members;
 
   @OneToMany(mappedBy = "group")
