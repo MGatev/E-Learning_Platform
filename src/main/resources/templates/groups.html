@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groups</title>
+    <link rel="stylesheet" href="/static/css/groups.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+<div th:replace="fragments/home-nav :: home-nav"/>
+<!-- Main Container -->
+<div class="container-fluid mt-5">
+    <!-- Header with filter and create group -->
+    <div class="d-flex justify-content-between align-items-center mb-4 px-3">
+        <div class="filter-container">
+            <label for="filterCriteria" class="form-label">Filter Groups:</label>
+            <select class="form-select" id="filterCriteria" aria-label="Filter groups">
+                <option value="all">All groups</option>
+                <option value="joined">My groups</option>
+                <option value="notJoined">New groups</option>
+            </select>
+        </div>
+        <button class="button-33" role="button" onclick="window.location.href='/groups/create'">+ Create Group</button>
+    </div>
+
+    <!-- Group List Section -->
+    <section id="groupsList" class="d-flex flex-column gap-3 px-3">
+        <div class="group-card" th:each="group : ${groups}">
+            <!-- Group Image -->
+            <img th:src="${group.imageUrl}" alt="Group Image" loading="lazy">
+
+            <!-- Group Details -->
+            <div class="group-details">
+                <h5 th:text="${group.name}">Group Name</h5>
+                <p th:text="${group.description}">Short description of the group.</p>
+            </div>
+
+            <!-- Join Button -->
+            <div class="ms-auto">
+                <button class="button button-primary"
+                        th:if="${!group.joined}"
+                        th:text="'Join'"
+                        th:onclick="'joinGroup(' + ${group.id} + ')'">Join</button>
+                <button class="button button-secondary disabled"
+                        th:if="${group.joined}"
+                        th:text="'Joined'"
+                        aria-disabled="true">Joined</button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div th:replace="fragments/footer :: footer"/>
+
+<!-- JavaScript -->
+<script>
+    document.getElementById('filterCriteria').addEventListener('change', function() {
+        const selectedValue = this.value;
+        console.log("Selected Filter: ", selectedValue);
+        // TODO: Implement filter logic to update displayed groups
+    });
+
+    function joinGroup(groupId) {
+        console.log("Joining group with ID: ", groupId);
+        // TODO: Implement join group logic (e.g., API call to join a group)
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+
+.button-33 {
+    background-color: #c2fbd7;
+    border-radius: 100px;
+    box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+    color: green;
+    cursor: pointer;
+    display: inline-block;
+    font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.button-33:hover {
+    box-shadow: rgba(44, 187, 99, .35) 0 -25px 18px -14px inset, rgba(44, 187, 99, .25) 0 1px 2px, rgba(44, 187, 99, .25) 0 2px 4px, rgba(44, 187, 99, .25) 0 4px 8px, rgba(44, 187, 99, .25) 0 8px 16px, rgba(44, 187, 99, .25) 0 16px 32px;
+    transform: scale(1.05) rotate(-1deg);
+}
+
+body {
+    background-color: #e6f4e6; /* Light green background */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container Styling */
+.container-fluid {
+    background-color: #ffffff; /* White container */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 40px auto;
+    max-width: 1200px; /* Ensures it doesn't stretch too far */
+}
+
+/* Filter and Button Section */
+.filter-container label {
+    color: #2e5825;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Group Image */
+.group-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #d6e5d6;
+    background-color: #ffffff;
+}
+
+/* Group Details */
+.group-details h5 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2e5825; /* Dark green */
+}
+
+.group-details p {
+    margin: 5px 0 0;
+    color: #5c8c58;
+    font-size: 1rem;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .group-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .group-card img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+/* Join Button - Enhanced Green Style */
+.button-primary {
+    background-color: #4caf50; /* Fresh green */
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.button-primary:hover {
+    background-color: #388e3c; /* Darker green */
+    transform: translateY(-2px); /* Lift effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Joined Button - Stylish Muted Green */
+.button-secondary {
+    background-color: #c8e6c9; /* Soft green */
+    color: #2e7d32; /* Dark green text */
+    font-weight: bold;
+    padding: 8px 15px;
+    border: 1px solid #81c784; /* Subtle green border */
+    border-radius: 5px;
+    cursor: not-allowed;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.button-secondary:hover {
+    background-color: #a5d6a7; /* Slightly darker soft green */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Additional Group Card Hover Effect */
+.group-card {
+    background-color: #f1f8f1;
+    border: 1px solid #d0e6d0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.group-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
