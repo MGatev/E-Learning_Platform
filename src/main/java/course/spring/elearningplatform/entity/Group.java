@@ -21,8 +21,8 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
-@Data
 @Table(name = "learning_groups")
+@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Group {
   @Id
