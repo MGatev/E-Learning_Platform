@@ -14,12 +14,10 @@ import java.util.List;
 @Service
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
-    //private final GroupService groupService;
 
     @Autowired
     public ArticleServiceImpl(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
-        //this.groupService = groupService;
     }
 
     @Override
@@ -30,9 +28,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<Article> getAllArticlesForAGroup(Long groupId) {
-        // Group group = groupService.getGroupById(groupId);
-
-        return articleRepository.findAllByGroupId(groupId);
+        return articleRepository.findAllByGroupId(groupId).orElseThrow(() -> new EntityNotFoundException(String.format("Articles for group with id=%s not found", groupId)));
     }
 
     @Override

@@ -9,4 +9,5 @@ public interface GroupService {
   List<Group> getAllGroups();
   Group getGroupById(Long id);
   Group createGroup(GroupDto groupDto);
+  Group deleteGroup(Long id);
 }
