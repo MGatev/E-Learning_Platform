@@ -1,0 +1,78 @@
+/* Profile container for positioning */
+.profile-pic-container {
+    position: relative;
+    display: flex; /* Aligns image and text in a row */
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+/* Profile picture styles */
+.profile-pic {
+    transform: translateX(-10px);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.3s ease; /* Smooth hover effect */
+}
+
+/* Name styling */
+.profile-name {
+    font-size: 14px;
+    margin-left: 10px; /* Space between image and name */
+    color: white;
+    opacity: 0; /* Initially hidden */
+    white-space: nowrap; /* Prevents wrapping */
+    transition: opacity 0.3s ease, margin-left 0.3s ease; /* Smooth appearance */
+}
+
+/* Hover effect */
+.profile-pic:hover {
+    transform: translateX(5px); /* Slide image to the left */
+}
+
+.profile-pic:hover + .profile-name {
+    opacity: 1; /* Make the name visible */
+    margin-left: 20px; /* Push the name slightly further to the right */
+}
+
+.profile-pic-container {
+    position: relative; /* Needed to position the dropdown relative to the image */
+}
+
+/* Custom dropdown menu styling */
+.custom-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: -16px;
+    min-width: 190px;
+    background-color: #343a40; /* Matching the navbar's dark background */
+    border-radius: 0.25rem;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Add some shadow for depth */
+    z-index: 10; /* Ensure it's on top of other content */
+}
+
+/* Make dropdown visible when profile image container is hovered */
+.profile-pic-container:hover .custom-dropdown-menu {
+    display: block;
+}
+
+.profile-pic-container:hover .profile-name {
+    opacity: 1;
+}
+
+.profile-pic-container:hover .profile-pic {
+    transform: translateX(5px);
+}
+
+/* Dropdown item styling */
+.custom-dropdown-menu .dropdown-item {
+    color: #fff;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.custom-dropdown-menu .dropdown-item:hover {
+    background-color: #495057; /* Slightly lighter background on hover */
+}
