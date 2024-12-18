@@ -13,7 +13,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -37,11 +36,16 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+    private String profilePicture;
 
     @NonNull
     @NotEmpty
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles;
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 //
 //    public User(String username, String password, String firstName, String lastName, String email) {
 //        this.username = username;

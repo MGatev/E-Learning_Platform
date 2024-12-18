@@ -18,6 +18,10 @@ public class CustomUserDetails implements UserDetails {
         return List.of();
     }
 
+    public User getUser() {
+        return user;
+    }
+
     @Override
     public String getPassword() {
         return user.getPassword();
