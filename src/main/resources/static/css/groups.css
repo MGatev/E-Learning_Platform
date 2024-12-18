@@ -57,18 +57,25 @@ body {
     background-color: #ffffff;
 }
 
-/* Group Details */
-.group-details h5 {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #2e5825; /* Dark green */
+.group-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Adds some spacing between the name and description */
 }
 
-.group-details p {
-    margin: 5px 0 0;
-    color: #5c8c58;
-    font-size: 1rem;
+.group-details h5 {
+    margin: 0;
+    font-size: 1.25rem; /* Larger font size for the group name */
+    color: #2e5825; /* Dark green for the group name */
+    font-weight: bold; /* Bold styling for emphasis */
+}
+
+.group-details .group-description {
+    margin: 5px 0 0 0; /* Adds spacing only at the top of the description */
+    font-size: 0.875rem; /* Smaller font size */
+    font-weight: 300; /* Lighter font weight */
+    color: #6c757d; /* Light gray for better readability */
+    line-height: 1.4; /* Improves spacing for multiple lines */
 }
 
 /* Responsive Styling */
@@ -131,6 +138,8 @@ body {
     align-items: center;
     gap: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none; /* Prevent link underline */
+    color: inherit; /* Ensure text color remains unchanged */
 }
 
 .group-card:hover {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Groups</title>
-    <link rel="stylesheet" href="/static/css/groups.css">
+    <link rel="stylesheet" href="/css/groups.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 </head>
 <body>
@@ -26,18 +26,18 @@
 
     <!-- Group List Section -->
     <section id="groupsList" class="d-flex flex-column gap-3 px-3">
-        <div class="group-card" th:each="group : ${groups}">
+        <a class="group-card" th:each="group : ${groups}" th:href="@{'/groups/' + ${group.id}}">
             <!-- Group Image -->
-            <img th:src="${group.imageUrl}" alt="Group Image" loading="lazy">
+            <img th:src="'data:image/jpeg;base64,' + ${group.parseImage()}" alt="Group Image" loading="lazy">
 
             <!-- Group Details -->
             <div class="group-details">
                 <h5 th:text="${group.name}">Group Name</h5>
-                <p th:text="${group.description}">Short description of the group.</p>
+                <p class="group-description" th:text="${group.description}">Short description of the group.</p>
             </div>
 
             <!-- Join Button -->
-            <div class="ms-auto">
+            <!--<div class="ms-auto">
                 <button class="button button-primary"
                         th:if="${!group.joined}"
                         th:text="'Join'"
@@ -46,8 +46,8 @@
                         th:if="${group.joined}"
                         th:text="'Joined'"
                         aria-disabled="true">Joined</button>
-            </div>
-        </div>
+            </div>-->
+        </a>
     </section>
 </div>
 

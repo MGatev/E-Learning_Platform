@@ -1,7 +1,6 @@
 package course.spring.elearningplatform.service.impl;
 
 import course.spring.elearningplatform.dto.GroupDto;
-import course.spring.elearningplatform.dto.mapper.EntityMapper;
 import course.spring.elearningplatform.entity.Group;
 import course.spring.elearningplatform.exception.DuplicatedEntityException;
 import course.spring.elearningplatform.exception.EntityNotFoundException;
@@ -9,7 +8,9 @@ import course.spring.elearningplatform.repository.GroupRepository;
 import course.spring.elearningplatform.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -35,11 +36,11 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group createGroup(GroupDto groupDto) {
-        Group group = EntityMapper.mapCreateDtoToEntity(groupDto, Group.class);
-        if (groupRepository.existsByName(groupDto.getName())) {
-            throw new DuplicatedEntityException(String.format("Group with name=%s already exists", group.getName()));
+        Group groupForCreate = buildGroup(groupDto);
+        if (groupRepository.existsByName(groupForCreate.getName())) {
+            throw new DuplicatedEntityException(String.format("Group with name=%s already exists", groupForCreate.getName()));
         }
-        return groupRepository.save(group);
+        return groupRepository.save(groupForCreate);
     }
 
     @Override
@@ -47,6 +48,25 @@ public class GroupServiceImpl implements GroupService {
         Group group = groupRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id=%s not found", id)));
         groupRepository.deleteById(id);
+        return group;
+    }
+
+    private Group buildGroup(GroupDto groupDto) {
+        Group group = new Group();
+        group.setName(groupDto.getName());
+        group.setMembers(groupDto.getMembers());
+        group.setArticles(groupDto.getArticles());
+        group.setDescription(groupDto.getDescription());
+
+        MultipartFile image = groupDto.getImage();
+        if (!image.isEmpty()) {
+            try {
+                group.setImage(image.getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException("Error uploading image!", e);
+            }
+        }
+
         return group;
     }
 }
