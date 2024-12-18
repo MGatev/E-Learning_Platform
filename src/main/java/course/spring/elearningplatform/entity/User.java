@@ -6,6 +6,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,6 +44,7 @@ public class User {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles;
 
+
     public String getFullName() {
         return firstName + " " + lastName;
     }
@@ -54,5 +56,9 @@ public class User {
 //        this.lastName = lastName;
 //        this.email = email;
 //    }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Group> groups;
+
 }
 
