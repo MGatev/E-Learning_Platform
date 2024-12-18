@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(Error)}">
+<body>
+<div th:replace="~{fragments/home-nav :: home-nav}"/>
+<div class="container mt-3">
+    <h1>Oops! Something went wrong.</h1>
+    <p th:text="${errorMessage}">Default error message</p>
+    <a th:href="@{/home}">Go back to the homepage</a>
+</div>
+</body>
+</html>
