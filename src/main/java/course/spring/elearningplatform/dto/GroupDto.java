@@ -8,9 +8,9 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -22,9 +22,11 @@ public class GroupDto {
   private String name;
 
   @NotNull(message = "Image URL is required!")
-  private String imageUrl;
+  private MultipartFile image;
 
-  private Set<User> members;
+  private String description;
+
+  private List<User> members;
 
   private List<Article> articles;
 }
