@@ -19,4 +19,7 @@ public class ArticleDto {
 
     @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @NotBlank
+    private Long groupId;
 }

@@ -1,5 +1,6 @@
 package course.spring.elearningplatform.web;
 
+import course.spring.elearningplatform.dto.ArticleDto;
 import course.spring.elearningplatform.dto.GroupDto;
 import course.spring.elearningplatform.dto.GroupDto;
 import course.spring.elearningplatform.entity.Group;
@@ -48,6 +49,7 @@ public class GroupController {
     @GetMapping("/{id}")
     public String getGroupById(@PathVariable Long id, Model model) {
         model.addAttribute("group", groupService.getGroupById(id));
+        model.addAttribute("articles", articleService.getAllArticlesForAGroup(id));
         return "group";
     }
 
@@ -69,14 +71,18 @@ public class GroupController {
         return "articles";
     }
 
-    @DeleteMapping("/{id}/articles/{articleId}")
-    private String deleteArticle(@PathVariable Long id, @PathVariable Long articleId) {
+    @PostMapping("/{id}/articles/{articleId}")
+    private String deleteArticle(@PathVariable("id") Long id, @PathVariable("articleId") Long articleId, Model model) {
         articleService.deleteArticleById(articleId);
-        return "redirect:/groups/" + id + "/articles";
+        model.addAttribute("articles", articleService.getAllArticlesForAGroup(id));
+        return "redirect:/groups/" + id;
     }
 
     @PostMapping("/{id}/articles/create")
-    private String createArticle() {
-        return "groups";
+    private String createArticle(@PathVariable("id") Long id, @ModelAttribute ArticleDto articleDto, Model model) {
+        articleService.createArticle(id, articleDto);
+        model.addAttribute("group", groupService.getGroupById(id));
+        model.addAttribute("articles", articleService.getAllArticlesForAGroup(id));
+        return "redirect:/groups/" + id;
     }
 }

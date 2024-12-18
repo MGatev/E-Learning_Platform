@@ -208,3 +208,52 @@ strong {
     transform: translateY(-2px); /* Lift effect */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.group-description {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #388e3c; /* Medium green to complement the theme */
+    background-color: #e8f5e9; /* Light green background */
+    padding: 10px 20px;
+    margin: 0 auto;
+    max-width: 80%;
+    border-left: 4px solid #81c784; /* Decorative border */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.group-description:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background-color: #f1f8f9; /* Slightly lighter green on hover */
+}
+.group-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.group-image {
+    width: 200px; /* Adjust size as needed */
+    height: 200px;
+    border-radius: 50%; /* Makes it circular */
+    object-fit: cover; /* Ensures the image fits perfectly */
+    border: 5px solid #81c784; /* Light green border */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.group-image:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+/* Description Styling */
+.group-description {
+    font-size: 1.2rem;
+    color: #607d8b; /* Muted blue-grey for contrast */
+    font-style: italic;
+    margin-top: 10px;
+}

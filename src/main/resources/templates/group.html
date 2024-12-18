@@ -9,7 +9,14 @@
 <div th:replace="fragments/home-nav :: home-nav"></div>
 
 <div class="container mt-5">
+    <div class="text-center group-image-container mb-4">
+        <img th:src="'data:image/jpeg;base64,' + ${group.parseImage()}"
+             alt="Group Image"
+             class="group-image"
+             loading="lazy">
+    </div>
     <h1 th:text="${group.name}" class="mb-4 text-center">Group Name</h1>
+    <p th:text="${group.description}" class="group-description text-center">A brief description about the group.</p>
     <p class="text-center">Number of Members: <span th:text="${group.members.size()}">0</span></p>
 
     <div class="text-center mt-2">
@@ -22,27 +29,25 @@
             <div class="form-group">
                 <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
             </div>
-            <button class="button-primary">Add Post</button>
+            <button type="submit" class="button-primary">Add Article</button>
         </form>
     </div>
 
-    <!-- Articles Section -->
     <div class="section">
         <h2>Articles</h2>
         <ul class="list-group col-md-8 text-left pl-0">
             <li class="list-group-item d-flex align-items-start" th:each="article : ${group.articles}">
-                <img th:src="${article.writer.photoUrl}" alt="Writer Image" class="writer-img mr-3" />
+                <!--<img th:src="${article.author.photoUrl}" alt="Writer Image" class="writer-img mr-3" /> -->
 
                 <div>
                     <div class="mb-2">
-                        <strong th:text="${article.writer.name}">Writer Name</strong> -
-                        <span class="text-muted" th:text="${article.writer.role}">Role</span>
+                        <strong th:text="${article.author.getFirstName()}">Author Name</strong> -
+                        <span class="text-muted" th:text="${article.author.getRoles()}">Role</span>
                     </div>
 
-                    <h5 th:text="${article.title}">Article Title</h5>
                     <p th:text="${article.content}">Article Content</p>
 
-                    <form th:action="@{/groups/{groupId}/articles/{articleId}/delete(groupId=${group.id}, articleId=${article.id})}" method="post">
+                    <form th:action="@{/groups/{groupId}/articles/{articleId}(groupId=${group.id}, articleId=${article.id})}" method="post">
                         <input type="hidden" name="_method" value="delete"/>
                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                     </form>
