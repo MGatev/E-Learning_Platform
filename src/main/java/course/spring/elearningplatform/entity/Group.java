@@ -1,25 +1,29 @@
 package course.spring.elearningplatform.entity;
 
+import jakarta.persistence.*;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
+@Table(name = "learning_groups")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Group {
@@ -29,13 +33,31 @@ public class Group {
   @EqualsAndHashCode.Include
   private String name;
 
-  private String imageUrl;
+  @Lob
+  private byte[] image;
+
+  private String description;
 
   @ManyToMany(fetch = FetchType.EAGER)
-  @CollectionTable(name = "group_members", joinColumns = @JoinColumn(name = "group_id"))
-  private Set<User> members;
+  @CollectionTable(name = "group_members")
+  private List<User> members;
 
   @OneToMany(mappedBy = "group")
   private List<Article> articles;
-}
 
+  public String parseImage() {
+    return image != null ? Base64.getEncoder().encodeToString(image) : null;
+  }
+
+  public void addMember(User user) {
+    if (user == null) {
+      return;
+    }
+    if (members == null) {
+      members = new ArrayList<>();
+    } else if (members.contains(user)) {
+      return;
+    }
+    members.add(user);
+  }
+}

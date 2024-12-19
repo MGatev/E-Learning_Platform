@@ -6,7 +6,7 @@ import course.spring.elearningplatform.entity.Article;
 import java.util.List;
 
 public interface ArticleService {
-  Article createArticle(ArticleDto article);
+  Article createArticle(Long groupId, ArticleDto article);
   List<Article> getAllArticlesForAGroup(Long groupId);
   Article deleteArticleById(Long id);
 }

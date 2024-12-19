@@ -1,0 +1,107 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically */
+    background-color: #f0f4f0; /* Light grayish-green background */
+    color: #3d6b3d; /* Dark green text color */
+}
+
+/* Centered form container */
+.group-form-container {
+    background-color: #ffffff; /* White background */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width: 100%;
+    max-width: 500px; /* Set max width for responsiveness */
+}
+
+/* Heading styling */
+.form-heading {
+    color: #2e7d32; /* Green heading color */
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+/* Form label styling */
+.form-label {
+    font-weight: bold;
+    color: #33691e;
+    margin-bottom: 8px;
+}
+
+/* Form input fields */
+.form-input, input[type="file"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #a5d6a7; /* Light green border */
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Light input background */
+    width: 100%;
+    box-sizing: border-box; /* Ensures padding doesn't add to width */
+    margin-bottom: 15px;
+}
+
+/* Buttons styling */
+.submit-button, .add-member-button {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #66bb6a; /* Vibrant green for buttons */
+    color: white;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.submit-button:hover, .add-member-button:hover {
+    background-color: #388e3c; /* Darker green on hover */
+}
+
+/* Members list spacing */
+.members-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button-33 {
+    background-color: #c2fbd7;
+    border-radius: 100px;
+    box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+    color: green;
+    cursor: pointer;
+    display: inline-block;
+    font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+    font-size: 16px;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.button-33:hover {
+    box-shadow: rgba(44, 187, 99, .35) 0 -25px 18px -14px inset, rgba(44, 187, 99, .25) 0 1px 2px, rgba(44, 187, 99, .25) 0 2px 4px, rgba(44, 187, 99, .25) 0 4px 8px, rgba(44, 187, 99, .25) 0 8px 16px, rgba(44, 187, 99, .25) 0 16px 32px;
+    transform: scale(1.05) rotate(-1deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .group-form-container {
+        padding: 20px;
+    }
+}

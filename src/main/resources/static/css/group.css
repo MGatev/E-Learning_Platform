@@ -1,0 +1,259 @@
+/* General Body Styling */
+body {
+    background-color: #e8f5e9;  /* Light green background */
+    font-family: Arial, sans-serif;
+    color: #2c3e50;
+}
+
+h1, h2 {
+    color: #2e7d32;  /* Darker green for headers */
+    font-weight: 600;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+/* Section Styling */
+.section {
+    margin-bottom: 40px;
+    padding: 25px;
+    background-color: #ffffff;
+    border: 1px solid #c8e6c9;  /* Light green border */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.section:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2e7d32;
+}
+
+/* Centered Add Person Button */
+.btn-success {
+    background-color: #43a047;  /* Light green */
+    border-color: #43a047;
+}
+
+.btn-success:hover {
+    background-color: #388e3c;
+    border-color: #388e3c;
+}
+
+.text-center .btn {
+    border-radius: 8px;
+    font-size: 1rem;
+    padding: 10px 20px;
+}
+
+/* Add Post Form Styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+textarea.form-control {
+    resize: none;
+    border: 1px solid #c8e6c9;  /* Light green border */
+    border-radius: 6px;
+}
+
+.form-control:focus {
+    border-color: #81c784;  /* Lighter green on focus */
+    box-shadow: 0 0 5px rgba(129, 199, 132, 0.5);
+}
+
+button[type="submit"] {
+    border-radius: 6px;
+    background-color: #388e3c;  /* Medium green */
+    border-color: #388e3c;
+    font-size: 1rem;
+    padding: 8px 16px;
+    color: #ffffff;
+    transition: background-color 0.3s ease-in-out;
+}
+
+button[type="submit"]:hover {
+    background-color: #2e7d32;  /* Dark green on hover */
+    border-color: #2e7d32;
+}
+
+/* Articles List Styling */
+.list-group-item {
+    display: flex;
+    align-items: flex-start;
+    background-color: #ffffff;
+    border: 1px solid #c8e6c9;  /* Light green border */
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.list-group-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.list-group-item h5 {
+    font-size: 1.3rem;
+    color: #2e7d32;  /* Dark green for titles */
+    margin-bottom: 10px;
+}
+
+.list-group-item p {
+    font-size: 1rem;
+    color: #666666;
+    margin-bottom: 10px;
+}
+
+.list-group-item .btn-danger {
+    background-color: #d32f2f;  /* Red for delete */
+    border-color: #d32f2f;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+}
+
+.list-group-item .btn-danger:hover {
+    background-color: #c62828;  /* Darker red on hover */
+    border-color: #c62828;
+}
+
+/* Writer Image Styling */
+.writer-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #c8e6c9;  /* Light green border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-right: 15px;
+}
+
+/* Writer Info Styling */
+.text-muted {
+    color: #81c784;  /* Light green for role */
+    font-size: 0.9rem;
+}
+
+strong {
+    font-size: 1.1rem;
+    color: #2e7d32;  /* Dark green for the writer's name */
+}
+
+/* Additional Utility Classes */
+.mt-2, .mt-4, .mt-5 {
+    margin-top: 20px !important;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.pl-0 {
+    padding-left: 0 !important;
+}
+
+.mx-auto {
+    margin: 0 auto;
+}
+
+.button-33 {
+    background-color: #c2fbd7;
+    border-radius: 100px;
+    box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+    color: green;
+    cursor: pointer;
+    display: inline-block;
+    font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.button-33:hover {
+    box-shadow: rgba(44, 187, 99, .35) 0 -25px 18px -14px inset, rgba(44, 187, 99, .25) 0 1px 2px, rgba(44, 187, 99, .25) 0 2px 4px, rgba(44, 187, 99, .25) 0 4px 8px, rgba(44, 187, 99, .25) 0 8px 16px, rgba(44, 187, 99, .25) 0 16px 32px;
+    transform: scale(1.05) rotate(-1deg);
+}
+.button-primary {
+    background-color: #4caf50; /* Fresh green */
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.button-primary:hover {
+    background-color: #388e3c; /* Darker green */
+    transform: translateY(-2px); /* Lift effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.group-description {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #388e3c; /* Medium green to complement the theme */
+    background-color: #e8f5e9; /* Light green background */
+    padding: 10px 20px;
+    margin: 0 auto;
+    max-width: 80%;
+    border-left: 4px solid #81c784; /* Decorative border */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.group-description:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background-color: #f1f8f9; /* Slightly lighter green on hover */
+}
+.group-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.group-image {
+    width: 200px; /* Adjust size as needed */
+    height: 200px;
+    border-radius: 50%; /* Makes it circular */
+    object-fit: cover; /* Ensures the image fits perfectly */
+    border: 5px solid #81c784; /* Light green border */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.group-image:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+/* Description Styling */
+.group-description {
+    font-size: 1.2rem;
+    color: #607d8b; /* Muted blue-grey for contrast */
+    font-style: italic;
+    margin-top: 10px;
+}

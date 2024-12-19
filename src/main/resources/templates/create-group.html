@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Group</title>
+    <link rel="stylesheet" href="/css/create-group.css">
+</head>
+<body>
+<div class="group-form-container">
+    <h1 class="form-heading">Create a Group</h1>
+    <form th:action="@{/groups/create}" th:object="${group}" method="post" enctype="multipart/form-data" class="group-form">
+        <label for="groupName" class="form-label">Group Name:</label>
+        <input type="text" id="groupName" th:field="*{name}" placeholder="Enter group name" class="form-input" required>
+
+        <label for="groupDescription" class="form-label">Group Description:</label>
+        <input type="text" id="groupDescription" th:field="*{description}" placeholder="Enter group description" class="form-input">
+
+        <label for="groupImage" class="form-label">Group Image:</label>
+        <input type="file" id="groupImage" th:field="*{image}" name="image" accept="image/*" class="form-input" required>
+
+        <label class="form-label">Members:</label>
+        <div id="members" class="members-list"></div>
+        <button type="button" id="addMember" class="add-member-button">Add Member</button>
+        <button type="submit" class="button-33">Create Group</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('addMember').addEventListener('click', function() {
+        const membersDiv = document.getElementById('members');
+        const index = membersDiv.children.length;
+        const memberInput = document.createElement('input');
+        memberInput.type = 'text';
+        memberInput.placeholder = 'Enter member name';
+        memberInput.className = 'form-input';
+        memberInput.setAttribute('th:field', `*{members[${index}]}`);
+        membersDiv.appendChild(memberInput);
+    });
+</script>
+</body>
+</html>
