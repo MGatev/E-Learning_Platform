@@ -4,8 +4,6 @@ import course.spring.elearningplatform.dto.ArticleDto;
 import course.spring.elearningplatform.dto.GroupDto;
 import course.spring.elearningplatform.entity.Group;
 import course.spring.elearningplatform.entity.User;
-import course.spring.elearningplatform.exception.DuplicatedEntityException;
-import course.spring.elearningplatform.exception.EntityNotFoundException;
 import course.spring.elearningplatform.service.ArticleService;
 import course.spring.elearningplatform.service.GroupService;
 import course.spring.elearningplatform.service.UserService;
@@ -15,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/groups")
