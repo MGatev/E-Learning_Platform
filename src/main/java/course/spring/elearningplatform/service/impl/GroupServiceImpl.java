@@ -32,14 +32,14 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public Group getGroupById(Long id) {
       return groupRepository.findById(id)
-              .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id=%s not found", id)));
+              .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id %s not found", id), "redirect:/groups"));
     }
 
     @Override
     public Group createGroup(GroupDto groupDto) {
         Group groupForCreate = buildGroup(groupDto);
         if (groupRepository.existsByName(groupForCreate.getName())) {
-            throw new DuplicatedEntityException(String.format("Group with name=%s already exists", groupForCreate.getName()));
+            throw new DuplicatedEntityException(String.format("Group with name %s already exists", groupForCreate.getName()));
         }
         return groupRepository.save(groupForCreate);
     }
@@ -47,7 +47,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public Group deleteGroup(Long id) {
         Group group = groupRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id=%s not found", id)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id %s not found", id), "redirect:/groups"));
         groupRepository.deleteById(id);
         return group;
     }
@@ -74,8 +74,16 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public Group addMember(Long id, User user) {
         Group group = groupRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id=%s not found", id)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id %s not found", id), "redirect:/groups/" + id));
         group.addMember(user);
+        return groupRepository.save(group);
+    }
+
+    @Override
+    public Group removeMember(Long id, User user) {
+        Group group = groupRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id %s not found", id), "redirect:/groups/" + id));
+        group.removeMember(user);
         return groupRepository.save(group);
     }
 }

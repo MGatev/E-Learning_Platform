@@ -2,13 +2,11 @@ package course.spring.elearningplatform.service.impl;
 
 import course.spring.elearningplatform.dto.ArticleDto;
 import course.spring.elearningplatform.dto.mapper.ArticleDtoToArticleMapper;
-import course.spring.elearningplatform.dto.mapper.EntityMapper;
 import course.spring.elearningplatform.entity.Article;
 import course.spring.elearningplatform.entity.Group;
 import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.exception.EntityNotFoundException;
 import course.spring.elearningplatform.repository.ArticleRepository;
-import course.spring.elearningplatform.repository.GroupRepository;
 import course.spring.elearningplatform.service.ArticleService;
 import course.spring.elearningplatform.service.GroupService;
 import course.spring.elearningplatform.service.UserService;
@@ -17,10 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -54,7 +49,7 @@ public class ArticleServiceImpl implements ArticleService {
     public Article deleteArticleById(Long id) {
         Article article = articleRepository.findById(id).orElse(null);
         if (article == null) {
-            throw new EntityNotFoundException(String.format("Article with id=%s not found", id));
+            throw new EntityNotFoundException(String.format("Article with id=%s not found", id), "redirect:/groups");
         }
         articleRepository.deleteById(id);
         return article;

@@ -60,4 +60,11 @@ public class Group {
     }
     members.add(user);
   }
+
+  public void removeMember(User user) {
+    if (user == null || members == null) {
+      return;
+    }
+    members.remove(user);
+  }
 }
