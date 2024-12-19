@@ -15,6 +15,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -45,5 +46,17 @@ public class Group {
 
   public String parseImage() {
     return image != null ? Base64.getEncoder().encodeToString(image) : null;
+  }
+
+  public void addMember(User user) {
+    if (user == null) {
+      return;
+    }
+    if (members == null) {
+      members = new ArrayList<>();
+    } else if (members.contains(user)) {
+      return;
+    }
+    members.add(user);
   }
 }

@@ -6,6 +6,8 @@
     <title>Groups</title>
     <link rel="stylesheet" href="/css/groups.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 <div th:replace="fragments/home-nav :: home-nav"/>
@@ -36,24 +38,23 @@
                 <p class="group-description" th:text="${group.description}">Short description of the group.</p>
             </div>
 
-            <!-- Join Button -->
-            <!--<div class="ms-auto">
+            <div class="ms-auto">
                 <button class="button button-primary"
-                        th:if="${!group.joined}"
+                        th:if="${!group.members.contains(loggedUser)}"
                         th:text="'Join'"
-                        th:onclick="'joinGroup(' + ${group.id} + ')'">Join</button>
+                        th:onclick="|joinGroup(event, ${group.id})|">Join</button>
+
                 <button class="button button-secondary disabled"
-                        th:if="${group.joined}"
+                        th:if="${group.members.contains(loggedUser)}"
                         th:text="'Joined'"
                         aria-disabled="true">Joined</button>
-            </div>-->
+            </div>
         </a>
     </section>
 </div>
 
 <div th:replace="fragments/footer :: footer"/>
 
-<!-- JavaScript -->
 <script>
     document.getElementById('filterCriteria').addEventListener('change', function() {
         const selectedValue = this.value;
@@ -61,9 +62,32 @@
         // TODO: Implement filter logic to update displayed groups
     });
 
-    function joinGroup(groupId) {
-        console.log("Joining group with ID: ", groupId);
-        // TODO: Implement join group logic (e.g., API call to join a group)
+    function joinGroup(event, groupId) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        fetch(`/groups/${groupId}/join`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeader]: csrfToken
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log(`Successfully joined group with ID: ${groupId}`);
+                    // Optionally, update the UI to reflect the change
+                    location.reload();
+                } else {
+                    console.error(`Failed to join group with ID: ${groupId}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 </script>
 </body>

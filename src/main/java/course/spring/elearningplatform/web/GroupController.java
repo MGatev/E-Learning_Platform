@@ -1,9 +1,15 @@
 package course.spring.elearningplatform.web;
 
 import course.spring.elearningplatform.dto.GroupDto;
+import course.spring.elearningplatform.entity.Group;
+import course.spring.elearningplatform.entity.User;
+import course.spring.elearningplatform.exception.DuplicatedEntityException;
 import course.spring.elearningplatform.service.ArticleService;
 import course.spring.elearningplatform.service.GroupService;
+import course.spring.elearningplatform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,16 +19,20 @@ import org.springframework.web.bind.annotation.*;
 public class GroupController {
     private final GroupService groupService;
     private final ArticleService articleService;
+    private final UserService userService;
 
     @Autowired
-    public GroupController(GroupService groupService, ArticleService articleService) {
+    public GroupController(GroupService groupService, ArticleService articleService, UserService userService) {
         this.groupService = groupService;
         this.articleService = articleService;
+        this.userService = userService;
     }
 
     @GetMapping
-    public String getAllGroups(Model model) {
+    public String getAllGroups(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        User loggedUser = userService.getUserByUsername(userDetails.getUsername());
         model.addAttribute("groups", groupService.getAllGroups());
+        model.addAttribute("loggedUser", loggedUser);
         return "groups";
     }
 
@@ -39,8 +49,15 @@ public class GroupController {
     }
 
     @PostMapping("/create")
-    public String createGroup(@ModelAttribute GroupDto groupDto) {
-        groupService.createGroup(groupDto);
+    public String createGroup(@ModelAttribute GroupDto groupDto, @AuthenticationPrincipal UserDetails userDetails) {
+        Group createdGroup = groupService.createGroup(groupDto);
+        return joinGroup(createdGroup.getId(), userDetails);
+    }
+
+    @PostMapping("/{id}/join")
+    public String joinGroup(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        User loggedUser = userService.getUserByUsername(userDetails.getUsername());
+        groupService.addMember(id, loggedUser);
         return "redirect:/groups";
     }
 

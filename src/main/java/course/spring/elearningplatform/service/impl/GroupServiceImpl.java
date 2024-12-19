@@ -2,6 +2,7 @@ package course.spring.elearningplatform.service.impl;
 
 import course.spring.elearningplatform.dto.GroupDto;
 import course.spring.elearningplatform.entity.Group;
+import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.exception.DuplicatedEntityException;
 import course.spring.elearningplatform.exception.EntityNotFoundException;
 import course.spring.elearningplatform.repository.GroupRepository;
@@ -68,5 +69,13 @@ public class GroupServiceImpl implements GroupService {
         }
 
         return group;
+    }
+
+    @Override
+    public Group addMember(Long id, User user) {
+        Group group = groupRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id=%s not found", id)));
+        group.addMember(user);
+        return groupRepository.save(group);
     }
 }
