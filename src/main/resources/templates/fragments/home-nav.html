@@ -7,7 +7,7 @@
                     <a class="nav-link" th:href="@{/home}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link" th:href="@{/news}">News</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Pricing</a>
@@ -24,6 +24,11 @@
                     </div>
                 </li>
             </ul>
+            <!-- Search box in the middle of the navbar -->
+            <form class="form-inline mx-auto" th:action="@{/search}" method="get">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
             <ul class="navbar-nav text-light my-2 my-lg-0 ml-auto">
                 <li th:if="${#authentication.principal}" class="nav-item">
                     <div class="profile-container">

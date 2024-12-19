@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('News Detail')}">
+    <link rel="stylesheet" href="/css/news-detail.css">
+    <style>
+        /* news-detail.css */
+        .container {
+            margin-top: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .text-muted {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .btn-secondary {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/home-nav :: home-nav}"></div>
+
+<div class="container">
+    <h1 th:text="${news.title}"></h1>
+    <p class="text-muted" th:text="${news.publishedDate}"></p>
+    <p th:text="${news.content}"></p>
+
+    <a href="/news" class="btn btn-secondary">Back to News List</a>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

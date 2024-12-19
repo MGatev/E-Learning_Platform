@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Delete News')}">
+    <link rel="stylesheet" href="/css/news.css">
+</head>
+<body>
+<div th:replace="~{fragments/home-nav :: home-nav}"></div>
+
+<div class="container">
+    <h1>Select News to Delete</h1>
+    <form th:action="@{/news/delete/selected}" method="post">
+        <!-- Dropdown for selecting news -->
+        <div class="form-group">
+            <label for="newsId">Select News</label>
+            <select id="newsId" name="newsId" class="form-control" required>
+                <option value="" disabled selected>Select a news item to delete</option>
+                <div th:each="news : ${newsList}">
+                    <option th:value="${news.id}" th:text="${news.title}"></option>
+                </div>
+            </select>
+        </div>
+
+        <!-- Submit delete request -->
+        <button type="submit" class="btn btn-danger">Delete News</button>
+    </form>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

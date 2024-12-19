@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/head :: head('News')}">
+    <link rel="stylesheet" href="/css/news.css">
+</head>
+<body>
+<div th:replace="~{fragments/home-nav :: home-nav}"/>
+<div class="container">
+    <div class="container">
+        <h1>News</h1>
+        <a href="/news/add" class="btn btn-primary mb-3">Add News</a>
+        <a href="/news/delete" class="btn deleteButton mb-3">Delete News</a> <!-- Redirect to delete page -->
+
+        <div class="row">
+            <div th:each="news : ${newsList}" class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${news.title}">News Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted" th:text="${news.publishedDate}">Published Date</h6>
+                    </div>
+                    <div class="card-footer text-end">
+                        <a th:href="@{/news/{id}(id=${news.id})}" class="btn btn-info">Read More</a> <!-- Read more button -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>
