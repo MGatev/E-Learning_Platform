@@ -156,5 +156,19 @@ body {
     pointer-events: auto; /* Disable pointer events for all children by default */
 }
 
+.disabled-link {
+    opacity: 0.6; /* Dim the card */
+    pointer-events: none; /* Disable interactions */
+    cursor: not-allowed;
+    position: relative;
+}
+
+.disabled-link .button-primary {
+    opacity: 1; /* Reset opacity for the button */
+    pointer-events: auto; /* Enable interactions on the button */
+    position: relative; /* Ensure it's unaffected by the parent's opacity */
+    z-index: 1; /* Bring it above any dimmed overlay */
+}
+
 
 

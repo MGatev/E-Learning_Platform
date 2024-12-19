@@ -19,6 +19,10 @@
         <label for="groupImage" class="form-label">Group Image:</label>
         <input type="file" id="groupImage" th:field="*{image}" name="image" accept="image/*" class="form-input" required>
 
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}">Group name already exists. Please choose another one.</p>
+        </div>
+
         <label class="form-label">Members:</label>
         <div id="members" class="members-list"></div>
         <button type="button" id="addMember" class="add-member-button">Add Member</button>

@@ -32,7 +32,12 @@
 
     <!-- Group List Section -->
     <section id="groupsList" class="d-flex flex-column gap-3 px-3">
-        <a class="group-card d-flex align-items-center gap-3" th:each="group : ${groups}" th:href="@{'/groups/' + ${group.id}}">
+        <a class="group-card align-items-center gap-3"
+           th:each="group : ${groups}"
+           th:href="@{'/groups/' + ${group.id}}"
+           th:attr="data-filter=${group.members.contains(loggedUser) ? 'joined' : 'notJoined'}"
+           th:classappend="${group.members.contains(loggedUser) ? '' : 'disabled-link'}"
+           onclick="handleCardClick(this, event)">
             <!-- Group Image -->
             <img th:src="'data:image/jpeg;base64,' + ${group.parseImage()}" alt="Group Image" loading="lazy">
 
@@ -57,13 +62,57 @@
     </section>
 </div>
 
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true"
+     th:if="${errorMessage}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p th:text="${errorMessage}">An error occurred. Please try again later.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:replace="fragments/footer :: footer"/>
 
 <script>
+
+    function handleCardClick(element, event) {
+        if (element.classList.contains('disabled-link')) {
+            // Prevent click and navigation
+            event.preventDefault();
+            event.stopPropagation();
+            alert("You must join this group before accessing it.");
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const errorModal = document.getElementById('errorModal');
+        if (errorModal) {
+            const modal = new bootstrap.Modal(errorModal);
+            modal.show();
+        }
+    });
+
     document.getElementById('filterCriteria').addEventListener('change', function() {
         const selectedValue = this.value;
-        console.log("Selected Filter: ", selectedValue);
-        // TODO: Implement filter logic to update displayed groups
+        const groups = document.querySelectorAll('#groupsList .group-card');
+
+        groups.forEach(group => {
+            const groupFilter = group.getAttribute('data-filter');
+            if (selectedValue === 'all' || groupFilter === selectedValue) {
+                group.classList.remove('d-none');
+            } else {
+                group.classList.add('d-none');
+            }
+        });
     });
 
     function joinGroup(event, groupId) {
@@ -83,7 +132,6 @@
             .then(response => {
                 if (response.ok) {
                     console.log(`Successfully joined group with ID: ${groupId}`);
-                    // Optionally, update the UI to reflect the change
                     location.reload();
                 } else {
                     console.error(`Failed to join group with ID: ${groupId}`);
@@ -92,6 +140,15 @@
             .catch(error => {
                 console.error('Error:', error);
             });
+    }
+
+    function displayErrorMessage(message) {
+        const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+        const errorMessageContainer = document.querySelector('#errorModal .modal-body ul');
+        const newError = document.createElement('li');
+        newError.textContent = message;
+        errorMessageContainer.appendChild(newError);
+        errorModal.show();
     }
 </script>
 </body>
