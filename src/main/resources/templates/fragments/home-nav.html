@@ -1,14 +1,10 @@
 <div th:fragment="home-nav" xmlns:th="http://www.thymeleaf.org">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" th:href="@{/home}">E-Learning</a>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/home}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Features</a>
@@ -25,6 +21,24 @@
                         <a class="dropdown-item" href="#">Action</a>
                         <a class="dropdown-item" href="#">Another action</a>
                         <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav text-light my-2 my-lg-0 ml-auto">
+                <li th:if="${#authentication.principal}" class="nav-item">
+                    <div class="profile-container">
+                        <div class="profile-pic-container">
+                            <img class="rounded-circle profile-pic"
+                                 style="width: 40px; height: 40px; object-fit: cover;"
+                                 th:src="${#authentication.principal.user.profilePicture != null ? '/images/profiles/' + user.profilePicture : '/images/profiles/default-profile.jpg'}"
+                                 alt="Profile Picture"/>
+                            <span class="profile-name" th:text="${#authentication.principal.user.fullName}"></span>
+                            <div class="custom-dropdown-menu">
+                                <a class="dropdown-item" th:href="@{/profile}">My Profile</a>
+                                <a class="dropdown-item" href="#">Settings</a>
+                                <a class="dropdown-item" th:href="@{/logout}">Log Out</a>
+                            </div>
+                        </div>
                     </div>
                 </li>
             </ul>
