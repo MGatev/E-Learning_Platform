@@ -27,19 +27,83 @@
         <div id="members" class="members-list"></div>
         <button type="button" id="addMember" class="add-member-button">Add Member</button>
         <button type="submit" class="button-33">Create Group</button>
+
+        <!-- Template for dynamically adding members -->
+        <div id="member-template" style="display: none;">
+            <div class="member-item">
+                <input type="text" placeholder="Search for username" class="form-input search-user" />
+                <ul class="user-suggestions" style="display: none;"></ul>
+                <input type="hidden" name="members[]" class="selected-member" />
+            </div>
+        </div>
     </form>
 </div>
 
+<!-- Set the logged-in user's username in a data attribute -->
+<div id="loggedInUser" th:data-username="${loggedInUserUsername}"></div>
+
 <script>
-    document.getElementById('addMember').addEventListener('click', function() {
+    // Fetch the logged-in user's username from the data attribute
+    const loggedInUsername = document.getElementById('loggedInUser').getAttribute('data-username');
+    console.log('Logged-in Username:', loggedInUsername);  // Check if it correctly fetches the value
+
+    document.getElementById('addMember').addEventListener('click', function () {
         const membersDiv = document.getElementById('members');
-        const index = membersDiv.children.length;
-        const memberInput = document.createElement('input');
-        memberInput.type = 'text';
-        memberInput.placeholder = 'Enter member name';
-        memberInput.className = 'form-input';
-        memberInput.setAttribute('th:field', `*{members[${index}]}`);
-        membersDiv.appendChild(memberInput);
+        const template = document.getElementById('member-template');
+        const newMemberDiv = template.cloneNode(true);
+
+        newMemberDiv.style.display = 'block';
+        newMemberDiv.id = ''; // Remove the ID to prevent duplicates
+        membersDiv.appendChild(newMemberDiv);
+
+        // Attach event listeners for search and selection
+        const searchInput = newMemberDiv.querySelector('.search-user');
+        const suggestionsList = newMemberDiv.querySelector('.user-suggestions');
+
+        searchInput.addEventListener('input', function () {
+            const query = searchInput.value.trim();
+
+            // Fetch suggestions from the server, passing loggedInUsername as a parameter
+            fetch(`/users/search?query=${encodeURIComponent(query)}&loggedInUsername=${encodeURIComponent(loggedInUsername)}`)
+                .then(response => response.json())
+                .then(users => {
+                    suggestionsList.innerHTML = ''; // Clear previous suggestions
+
+                    console.log('Users received from API:', users);  // Log the fetched user list
+
+                    if (users.length === 0) {
+                        suggestionsList.style.display = 'none';
+                        return;
+                    }
+
+                    suggestionsList.style.display = 'block';
+
+                    users.forEach(username => {
+                        const suggestionItem = document.createElement('li');
+                        suggestionItem.textContent = username; // Display user's username
+                        suggestionItem.className = 'suggestion-item';
+
+                        // Add click handler to select the user
+                        suggestionItem.addEventListener('click', function () {
+                            searchInput.value = username; // Set input value to selected username
+                            newMemberDiv.querySelector('.selected-member').value = username; // Set hidden field to username
+                            suggestionsList.style.display = 'none'; // Hide suggestions
+                        });
+
+                        suggestionsList.appendChild(suggestionItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching suggestions:', error);
+                });
+        });
+
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', function (event) {
+            if (!newMemberDiv.contains(event.target)) {
+                suggestionsList.style.display = 'none';
+            }
+        });
     });
 </script>
 </body>

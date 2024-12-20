@@ -7,21 +7,28 @@ import course.spring.elearningplatform.exception.DuplicatedEntityException;
 import course.spring.elearningplatform.exception.EntityNotFoundException;
 import course.spring.elearningplatform.repository.GroupRepository;
 import course.spring.elearningplatform.service.GroupService;
+import course.spring.elearningplatform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.ArrayList;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupServiceImpl implements GroupService {
 
     private final GroupRepository groupRepository;
+    private final UserService userService;
 
     @Autowired
-    public GroupServiceImpl(GroupRepository groupRepository) {
+    public GroupServiceImpl(GroupRepository groupRepository, UserService userService) {
         this.groupRepository = groupRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -55,10 +62,11 @@ public class GroupServiceImpl implements GroupService {
     private Group buildGroup(GroupDto groupDto) {
         Group group = new Group();
         group.setName(groupDto.getName());
-        group.setMembers(groupDto.getMembers());
+        groupDto.getMembers().removeAll(List.of(""));
+        Set<User> members = groupDto.getMembers().stream().map(userService::getUserByUsername).collect(Collectors.toCollection(HashSet::new));
+        group.setMembers(members);
         group.setArticles(groupDto.getArticles());
         group.setDescription(groupDto.getDescription());
-
         MultipartFile image = groupDto.getImage();
         if (!image.isEmpty()) {
             try {

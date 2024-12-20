@@ -11,6 +11,7 @@ import course.spring.elearningplatform.service.GroupService;
 import course.spring.elearningplatform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +49,12 @@ public class GroupController {
 
     @GetMapping("/create")
     public String showCreateGroupPage(Model model) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+        User loggedInUser = userService.getUserByUsername(username);
+
         model.addAttribute("group", new GroupDto());
+        model.addAttribute("loggedInUserUsername", loggedInUser.getUsername());  // Pass the username
         return "create-group";
     }
 
