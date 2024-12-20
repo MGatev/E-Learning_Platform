@@ -18,7 +18,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -40,7 +42,7 @@ public class Group {
 
   @ManyToMany(fetch = FetchType.EAGER)
   @CollectionTable(name = "group_members")
-  private List<User> members;
+  private Set<User> members;
 
   @OneToMany(mappedBy = "group")
   private List<Article> articles;
@@ -54,7 +56,7 @@ public class Group {
       return;
     }
     if (members == null) {
-      members = new ArrayList<>();
+      members = new HashSet<>();
     } else if (members.contains(user)) {
       return;
     }

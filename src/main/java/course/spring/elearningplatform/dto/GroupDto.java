@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -26,7 +27,7 @@ public class GroupDto {
 
   private String description;
 
-  private List<User> members;
+  private Set<String> members;
 
   private List<Article> articles;
 }
