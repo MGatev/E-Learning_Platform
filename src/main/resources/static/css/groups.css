@@ -169,6 +169,20 @@ body {
     position: relative; /* Ensure it's unaffected by the parent's opacity */
     z-index: 1; /* Bring it above any dimmed overlay */
 }
+.button-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button-danger:hover {
+    background-color: #c82333;
+}
+
 
 
 

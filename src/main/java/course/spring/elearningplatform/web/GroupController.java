@@ -93,6 +93,12 @@ public class GroupController {
         return "redirect:/groups/" + id;
     }
 
+    @PostMapping("/{id}")
+    private String deleteGroup(@PathVariable("id") Long id) {
+        groupService.deleteGroup(id);
+        return "redirect:/groups";
+    }
+
     @PostMapping("/{id}/articles/create")
     private String createArticle(@PathVariable("id") Long id, @ModelAttribute ArticleDto articleDto, Model model) {
         articleService.createArticle(id, articleDto);
