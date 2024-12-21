@@ -39,7 +39,7 @@
            th:classappend="${group.members.contains(loggedUser) ? '' : 'disabled-link'}"
            onclick="handleCardClick(this, event)">
             <!-- Group Image -->
-            <img th:src="'data:image/jpeg;base64,' + ${group.parseImage()}" alt="Group Image" loading="lazy">
+            <img th:src="${group.getImageBase64()}" alt="Group Image" loading="lazy">
 
             <!-- Group Details -->
             <div class="group-details">

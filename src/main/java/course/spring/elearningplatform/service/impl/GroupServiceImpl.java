@@ -1,19 +1,20 @@
 package course.spring.elearningplatform.service.impl;
 
 import course.spring.elearningplatform.dto.GroupDto;
+import course.spring.elearningplatform.dto.ImageDto;
 import course.spring.elearningplatform.entity.Group;
+import course.spring.elearningplatform.entity.Image;
 import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.exception.DuplicatedEntityException;
 import course.spring.elearningplatform.exception.EntityNotFoundException;
 import course.spring.elearningplatform.repository.GroupRepository;
 import course.spring.elearningplatform.service.GroupService;
+import course.spring.elearningplatform.service.ImageService;
 import course.spring.elearningplatform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import java.util.ArrayList;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,22 +25,38 @@ public class GroupServiceImpl implements GroupService {
 
     private final GroupRepository groupRepository;
     private final UserService userService;
+    private final ImageService imageService;
 
     @Autowired
-    public GroupServiceImpl(GroupRepository groupRepository, UserService userService) {
+    public GroupServiceImpl(GroupRepository groupRepository, UserService userService, ImageService imageService) {
         this.groupRepository = groupRepository;
         this.userService = userService;
+        this.imageService = imageService;
     }
 
+    @Transactional
     @Override
     public List<Group> getAllGroups() {
-        return groupRepository.findAll();
+        List<Group> allGroups = groupRepository.findAll();
+      return allGroups.stream().peek(group -> {
+          Image image = group.getImage();
+          if (image != null) {
+              group.setImageBase64(image.parseImage());
+          }
+              })
+              .toList();
     }
 
+    @Transactional
     @Override
     public Group getGroupById(Long id) {
-      return groupRepository.findById(id)
-              .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id %s not found", id), "redirect:/groups"));
+        Group group = groupRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id %s not found", id), "redirect:/groups"));
+        Image image = group.getImage();
+        if (image != null) {
+            group.setImageBase64(image.parseImage());
+        }
+        return group;
     }
 
     @Override
@@ -67,13 +84,11 @@ public class GroupServiceImpl implements GroupService {
         group.setMembers(members);
         group.setArticles(groupDto.getArticles());
         group.setDescription(groupDto.getDescription());
-        MultipartFile image = groupDto.getImage();
-        if (!image.isEmpty()) {
-            try {
-                group.setImage(image.getBytes());
-            } catch (IOException e) {
-                throw new RuntimeException("Error uploading image!", e);
-            }
+
+        ImageDto imageDto = groupDto.getImage();
+        if (imageDto != null) {
+            Image savedImage = imageService.createImage(imageDto);
+            group.setImage(savedImage);
         }
 
         return group;

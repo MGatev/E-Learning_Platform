@@ -17,7 +17,7 @@
         <input type="text" id="groupDescription" th:field="*{description}" placeholder="Enter group description" class="form-input">
 
         <label for="groupImage" class="form-label">Group Image:</label>
-        <input type="file" id="groupImage" th:field="*{image}" name="image" accept="image/*" class="form-input" required>
+        <input type="file" id="groupImage" th:field="*{image.image}" name="image" accept="image/*" class="form-input" required>
 
         <div th:if="${errorMessage}" class="error-message">
             <p th:text="${errorMessage}">Group name already exists. Please choose another one.</p>

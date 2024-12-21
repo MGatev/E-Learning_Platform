@@ -6,7 +6,7 @@
 
 <div class="container mt-5">
     <div class="text-center group-image-container mb-4">
-        <img th:src="'data:image/jpeg;base64,' + ${group.parseImage()}"
+        <img th:src="${group.getImageBase64()}"
              alt="Group Image"
              class="group-image"
              loading="lazy">
