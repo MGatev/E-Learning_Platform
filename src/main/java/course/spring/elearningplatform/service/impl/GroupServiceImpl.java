@@ -11,7 +11,6 @@ import course.spring.elearningplatform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.ArrayList;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -80,9 +79,10 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Group addMember(Long id, User user) {
+    public Group addMember(Long id, String username) {
         Group group = groupRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id %s not found", id), "redirect:/groups/" + id));
+        User user = userService.getUserByUsername(username);
         group.addMember(user);
         return groupRepository.save(group);
     }
