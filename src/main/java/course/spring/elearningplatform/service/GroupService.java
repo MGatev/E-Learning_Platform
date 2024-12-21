@@ -11,6 +11,6 @@ public interface GroupService {
   Group getGroupById(Long id);
   Group createGroup(GroupDto groupDto);
   Group deleteGroup(Long id);
-  Group addMember(Long id, User user);
+  Group addMember(Long id, String username);
   Group removeMember(Long id, User user);
 }
