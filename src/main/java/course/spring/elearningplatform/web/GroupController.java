@@ -41,9 +41,12 @@ public class GroupController {
     }
 
     @GetMapping("/{id}")
-    public String getGroupById(@PathVariable Long id, Model model) {
+    public String getGroupById(@PathVariable Long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        User loggedInUser = userService.getUserByUsername(userDetails.getUsername());
+
         model.addAttribute("group", groupService.getGroupById(id));
         model.addAttribute("articles", articleService.getAllArticlesForAGroup(id));
+        model.addAttribute("loggedInUser", loggedInUser.getUsername());
         return "group";
     }
 
@@ -54,7 +57,7 @@ public class GroupController {
         User loggedInUser = userService.getUserByUsername(username);
 
         model.addAttribute("group", new GroupDto());
-        model.addAttribute("loggedInUserUsername", loggedInUser.getUsername());  // Pass the username
+        model.addAttribute("loggedInUserUsername", loggedInUser.getUsername());
         return "create-group";
     }
 
@@ -66,8 +69,7 @@ public class GroupController {
 
     @PostMapping("/{id}/join")
     public String joinGroup(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
-        User loggedUser = userService.getUserByUsername(userDetails.getUsername());
-        groupService.addMember(id, loggedUser);
+        groupService.addMember(id, userDetails.getUsername());
         return "redirect:/groups";
     }
 
@@ -96,6 +98,12 @@ public class GroupController {
         articleService.createArticle(id, articleDto);
         model.addAttribute("group", groupService.getGroupById(id));
         model.addAttribute("articles", articleService.getAllArticlesForAGroup(id));
+        return "redirect:/groups/" + id;
+    }
+
+    @PostMapping("/{id}/addMember")
+    public String addMemberToGroup(@PathVariable("id") Long id, @RequestParam("username") String username, @AuthenticationPrincipal UserDetails userDetails) {
+        groupService.addMember(id, username);
         return "redirect:/groups/" + id;
     }
 
