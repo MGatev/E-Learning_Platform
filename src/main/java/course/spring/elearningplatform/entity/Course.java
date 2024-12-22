@@ -22,10 +22,15 @@ public class Course {
     private String description;
 
     @NonNull
-    @NotEmpty
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> categories;
 
     @OneToMany
     private List<Lesson> lessons;
+
+    @OneToMany
+    private List<Question> questions;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Quiz quiz;
 }

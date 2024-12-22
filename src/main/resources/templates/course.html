@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/head :: head('Home Page')}">
 <body>
 <div th:replace="~{fragments/home-nav :: home-nav}"/>
+<!--<button type="button" class="btn btn-primary" onclick="window.location.href='/quizzes/create-quiz?courseId=' + [[${courseId}]]">Create Quiz</button>-->
+<button type="button" class="btn btn-primary" onclick="window.location.href='/quizzes/create-quiz?courseId=' + 1">Create Quiz</button>
+<button type="button" class="btn btn-primary" onclick="window.location.href='/quizzes/quiz?courseId=' + 1">Start Quiz</button>
+<button type="button" class="btn btn-primary" onclick="window.location.href='/questions/question-create?courseId=' + 1">Add Question</button>
 <div th:replace="~{fragments/footer :: footer}"/>
 </body>
 </html>
