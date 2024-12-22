@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Create Question')}">
+<body>
+<div th:replace="~{fragments/home-nav :: home-nav}"/>
+<div class="quiz-form-container">
+    <h1 class="form-heading">Create a Question</h1>
+    <form th:action="@{/questions/create}" method="post" class="quiz-form">
+        <input type="hidden" id="courseId" name="courseId" th:value="${courseId}"/>
+        <label title="title">Title:</label>
+        <input id="questionTitle" type="text" name="questionTitle" required>
+        <label for="option1">Option 1:</label>
+        <input id="option1" type="text" name="option1" required>
+        <label for="option2">Option 2:</label>
+        <input id="option2" type="text" name="option2" required>
+        <label for="option3">Option 3:</label>
+        <input id="option3" type="text" name="option3" required>
+        <label for="option4">Option 4:</label>
+        <input id="option4" type="text" name="option4" required>
+        <label for="correctAnswer">Correct Answer:</label>
+        <input id="correctAnswer" type="text" name="correctAnswer" required>
+        <label for="difficulty">Difficulty:</label>
+        <input id="difficulty" type="text" name="difficulty" required>
+        <label for="category">Category:</label>
+        <input id="category" type="text" name="category" required>
+        <button type="submit" class="button-33">Create Question</button>
+    </form>
+</div>
+<div th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

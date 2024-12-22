@@ -42,7 +42,7 @@
     <div class="lessons-section mt-5">
         <div class="section-title">
             <h3 class="title">Lessons</h3>
-            <a th:href="@{/courses/{id}/lessons/create(id=${course.id})}" class="add-lesson">Add Lesson</a>
+            <a th:href="@{/courses/{id}/lessons/create(id=${course.id})}" class="add-button">Add Lesson</a>
         </div>
         <ul class="list-group">
             <li th:each="lesson, index : ${course.lessons}" style="list-style-type: none; cursor: pointer;">
@@ -72,11 +72,16 @@
     <div class="quiz-section mt-5">
         <div class="section-title">
             <h3 class="title">Final Quiz</h3>
-            <a th:href="@{/courses/{id}/lessons/create(id=${course.id})}" class="add-lesson">Add Quiz</a>
+            <a onclick="window.location.href='/quizzes/create-quiz?courseId=' + 1"
+               class="add-button" style="color: white;">Create Quiz</a>
         </div>
         <p th:if="${!allLessonsCompleted}" class="quiz-instructions">Complete all lessons to unlock the quiz.</p>
-        <button type="button" class="btn btn-success start-quiz-btn" th:unless="${!allLessonsCompleted}">
+        <button type="button" class="btn btn-success start-quiz-btn" th:unless="${!allLessonsCompleted}"
+                onclick="window.location.href='/quizzes/quiz?courseId=' + 1">
             Start Quiz
+        </button>
+        <button th:unless="${!allLessonsCompleted}" type="button" class="btn btn-success start-quiz-btn"
+                onclick="window.location.href='/questions/question-create?courseId=' + 1">Add Question
         </button>
     </div>
 </div>
