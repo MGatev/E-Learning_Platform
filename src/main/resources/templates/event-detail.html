@@ -6,17 +6,43 @@
 </head>
 <body>
 <div th:replace="~{fragments/home-nav :: home-nav}"></div>
-<div class="custom-page-container">
-    <h1 class="custom-page-header" th:text="${event.title}">Event Title</h1>
-    <div class="event-detail">
-        <img th:src="@{/images/{filename}(filename=${event.imagePath?.substring(event.imagePath?.lastIndexOf('/') + 1)})}"
-             alt="Event Image" class="event-detail-image" />
-        <p>Description: <span class="event-detail-description" th:text="${event.description}">Description</span></p>
-        <p>Start Time: <span class="event-detail-timestamp" th:text="${event.startTime}">Start Time</span></p>
-        <p>End Time: <span class="event-detail-timestamp" th:text="${event.endTime}">End Time</span></p>
-        <p>Instructor: <span class="event-detail-instructor" th:text="${event.instructor}">Instructor</span></p>
+
+<h1 class="page-title" th:text="${event.title}">Event Title</h1>
+
+<div class="event-page-container">
+    <!-- Left Section: Photo and Description -->
+    <div class="event-left">
+        <!-- Event Image -->
+        <img th:src="${event.getImageBase64()}" alt="Event Image" class="event-image" />
+
+        <!-- Event Description -->
+        <div class="event-description">
+            <strong>Description:</strong>
+            <span th:text="${event.description}">Event description goes here.</span>
+        </div>
     </div>
-    <a class="custom-button" th:href="@{/events}">Back to Events</a>
+
+    <!-- Right Section: Date/Time and Instructor -->
+    <div class="event-right">
+        <!-- Date and Time Block -->
+        <div class="event-datetime">
+            <h5>Date & Time</h5>
+            <div class="start-event">
+                <strong>Start:</strong>
+                <span th:text="${#temporals.format(event.startTime, 'EEEE, dd MMM yyyy - HH:mm')}">Start Date</span>
+            </div>
+            <div class="start-event">
+                <strong>End:</strong>
+                <span th:text="${#temporals.format(event.endTime, 'EEEE, dd MMM yyyy - HH:mm')}">End Date</span>
+            </div>
+        </div>
+
+        <!-- Instructor Block -->
+        <div class="event-instructor">
+            <h5>Instructor</h5>
+            <span th:text="${event.instructor}">Instructor Name</span>
+        </div>
+    </div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>

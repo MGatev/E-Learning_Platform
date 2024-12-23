@@ -24,6 +24,12 @@ public class Event {
     private Course course;
 
     private String instructor;
-    private String imagePath;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "image_id")
+    private Image image;
+
+    @Transient
+    private String imageBase64;
 }
 

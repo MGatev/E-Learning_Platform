@@ -4,6 +4,7 @@ import course.spring.elearningplatform.dto.EventDto;
 import course.spring.elearningplatform.dto.ImageDto;
 import course.spring.elearningplatform.dto.mapper.EntityMapper;
 import course.spring.elearningplatform.entity.Event;
+import course.spring.elearningplatform.entity.Group;
 import course.spring.elearningplatform.service.EventService;
 import course.spring.elearningplatform.service.ImageService;
 import course.spring.elearningplatform.service.impl.EventServiceImpl;
@@ -47,45 +48,25 @@ public class EventController {
     public String getEventById(@PathVariable Long id, Model model) {
         Event event = eventService.getEventById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid event Id:" + id));
+        event.setImageBase64(event.getImage().parseImage());
         EventDto eventDTO = EntityMapper.mapEntityToDto(event, EventDto.class);
-        model.addAttribute("event", eventDTO);
+        model.addAttribute("event", event);
         return "event-detail";
     }
 
     @GetMapping("/new")
     public String createEventForm(Model model) {
-        model.addAttribute("event", new EventDto());
+        EventDto eventDto = new EventDto();
+        model.addAttribute("event", eventDto);
         return "event-form";
     }
 
     @PostMapping
-    public String saveEvent(@ModelAttribute("event") EventDto eventDTO,
-                            @RequestParam("image") MultipartFile imageFile,
-                            Model model) {
-        try {
-            if (imageFile != null && !imageFile.isEmpty()) {
-                String uploadDir = "uploads/";
-                String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
-                Path uploadPath = Paths.get(uploadDir);
-
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-
-                Path filePath = uploadPath.resolve(fileName);
-                Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-                eventDTO.setImagePath(uploadDir + fileName);
-            }
-
-            eventService.saveEvent(eventDTO);
-            return "redirect:/events";
-
-        } catch (IOException ex) {
-            model.addAttribute("error", "Error uploading image: " + ex.getMessage());
-            return "event-form";
-        }
+    public String saveEvent(@ModelAttribute EventDto eventDTO) {
+        eventService.saveEvent(eventDTO);
+        return "redirect:/events";
     }
+
 
     @GetMapping("/home")
     public String homePage(Model model) {

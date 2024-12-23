@@ -20,11 +20,11 @@
       </div>
       <div class="event-form-group">
         <label class="event-form-label">Start Time:</label>
-        <input type="datetime-local" class="event-form-input" th:field="*{startTime}" />
+        <input type="datetime-local" id="startTime" class="event-form-input" th:field="*{startTime}" />
       </div>
       <div class="event-form-group">
         <label class="event-form-label">End Time:</label>
-        <input type="datetime-local" class="event-form-input" th:field="*{endTime}" />
+        <input type="datetime-local" id="endTime" class="event-form-input" th:field="*{endTime}" />
       </div>
       <div class="event-form-group">
         <label class="event-form-label">Instructor:</label>
@@ -32,12 +32,34 @@
       </div>
       <div class="event-form-group">
         <label class="event-form-label">Image:</label>
-        <input type="file" class="event-form-file" name="image" />
+        <input type="file" id="groupImage" th:field="*{image.image}" name="image" accept="image/*" class="form-input" required>
       </div>
+
       <button type="submit" class="event-form-button">Save</button>
     </form>
   </div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const now = new Date();
+    const startTimeInput = document.getElementById('startTime');
+    const endTimeInput = document.getElementById('endTime');
+
+    const formattedNow = now.toISOString().slice(0, 16);
+
+    startTimeInput.min = formattedNow;
+
+    startTimeInput.addEventListener('change', function () {
+      const startTime = this.value;
+      endTimeInput.min = startTime;
+
+      if (endTimeInput.value < startTime) {
+        endTimeInput.value = '';
+      }
+    });
+  });
+</script>
 </body>
 </html>

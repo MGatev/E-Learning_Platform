@@ -12,6 +12,7 @@ import course.spring.elearningplatform.service.EventService;
 import course.spring.elearningplatform.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -23,18 +24,41 @@ import java.util.stream.Collectors;
 @Service
 public class EventServiceImpl implements EventService {
 
-    @Autowired
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
+    private final ImageService imageService;
 
+    @Autowired
+    EventServiceImpl(EventRepository eventRepository, ImageService imageService) {
+        this.imageService = imageService;
+        this.eventRepository = eventRepository;
+    }
+
+    @Transactional
     @Override
     public List<Event> getAllEvents() {
-        return eventRepository.findAll();
+        List<Event> allEvents = eventRepository.findAll();
+        return allEvents.stream().peek(group -> {
+                    Image image = group.getImage();
+                    if (image != null) {
+                        group.setImageBase64(image.parseImage());
+                    }
+                })
+                .toList();
     }
 
+    @Transactional
     @Override
     public Optional<Event> getEventById(Long id) {
-        return eventRepository.findById(id);
+        Optional<Event> eventOptional = eventRepository.findById(id);
+        eventOptional.ifPresent(event -> {
+            Image image = event.getImage();
+            if (image != null) {
+                event.setImageBase64(image.parseImage());
+            }
+        });
+        return eventOptional;
     }
+
 
     @Override
     public Event saveEvent(EventDto eventDto) {
@@ -58,7 +82,12 @@ public class EventServiceImpl implements EventService {
         event.setStartTime(eventDto.getStartTime());
         event.setEndTime(eventDto.getEndTime());
         event.setInstructor(eventDto.getInstructor());
-        event.setImagePath(eventDto.getImagePath());
+
+        ImageDto imageDto = eventDto.getImage();
+        if (imageDto != null) {
+            Image savedImage = imageService.createImage(imageDto);
+            event.setImage(savedImage);
+        }
 
         return event;
     }

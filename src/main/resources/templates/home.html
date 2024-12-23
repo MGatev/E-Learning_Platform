@@ -92,17 +92,22 @@
     </div>
 
     <!-- Events -->
-    <h2 class="text-center mt-5">Upcoming Events</h2>
-    <div class="card-deck" style="justify-content: center; gap: 2rem;">
+    <div class="upcoming-div">
+        <h2 class="upcoming-event" style="color: #e6f4e6;">Upcoming Events</h2>
+    </div>
+    <div class="card-deck" style="justify-content: center; gap: 2rem; padding-top: 10px;">
+        <br>
         <div th:if="${upcomingEvents.isEmpty()}" class="text-center">
             <p>No upcoming events found.</p>
         </div>
         <div class="card" style="max-width: 15rem;" th:each="event : ${upcomingEvents}">
-            <img class="card-img-top" th:src="@{/images/{filename}(filename=${event.imagePath})}" alt="Event image">
             <div class="card-body">
-                <h5 class="card-title" th:text="${event.title}">Event Title</h5>
-                <p class="card-text" th:text="${event.description}">Event description goes here.</p>
-                <p class="card-text"><small class="text-muted" th:text="'Date: ' + ${event.startTime}">Date</small></p>
+                <a th:href="@{/events/{id}(id=${event.id})}" class="card-title-link">
+                    <h5 class="card-title" th:text="${event.title}">Event Title</h5>
+                </a>
+                <img th:src="${event.getImageBase64()}" alt="Event Image" class="event-image" />
+
+                <span th:text="${#temporals.format(event.startTime, 'EEEE, dd MMM yyyy - HH:mm')}">Start Date</span>
             </div>
         </div>
     </div>

@@ -1,3 +1,4 @@
+/* Updated CSS file with requested changes */
 
 .custom-page-container {
     max-width: 800px;
@@ -16,6 +17,17 @@
     font-weight: bold;
     color: #333;
     margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.custom-page-header::after {
+    content: "";
+    display: block;
+    width: 60%;
+    height: 2px;
+    border-bottom: 2px dotted green;
+    margin: 10px auto 0;
 }
 
 /* Styling for the list of events */
@@ -26,6 +38,7 @@
 }
 
 .custom-event-list-item {
+    display:flex;
     background: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -97,14 +110,25 @@
 .event-detail {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 20px;
 }
 
 .event-detail-image {
-    max-width: 100%;
+    max-width: 90%;
+    max-height: 400px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.event-detail-image::after {
+    content: "";
+    display: block;
+    width: 60%;
+    height: 2px;
+    border-bottom: 2px dotted green;
+    margin: 10px auto 0;
 }
 
 .event-detail-description,
@@ -114,6 +138,7 @@
     color: #555;
     margin: 5px 0;
     line-height: 1.5;
+    padding: 10px; /* Added padding */
 }
 
 .event-detail-description span,
@@ -121,4 +146,130 @@
 .event-detail-instructor span {
     font-weight: bold;
     color: #333;
+}
+
+/* Calendar icon with timestamp containers */
+.event-detail-timestamp-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.calendar-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-image: url('/path/to/calendar-icon.png'); /* Replace with actual icon path */
+    background-size: cover;
+}
+
+/* Styling for date and time blocks */
+.timestamp-container {
+    padding: 5px 10px;
+    background-color: #e8f5e9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    color: #333;
+    display: inline-block;
+}
+
+/* Image Styling (in case you want consistency with the container) */
+.group-image-container {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Center the image and apply a border */
+.event-image {
+    display: flex;
+    margin: 0 auto; /* Centers the image */
+    max-width: 90%; /* Keeps the image responsive */
+    max-height: 500px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Adds subtle shadow */
+    border: 2px solid #e0e0e0;
+}
+
+
+.event-image-list {
+    display: flex;
+
+}
+
+/* Add hover effect */
+.event-image:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+/* Event Left Section */
+
+.event-page-container {
+    display: flex;
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px 10px 10px 10px; /* Adds padding inside the container */
+}
+
+.event-left {
+    flex: 3; /* Increased size for the left section */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Event Right Section */
+.event-right {
+    flex: 1; /* Smaller size for the right section */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Title Styling */
+.page-title {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    font-size: 46px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #5cb85c;
+    border-bottom: dotted #5cb85c;
+}
+
+.event-description {
+    padding: 10px 10px 10px 50px;
+}
+
+.event-datetime strong,
+.event-instructor strong {
+    color: #5cb85c; /* Green color for the labels */
+    font-size: 18px; /* Bigger font size */
+    font-weight: bold; /* Keep it bold */
+    padding: 10px 10px 10px 10px;
+}
+
+.start-event {
+    padding: 10px 10px 10px 10px;
+}
+
+h5 {
+    font-style: bold;
+    font-color: #06402b;
+    border-bottom: dotted #5cb85c;
+}
+
+.upcoming-div {
+    background-color: #2C2F33;
+    margin: 20px 20px 20px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 5px 20px 5px 20px;
 }

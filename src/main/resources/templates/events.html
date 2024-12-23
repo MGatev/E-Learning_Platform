@@ -11,8 +11,15 @@
   <a href="/events/new" class="custom-create-link">Create New Event</a>
   <ul class="custom-event-list">
     <li class="custom-event-list-item" th:each="event : ${events}">
-      <a class="custom-event-title" th:href="@{/events/{id}(id=${event.id})}" th:text="${event.title}">Event Title</a>
-      <p class="custom-event-description" th:text="${event.description}">Description</p>
+      <div class="left">
+        <a class="custom-event-title" th:href="@{/events/{id}(id=${event.id})}" th:text="${event.title}">
+          Event Title
+        </a>
+        <p class="custom-event-description" th:text="${event.description}">Description</p>
+      </div>
+      <div class="event-right">
+        <span th:text="${#temporals.format(event.startTime, 'EEEE, dd MMM yyyy - HH:mm')}"  style="text-align: right;">Start Date</span>
+      </div>
     </li>
   </ul>
 </div>
