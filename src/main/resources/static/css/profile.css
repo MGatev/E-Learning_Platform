@@ -1,0 +1,144 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0fdf0; /* Light green background */
+    margin: 0;
+    padding: 0;
+}
+
+.profile-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.profile-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    padding-left: 50px;
+}
+
+.profile-picture {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 3px solid #a3d9a5; /* Slightly darker green for the border */
+    transition: transform 0.3s ease-in-out;
+}
+
+.profile-picture:hover {
+    animation: breathing 2s infinite;
+}
+
+/* Breathing effect */
+@keyframes breathing {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05); /* Slightly increase the size */
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.user-info {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.user-name {
+    font-size: 1.5em;
+    color: #3c763d; /* Dark green */
+    margin: 5px 0;
+}
+
+.username {
+    font-size: 1em;
+    color: #6da76d; /* Lighter green */
+    margin: 5px 0;
+}
+
+.user-role {
+    font-size: 0.9em;
+    color: #6da76d; /* Lighter green */
+    margin: 5px 0;
+}
+
+.profile-right {
+    width: 60%;
+    border: 1px solid #a3d9a5;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #3c763d;
+}
+
+.user-form input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #a3d9a5;
+    border-radius: 5px;
+}
+
+.user-form button {
+    background-color: #3c763d;
+    color: #ffffff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.user-form button:hover {
+    background-color: #2e5c2e;
+}
+
+.profile-right button {
+    border: none;
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.profile-right button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.button-manage-groups {
+    background-color: #5cb85c;
+}
+
+.button-view-badges {
+    background-color: #4cae4c;
+}
+
+.button-view-certificates {
+    background-color: #3d8b3d;
+}
+
+.profile-right button .emoji {
+    margin-right: 10px;
+}

@@ -1,0 +1,43 @@
+.profile-picture-container {
+    position: relative;
+    margin: 20px auto;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed #ddd;
+    cursor: pointer;
+}
+
+.profile-picture-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.profile-picture-container:hover {
+    border-color: #007bff;
+}
+
+.profile-picture-container input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+.form-input, input[type="file"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #a5d6a7; /* Light green border */
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Light input background */
+    width: 100%;
+    box-sizing: border-box; /* Ensures padding doesn't add to width */
+    margin-bottom: 15px;
+}
