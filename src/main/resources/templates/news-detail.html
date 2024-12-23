@@ -1,44 +1,94 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('News Detail')}">
-    <link rel="stylesheet" href="/css/news-detail.css">
-    <style>
-        /* news-detail.css */
-        .container {
-            margin-top: 30px;
+<head th:replace="~{fragments/head :: head('News Detail')}"/>
+<link rel="stylesheet" href="/css/news-detail.css"/>
+<style>
+    /* General container styling */
+    .news-container {
+            margin: 50px auto;
+            padding: 30px;
+            max-width: 800px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
+    .news-title {
+        text-align: center;
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #244e11;
+        letter-spacing: 0.5px;
+        position: relative;
+        padding-bottom: 10px;
+    }
 
-        .text-muted {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-        }
+    .news-title::after {
+        content: "";
+        display: block;
+        width: 60%;
+        height: 2px;
+        border-bottom: 2px dotted green;
+        margin: 10px auto 0;
+    }
 
-        p {
-            font-size: 1.2rem;
-            line-height: 1.6;
-        }
+    .news-date {
+        font-size: 1rem;
+        margin: 20px auto 30px;
+        display: block;
+        text-align: left;
+        color: #6c757d;
+        background-color: #eef6ee;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
 
-        .btn-secondary {
-            margin-top: 20px;
-        }
-    </style>
+    .news-content {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        color: #333;
+        margin-bottom: 30px;
+        padding: 10px 15px;
+        background-color: #ffffff;
+        border-radius: 5px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .news-back-button {
+        display: block;
+        margin: 0 auto;
+        background-color: #5cb85c;
+        border: none;
+        color: #fff;
+        font-size: 1.2rem;
+        padding: 10px 25px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .news-back-button:hover {
+        background-color: #4cae4c;
+        transform: translateY(-2px);
+    }
+</style>
 </head>
 <body>
-<div th:replace="~{fragments/home-nav :: home-nav}"></div>
+<div th:replace="~{fragments/home-nav :: home-nav}"/>
 
-<div class="container">
-    <h1 th:text="${news.title}"></h1>
-    <p class="text-muted" th:text="${news.publishedDate}"></p>
-    <p th:text="${news.content}"></p>
+<div class="news-container">
+    <h1 class="news-title" th:text="${news.title}"></h1>
+    <span class="news-date" th:text="${#temporals.format(news.publishedDate, 'EEEE, dd MMM yyyy - HH:mm')}">Date</span>
+    <p class="news-content" th:text="${news.content}"></p>
 
-    <a href="/news" class="btn btn-secondary">Back to News List</a>
+    <a href="/news" class="news-back-button">Back to News List</a>
 </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: footer}"/>
 </body>
 </html>

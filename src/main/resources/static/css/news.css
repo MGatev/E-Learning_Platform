@@ -61,6 +61,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    margin-top: 40px;
+    margin-bottom: 40 px;
 }
 
 .card {
@@ -200,4 +202,13 @@
 
 .list-group-item .btn-info:hover {
     background-color: #138496;
+}
+
+.news-div {
+    background-color: #2C2F33;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 15px 20px 5px 20px;
+    margin: 10px 10px 10px 10px;
 }
