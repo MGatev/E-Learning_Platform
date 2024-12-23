@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Event Details Page')}">
+    <link rel="stylesheet" th:href="@{/css/event.css}" />
+    <title>Event Details</title>
+</head>
+<body>
+<div th:replace="~{fragments/home-nav :: home-nav}"></div>
+<div class="custom-page-container">
+    <h1 class="custom-page-header" th:text="${event.title}">Event Title</h1>
+    <div class="event-detail">
+        <img th:src="@{/images/{filename}(filename=${event.imagePath?.substring(event.imagePath?.lastIndexOf('/') + 1)})}"
+             alt="Event Image" class="event-detail-image" />
+        <p>Description: <span class="event-detail-description" th:text="${event.description}">Description</span></p>
+        <p>Start Time: <span class="event-detail-timestamp" th:text="${event.startTime}">Start Time</span></p>
+        <p>End Time: <span class="event-detail-timestamp" th:text="${event.endTime}">End Time</span></p>
+        <p>Instructor: <span class="event-detail-instructor" th:text="${event.instructor}">Instructor</span></p>
+    </div>
+    <a class="custom-button" th:href="@{/events}">Back to Events</a>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

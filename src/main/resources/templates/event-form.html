@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('EventForm Page')}">
+  <link rel="stylesheet" th:href="@{/css/event.css}" />
+  <title>Create Event</title>
 </head>
 <body>
-$END$
+<div th:replace="~{fragments/home-nav :: home-nav}"></div>
+<div class="event-form-wrapper">
+  <div class="event-form-container">
+    <h1 class="event-form-header">Create New Event</h1>
+    <form th:action="@{/events}" th:object="${event}" method="post" enctype="multipart/form-data">
+      <div class="event-form-group">
+        <label class="event-form-label">Title:</label>
+        <input type="text" class="event-form-input" th:field="*{title}" />
+      </div>
+      <div class="event-form-group">
+        <label class="event-form-label">Description:</label>
+        <textarea class="event-form-textarea" th:field="*{description}"></textarea>
+      </div>
+      <div class="event-form-group">
+        <label class="event-form-label">Start Time:</label>
+        <input type="datetime-local" class="event-form-input" th:field="*{startTime}" />
+      </div>
+      <div class="event-form-group">
+        <label class="event-form-label">End Time:</label>
+        <input type="datetime-local" class="event-form-input" th:field="*{endTime}" />
+      </div>
+      <div class="event-form-group">
+        <label class="event-form-label">Instructor:</label>
+        <input type="text" class="event-form-input" th:field="*{instructor}" />
+      </div>
+      <div class="event-form-group">
+        <label class="event-form-label">Image:</label>
+        <input type="file" class="event-form-file" name="image" />
+      </div>
+      <button type="submit" class="event-form-button">Save</button>
+    </form>
+  </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

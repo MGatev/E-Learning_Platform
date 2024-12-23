@@ -29,10 +29,10 @@ public class AuthController {
         return "register";
     }
 
-    @GetMapping("/home")
+    /*@GetMapping("/home")
     public String home(Model model) {
         return "home";
-    }
+    }*/
 
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute("user") UserDto userDto, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
