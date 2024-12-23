@@ -16,7 +16,7 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService) {
@@ -39,7 +39,7 @@ public class UserController {
 
         List<String> allUsernames = userService.getAllUsers().stream()
                 .map(User::getUsername)
-                .filter(username -> !username.equals(loggedInUsername)) // Exclude logged-in user
+                .filter(username -> !username.equals(loggedInUsername))
                 .filter(username -> username.toLowerCase().contains(query.toLowerCase()))
                 .toList();
 

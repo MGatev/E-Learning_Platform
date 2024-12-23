@@ -48,7 +48,7 @@ h1 {
     outline: none;
 }
 
-button[type="submit"] {
+button .addNewsButton:hover {
     width: 100%;
     padding: 12px;
     background-color: #007bff;
@@ -60,8 +60,8 @@ button[type="submit"] {
     transition: background-color 0.3s ease;
 }
 
-button[type="submit"]:hover {
-    background-color: #0056b3;
+button .addNewsButton:hover {
+  background-color: #0056b3;
 }
 
 @media (max-width: 768px) {

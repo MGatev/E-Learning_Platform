@@ -95,9 +95,10 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Group addMember(Long id, User user) {
+    public Group addMember(Long id, String username) {
         Group group = groupRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id %s not found", id), "redirect:/groups/" + id));
+        User user = userService.getUserByUsername(username);
         group.addMember(user);
         return groupRepository.save(group);
     }

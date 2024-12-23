@@ -1,0 +1,124 @@
+
+.custom-page-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+/* Header styling */
+.custom-page-header {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Styling for the list of events */
+.custom-event-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.custom-event-list-item {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.custom-event-list-item:hover {
+    transform: scale(1.02);
+}
+
+.custom-event-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #5cb85c;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.custom-event-title:hover {
+    color: #4cae4c;
+}
+
+.custom-event-description {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+}
+
+/* Button styling */
+.custom-button {
+    display: inline-block;
+    background-color: #5cb85c;
+    color: white;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-button:hover {
+    background-color: #4cae4c;
+}
+
+/* Link for creating new events */
+.custom-create-link {
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #5cb85c;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.custom-create-link:hover {
+    color: #4cae4c;
+}
+
+/* Event detail styling */
+.event-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.event-detail-image {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.event-detail-description,
+.event-detail-timestamp,
+.event-detail-instructor {
+    font-size: 16px;
+    color: #555;
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+.event-detail-description span,
+.event-detail-timestamp span,
+.event-detail-instructor span {
+    font-weight: bold;
+    color: #333;
+}
