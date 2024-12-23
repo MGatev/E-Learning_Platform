@@ -6,7 +6,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,10 +25,10 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
 
-    public static final String ROLE_STUDENT = "ROLE_STUDENT";
-    public static final String ROLE_INSTRUCTOR = "ROLE_INSTRUCTOR";
-    public static final String ROLE_ADMIN = "ROLE_ADMIN";
-    public static final String ROLE_UNREGISTERED = "ROLE_UNREGISTERED";
+    public static final String ROLE_STUDENT = "STUDENT";
+    public static final String ROLE_INSTRUCTOR = "INSTRUCTOR";
+    public static final String ROLE_ADMIN = "ADMIN";
+    public static final String ROLE_UNREGISTERED = "UNREGISTERED";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +39,10 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-    private String profilePicture;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "profile_picture_id")
+    private Image profilePicture;
 
     @NonNull
     @NotEmpty
@@ -48,14 +53,6 @@ public class User {
     public String getFullName() {
         return firstName + " " + lastName;
     }
-//
-//    public User(String username, String password, String firstName, String lastName, String email) {
-//        this.username = username;
-//        this.password = password;
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.email = email;
-//    }
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Group> groups;

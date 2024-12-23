@@ -35,10 +35,10 @@
             <ul class="navbar-nav text-light my-2 my-lg-0 ml-auto">
                 <li th:if="${#authentication.principal}" class="nav-item">
                     <div class="profile-container">
-                        <div class="profile-pic-container">
+                        <div class="profile-pic-container" th:data-username="${#authentication.principal.username}">
                             <img class="rounded-circle profile-pic"
                                  style="width: 40px; height: 40px; object-fit: cover;"
-                                 th:src="${#authentication.principal.user.profilePicture != null ? '/images/profiles/' + user.profilePicture : '/images/profiles/default-profile.jpg'}"
+                                 id="profilePicture"
                                  alt="Profile Picture"/>
                             <span class="profile-name" th:text="${#authentication.principal.user.fullName}"></span>
                             <div class="custom-dropdown-menu">
@@ -50,6 +50,34 @@
                     </div>
                 </li>
             </ul>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+
+                    const profileContainer = document.querySelector('.profile-pic-container');
+                    const username = profileContainer.dataset.username;
+
+                    const profilePictureUrl = `/api/images/${username}`;
+
+                    fetch(profilePictureUrl)
+                        .then(response => {
+                            if (response.ok) {
+                                return response.blob();
+                            } else {
+                                throw new Error('Failed to load profile picture.');
+                            }
+                        })
+                        .then(async blob => {
+                            const imageUrl = URL.createObjectURL(await blob);
+                            const profileImg = document.getElementById('profilePicture');
+                            profileImg.src = imageUrl;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching profile picture:', error);
+                            // Optionally handle errors by keeping the default image
+                        });
+                });
+            </script>
         </div>
     </nav>
 </div>

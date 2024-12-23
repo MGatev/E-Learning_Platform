@@ -33,5 +33,7 @@ public class UserDto {
 
     private Set<String> roles;
 
+    private ImageDto profilePicture;
+
     private Set<Group> groups;
 }
