@@ -1,0 +1,53 @@
+/* Custom class for card images */
+.custom-card-img {
+    width: 100%; /* Ensures the image spans the full width of its container */
+    height: 180px; /* Fixed height for uniform appearance */
+    object-fit: cover; /* Crop the image to fit the dimensions without distortion */
+    border-radius: 0.25rem; /* Match Bootstrap's default card border-radius */
+    transition: transform 0.3s ease-in-out; /* Smooth scaling effect */
+}
+
+/* Custom class for cards */
+.custom-card {
+    cursor: pointer;
+    margin: 1rem; /* Adds spacing between cards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for visual appeal */
+    border: 1px solid #ddd; /* Optional: light border for cleaner visuals */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transform and shadow change */
+}
+
+/* Hover effect for cards */
+.custom-card:hover {
+    transform: translateY(-10px); /* Slight lift effect */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+/* Hover effect for images */
+.custom-card:hover .custom-card-img {
+    transform: scale(1.05); /* Slight zoom on image */
+}
+
+/* Hover effect for card body */
+.custom-card-body {
+    transition: color 0.3s ease-in-out; /* Smooth transition for text color */
+}
+
+.custom-card:hover .custom-card-body {
+    color: #328e59; /* Change text color to primary on hover */
+}
+
+.card-body {
+    background-color: #eaf4eb;
+}
+
+/* Hover effect for card body */
+.custom-card-body {
+    background-color: white;
+    transition: color 0.3s ease-in-out; /* Smooth transition for text color */
+}
+
+.custom-card-button {
+    display: none; /* Hide the button completely */
+}
+
+

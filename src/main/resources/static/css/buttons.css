@@ -1,0 +1,51 @@
+/* Common Button Styles */
+button, .back-btn {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    border-radius: 25px;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    text-decoration: none;
+}
+
+/* Already Completed Message */
+.completed-message {
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+    color: #ddd; /* Light gray text for contrast */
+    background-color: #444; /* Dark background */
+    border: 1px solid #666; /* Subtle border */
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 15px;
+    animation: fadeIn 1s ease;
+    text-align: center;
+}
+
+/* Mark as Completed Button (Dark Green Version) */
+.completed-btn {
+    background-color: #333; /* Dark button */
+    color: white;
+}
+
+.completed-btn:hover {
+    background-color: #555; /* Darker on hover */
+    transform: scale(1.1);
+}
+
+/* Back to Course Button (Green Version) */
+.back-btn {
+    background-color: #28a745; /* Green button */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    display: inline-block;
+}
+
+.back-btn:hover {
+    background-color: #218838; /* Darker green on hover */
+    transform: scale(1.1);
+}
