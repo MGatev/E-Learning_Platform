@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/head :: head('Create Course')}">
+<body>
+<div th:replace="~{fragments/home-nav :: home-nav}"/>
+<div class="container">
+    <h2 class="text-center mt-5">Create New Course</h2>
+    <form method="POST" th:action="@{/courses/create}" th:object="${course}" enctype="multipart/form-data"
+          class="main-form mx-auto col-md-9 d-flex flex-column justify-content-center">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" class="form-control"
+                   th:field="*{name}" th:errorclass="field-error" placeholder="Enter name of the course" required/>
+            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+               class="errors alert alert-danger">
+            </p>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input id="description" name="description" type="text" class="form-control"
+                   th:field="*{description}" placeholder="Enter description for the course" required/>
+            <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+               class="errors alert alert-danger">
+            </p>
+        </div>
+
+        <label for="groupImage" class="form-label">Group Image:</label>
+        <input type="file" id="groupImage" th:field="*{image}" name="image" accept="image/*" class="form-input" required>
+
+        <div th:if="${errorMessage}" class="alert alert-warning">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <div class="form-group">
+            <label for="categories">Categories</label>
+            <div id="categories-wrapper">
+                <!-- Add dynamic input fields for categories -->
+                <input id="categories" type="text" class="form-control mb-2" th:field="*{categories[0]}" placeholder="Enter category">
+            </div>
+            <button type="button" class="btn btn-secondary mt-2" id="add-category-btn">Add Another Category</button>
+            <p th:if="${#fields.hasErrors('categories')}" th:errors="*{categories}"
+               class="errors alert alert-danger">
+            </p>
+        </div>
+
+        <div class="row">
+            <div class="col col-md-4">
+                <button type="submit" class="btn btn-info btn-lg mr-3">Create new course</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:replace="~{fragments/footer :: footer}"/>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const categoriesWrapper = document.getElementById('categories-wrapper');
+        const addCategoryBtn = document.getElementById('add-category-btn');
+
+        addCategoryBtn.addEventListener('click', function () {
+            const categoryInputCount = categoriesWrapper.querySelectorAll('input').length;
+            const newCategoryInput = document.createElement('input');
+            newCategoryInput.type = 'text';
+            newCategoryInput.className = 'form-control mb-2';
+            newCategoryInput.name = `categories[${categoryInputCount}]`;
+            newCategoryInput.placeholder = 'Enter category';
+            categoriesWrapper.appendChild(newCategoryInput);
+        });
+    });
+</script>
+</body>
+</html>
