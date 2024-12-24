@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Quiz')}">
+<body>
+<div th:replace="~{fragments/home-nav :: home-nav}"/>
+<div class="container mt-3">
+    <form id="quizForm" xmlns:th="http://www.thymeleaf.org">
+        <!-- Hidden input field for quizId -->
+        <input type="hidden" id="quizId" th:value="${quizId}">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <!-- Questions section -->
+        <div class="questions">
+            <div th:each="question : ${quizQuestions}" class="question-wrapper">
+                <p class="question-text" th:text="${question.questionTitle}"></p>
+                <div class="option-wrapper">
+                    <!-- Option 1 -->
+                    <label>
+                        <input type="radio" th:data-question-id="${question.id}" th:data-option="${question.option1}"
+                               th:name="'question-' + ${question.id}">
+                        <span th:text="${question.option1}"></span>
+                    </label>
+                    <!-- Option 2 -->
+                    <label>
+                        <input type="radio" th:data-question-id="${question.id}" th:data-option="${question.option2}"
+                               th:name="'question-' + ${question.id}">
+                        <span th:text="${question.option2}"></span>
+                    </label>
+                    <!-- Option 3 -->
+                    <label>
+                        <input type="radio" th:data-question-id="${question.id}" th:data-option="${question.option3}"
+                               th:name="'question-' + ${question.id}">
+                        <span th:text="${question.option3}"></span>
+                    </label>
+                    <!-- Option 4 -->
+                    <label>
+                        <input type="radio" th:data-question-id="${question.id}" th:data-option="${question.option4}"
+                               th:name="'question-' + ${question.id}">
+                        <span th:text="${question.option4}"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="button" id="submitQuiz" class="btn btn-primary">Submit Quiz</button>
+    </form>
+
+    <!-- Result Container (hidden initially) -->
+    <div id="quizResult" style="display:none;">
+        <h2>Quiz Result</h2>
+        <p id="resultMessage"></p>
+        <p id="scoreDetails"></p>
+    </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"/>
+
+<script>
+    document.getElementById('submitQuiz').addEventListener('click', function () {
+        const quizId = document.getElementById('quizId').value;
+        const responses = [];
+        const csrfToken = document.querySelector('input[name="_csrf"]').value;
+
+
+        // Gather all the selected responses (selected radio buttons)
+        document.querySelectorAll('input[type="radio"]:checked').forEach(input => {
+            responses.push({
+                questionId: input.getAttribute('data-question-id'),
+                answer: input.getAttribute('data-option')
+            });
+        });
+
+        console.log("QuizID: " + quizId);
+        console.log("Responses: ", responses);
+
+        // Make the AJAX POST request to submit the quiz
+        fetch('/quizzes/submit?quizId=' + quizId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify(responses) // Send the responses as the request body
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json(); // Parse JSON if the response is OK
+            }
+            throw new Error('Failed to submit the quiz');
+        })
+        .then(result => {
+            console.log("Quiz Result:", result);
+
+            // Display the result container and update the message
+            document.getElementById('quizResult').style.display = 'block';
+            document.getElementById('resultMessage').innerText = "You have completed the quiz!";
+
+            // Display score and percentage details
+            document.getElementById('scoreDetails').innerText = `Score: ${result.score} out of ${result.totalQuestions}`;
+            document.getElementById('scoreDetails').innerText += `\nPercentage: ${result.percentage.toFixed(2)}%`; // Display percentage
+            document.getElementById('quizForm').style.display = 'none';
+
+             confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error submitting quiz: ' + error.message);
+        });
+    });
+</script>
+
+<!-- Bootstrap JS (for UI components like alerts, etc.) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</body>
+</html>

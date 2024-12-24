@@ -12,25 +12,26 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/css/**").permitAll() // Public pages
-                        .requestMatchers("/logout").authenticated() // Ensure these endpoints are protected
-                        .anyRequest().authenticated() // Protect other endpoints
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/home", true) // Redirect after successful login
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
-                        .invalidateHttpSession(true)
-                        .clearAuthentication(true)
-                        .deleteCookies("JSESSIONID")
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-                );
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/register", "/login", "/css/**").permitAll() // Public pages
+                .requestMatchers("/logout").authenticated() // Ensure these endpoints are protected
+                .requestMatchers("/quizzes/submit").permitAll()
+                .anyRequest().authenticated() // Protect other endpoints
+            )
+            .formLogin(form -> form
+                .loginPage("/login")
+                .defaultSuccessUrl("/home", true) // Redirect after successful login
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .deleteCookies("JSESSIONID")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+            );
 
         return http.build();
     }

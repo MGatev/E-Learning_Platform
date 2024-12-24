@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Create Quiz')}">
+<body>
+<div th:replace="~{fragments/home-nav :: home-nav}"/>
+<div class="quiz-form-container">
+    <h1 class="form-heading">Create a Quiz</h1>
+    <form th:action="@{/quizzes/create}" method="post" class="quiz-form">
+        <input type="hidden" id="courseId" name="courseId" th:value="${courseId}"/>
+        <label title="title">Title:</label>
+        <input id="title" type="text" name="title" required>
+        <label for="numberOfQuestions">Number of Questions:</label>
+        <input id="numberOfQuestions" type="number" name="numberOfQuestions" required>
+        <button type="submit" class="button-33">Create Quiz</button>
+    </form>
+</div>
+<div th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

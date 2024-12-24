@@ -36,6 +36,12 @@ public class Course {
     @OneToMany
     private List<Lesson> lessons;
 
+    @OneToMany
+    private List<Question> questions;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Quiz quiz;
+
     public String parseImage() {
         return image != null ? Base64.getEncoder().encodeToString(image) : null;
     }
