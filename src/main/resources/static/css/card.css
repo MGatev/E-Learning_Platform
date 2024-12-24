@@ -82,7 +82,7 @@
     color: #328e59;
 }
 
-.add-lesson, .custom-button {
+.add-button, .custom-button {
     padding: 8px 16px;            /* Space around the text */
     background-color: #328e59;    /* Main green color for background */
     color: white;                 /* Text color */
@@ -102,7 +102,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 /* Hover effect */
-.add-lesson:hover, .custom-button:hover {
+.add-button:hover, .custom-button:hover {
     background-color: #246b3a;    /* Darker green when hovered */
     transform: scale(1.05);        /* Slightly enlarge the button on hover */
 }
