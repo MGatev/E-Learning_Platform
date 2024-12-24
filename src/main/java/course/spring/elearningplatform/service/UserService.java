@@ -14,4 +14,6 @@ public interface UserService {
     User getUserByUsername(String username);
     List<User> getAllUsers();
     List<User> getAllUsersByRole(Role role);
+
+    void save(User user);
 }
