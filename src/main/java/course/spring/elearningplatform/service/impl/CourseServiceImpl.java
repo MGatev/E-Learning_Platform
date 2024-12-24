@@ -2,20 +2,15 @@ package course.spring.elearningplatform.service.impl;
 
 import course.spring.elearningplatform.dto.mapper.EntityMapper;
 import course.spring.elearningplatform.dto.mapper.QuestionDto;
-import course.spring.elearningplatform.entity.Course;
-import course.spring.elearningplatform.entity.Question;
-import course.spring.elearningplatform.entity.QuestionWrapper;
-import course.spring.elearningplatform.entity.Quiz;
-import course.spring.elearningplatform.entity.QuizDto;
+import course.spring.elearningplatform.entity.*;
 import course.spring.elearningplatform.exception.EntityNotFoundException;
 import course.spring.elearningplatform.repository.CourseRepository;
 import course.spring.elearningplatform.repository.QuestionRepository;
 import course.spring.elearningplatform.dto.CourseDto;
 import course.spring.elearningplatform.dto.mapper.CourseDtoToCourseMapper;
-import course.spring.elearningplatform.entity.Lesson;
-import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.exception.DuplicatedEntityException;
 import course.spring.elearningplatform.service.CourseService;
+import course.spring.elearningplatform.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -26,21 +21,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import java.util.List;
-
 @Service
 public class CourseServiceImpl implements CourseService {
     private final QuizzesService quizzesService;
     private final CourseRepository courseRepository;
     private final QuestionRepository questionRepository;
+    private final ImageService imageService;
 
     @Autowired
     public CourseServiceImpl(CourseRepository courseRepository,
                              QuestionRepository questionRepository,
-                             QuizzesService quizzesService) {
+                             QuizzesService quizzesService,
+                             ImageService imageService) {
         this.courseRepository = courseRepository;
         this.questionRepository = questionRepository;
         this.quizzesService = quizzesService;
+        this.imageService = imageService;
     }
 
 
@@ -51,15 +47,22 @@ public class CourseServiceImpl implements CourseService {
                     "Cannot create a course with name '%s' because it already exists. Please choose other name.", courseDto.getName()));
         }
 
-        Course course = CourseDtoToCourseMapper.mapCourseDtoToCourse(courseDto, user);
+        Course course = CourseDtoToCourseMapper.mapCourseDtoToCourse(courseDto, user, imageService);
         return courseRepository.save(course);
     }
 
     @Override
     public Map<String, List<Course>> getCoursesGroupedByCategory() {
-        List<Course> courses = courseRepository.findAll();
+        List<Course> allCourses = courseRepository.findAll();
+        allCourses = allCourses.stream().peek(course -> {
+                    Image image = course.getImage();
+                    if (image != null) {
+                        course.setImageBase64(image.parseImage());
+                    }
+                })
+                .toList();
 
-        return courses.stream()
+        return allCourses.stream()
                 .flatMap(course -> course.getCategories().stream()
                         .map(category -> new AbstractMap.SimpleEntry<>(category, course)))
                 .collect(Collectors.groupingBy(
@@ -70,7 +73,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course getCourseById(Long id) {
-        return courseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no such course!"));
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("There is no such course!"));
+        Image image = course.getImage();
+        if (image != null) {
+            course.setImageBase64(image.parseImage());
+        }
+        return course;
     }
 
     @Override
@@ -134,8 +143,7 @@ public class CourseServiceImpl implements CourseService {
 
             return questionsForUser;
         } else {
-            //todo find better way to show that there is a problem
-            throw new RuntimeException("Quiz not found for the course");
+            throw new EntityNotFoundException("There is no quiz available for that course");
         }
     }
 }

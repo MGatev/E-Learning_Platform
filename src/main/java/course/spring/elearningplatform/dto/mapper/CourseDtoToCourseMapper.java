@@ -5,6 +5,7 @@ import course.spring.elearningplatform.dto.ImageDto;
 import course.spring.elearningplatform.entity.Course;
 import course.spring.elearningplatform.entity.Image;
 import course.spring.elearningplatform.entity.User;
+import course.spring.elearningplatform.service.ImageService;
 
 import java.util.Date;
 
