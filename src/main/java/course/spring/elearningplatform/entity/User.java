@@ -1,12 +1,6 @@
 package course.spring.elearningplatform.entity;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -60,5 +55,15 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Group> groups;
 
+    @OneToMany
+    private Set<Course> courses;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_completed_lessons",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "lesson_id")
+    )
+    private Set<Lesson> completedLessons = new HashSet<>();
 }
 
