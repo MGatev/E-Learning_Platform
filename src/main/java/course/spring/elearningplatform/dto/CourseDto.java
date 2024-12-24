@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class CourseDto {
     private String description;
 
     @NotNull(message = "Image URL is required!")
-    private MultipartFile image;
+    private ImageDto image;
 
     @NotEmpty(message = "At least one category should be added")
     private List<String> categories;

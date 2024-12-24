@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -34,8 +33,12 @@ public class Course {
     private User createdBy;
     private Date createdOn;
 
-    @Lob
-    private byte[] image;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "image_id")
+    private Image image;
+
+    @Transient
+    private String imageBase64;
 
     @OneToMany
     private List<Lesson> lessons;
@@ -45,8 +48,4 @@ public class Course {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Quiz quiz;
-
-    public String parseImage() {
-        return image != null ? Base64.getEncoder().encodeToString(image) : null;
-    }
 }

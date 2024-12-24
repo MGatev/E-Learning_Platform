@@ -29,11 +29,19 @@ public class Image {
   @EqualsAndHashCode.Exclude
   private byte[] image;
 
+  private String mimeType;
+
   public Image(byte[] image) {
     this.image = image;
   }
 
+  public Image(byte[] image, String mimeType) {
+    this.image = image;
+    this.mimeType = mimeType;
+  }
+
   public String parseImage() {
-    return image != null ? "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(image) : null;
+    String defaultMimeType = "image/jpeg"; // Default MIME type for existing images
+    return image != null ? "data:" + (mimeType != null ? mimeType : defaultMimeType) + ";base64," + Base64.getEncoder().encodeToString(image) : null;
   }
 }
