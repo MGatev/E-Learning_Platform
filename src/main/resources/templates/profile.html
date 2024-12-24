@@ -17,7 +17,7 @@
     <!-- Profile Section -->
     <div class="profile-left text-center p-3">
         <img class="profile-picture rounded-circle mb-3"
-             th:src="${loggedInUser.getProfilePicture().parseImage()}"
+             th:src="${loggedInUser.getProfilePicture() != null ? loggedInUser.getProfilePicture().parseImage() : '/images/default-profile.png'}"
              alt="Profile Picture">
         <div class="user-info">
             <h2 class="user-name" th:text="${loggedInUser.firstName} + ' ' + ${loggedInUser.lastName}">John Doe</h2>
