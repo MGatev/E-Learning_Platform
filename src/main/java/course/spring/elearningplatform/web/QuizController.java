@@ -1,6 +1,5 @@
 package course.spring.elearningplatform.web;
 
-import course.spring.elearningplatform.entity.Course;
 import course.spring.elearningplatform.entity.QuestionWrapper;
 import course.spring.elearningplatform.entity.QuizDto;
 import course.spring.elearningplatform.entity.Response;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
@@ -35,9 +33,9 @@ public class QuizController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<Course> createQuiz(@RequestParam long courseId, @ModelAttribute QuizDto quizDto) {
-        Course updatedCourse = courseService.addQuizToCourse(courseId, quizDto);
-        return ResponseEntity.ok(updatedCourse);
+    public String createQuiz(@RequestParam long courseId, @ModelAttribute QuizDto quizDto) {
+        courseService.addQuizToCourse(courseId, quizDto);
+        return "redirect:/courses/" + courseId;
     }
 
 
