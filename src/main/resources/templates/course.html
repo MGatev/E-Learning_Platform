@@ -31,8 +31,7 @@
             </div>
         </div>
         <div class="course-image">
-            <img th:src="'data:image/jpeg;base64,' + ${course.parseImage()}" alt="Course Image"
-                 class="course-image">
+            <img th:src="${course.getImageBase64()}" alt="Course Image" loading="lazy" class="course-image">
         </div>
     </div>
 </div>
@@ -70,17 +69,17 @@
 
     <!-- Quiz Section -->
     <div class="quiz-section mt-5">
-        <div class="section-title">
+        <div class="section-title mb-3">
             <h3 class="title">Final Quiz</h3>
             <a onclick="window.location.href='/quizzes/create-quiz?courseId=' + 1"
                class="add-button" style="color: white;">Create Quiz</a>
         </div>
         <p th:if="${!allLessonsCompleted}" class="quiz-instructions">Complete all lessons to unlock the quiz.</p>
-        <button type="button" class="btn btn-success start-quiz-btn" th:unless="${!allLessonsCompleted}"
+        <button type="button" class="btn add-button" th:unless="${!allLessonsCompleted}"
                 onclick="window.location.href='/quizzes/quiz?courseId=' + 1">
             Start Quiz
         </button>
-        <button th:unless="${!allLessonsCompleted}" type="button" class="btn btn-success start-quiz-btn"
+        <button th:unless="${!allLessonsCompleted}" type="button" class="btn add-button"
                 onclick="window.location.href='/questions/question-create?courseId=' + 1">Add Question
         </button>
     </div>

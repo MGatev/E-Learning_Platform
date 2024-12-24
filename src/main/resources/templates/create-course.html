@@ -25,7 +25,7 @@
         </div>
 
         <label for="groupImage" class="form-label">Group Image:</label>
-        <input type="file" id="groupImage" th:field="*{image}" name="image" accept="image/*" class="form-input" required>
+        <input type="file" id="groupImage" th:field="*{image.image}" name="image" accept="image/*" class="form-input" required>
 
         <div th:if="${errorMessage}" class="alert alert-warning">
             <p th:text="${errorMessage}"></p>

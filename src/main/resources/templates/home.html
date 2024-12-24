@@ -44,9 +44,7 @@
                               th:action="@{/courses/{id}(id=${course.id})}" method="get"
                               th:onclick="this.closest('form').submit()"
                               style="max-width: 15rem;">
-                            <img class="card-img-top custom-card-img"
-                                 th:src="'data:image/jpeg;base64,' + ${course.parseImage()}" alt="Course Image"
-                                 loading="lazy">
+                            <img th:src="${course.getImageBase64()}" alt="Course Image" loading="lazy" class="card-img-top custom-card-img">
                             <div class="card-body custom-card-body">
                                 <h5 class="card-title" th:text="${course.name}">Course Name</h5>
                                 <p class="card-text" th:text="${course.description}">Course description</p>
