@@ -94,5 +94,22 @@
     </div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"/>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const navPills = document.querySelector(".nav-pills");
+
+        const checkOverflow = () => {
+            if (navPills.scrollWidth > navPills.clientWidth) {
+                navPills.classList.remove("centered");
+            } else {
+                navPills.classList.add("centered");
+            }
+        };
+
+        // Run checkOverflow initially and on window resize
+        checkOverflow();
+        window.addEventListener("resize", checkOverflow);
+    });
+</script>
 </body>
 </html>

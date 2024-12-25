@@ -34,6 +34,11 @@
     text-align: center; /* Center align text */
 }
 
+.nav-pills.centered {
+    justify-content: center; /* Center the items horizontally */
+    overflow-x: visible; /* Disable scrolling */
+}
+
 /* Fix Bootstrap's box-shadow on active tabs */
 .nav-pills .nav-link.active {
     box-shadow: none; /* Remove box-shadow */
