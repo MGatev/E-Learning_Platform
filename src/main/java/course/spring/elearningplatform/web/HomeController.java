@@ -41,7 +41,15 @@ public class HomeController {
         model.addAttribute("upcomingEvents", upcomingEvents);
 
         Map<String, List<Course>> coursesByCategory = courseService.getCoursesGroupedByCategory();
-        model.addAttribute("coursesByCategory", coursesByCategory);
+        Map<String, List<Course>> top3CoursesByCategory = coursesByCategory.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey, // Keep the category key as it is
+                        entry -> entry.getValue().stream() // Process the list of courses
+                                .limit(3) // Limit to the first 3 courses
+                                .toList() // Collect into a new list
+                ));
+
+        model.addAttribute("top3CoursesByCategory", top3CoursesByCategory);
 
         return "home";
     }
