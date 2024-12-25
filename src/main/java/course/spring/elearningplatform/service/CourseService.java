@@ -19,6 +19,7 @@ public interface CourseService {
     Course getCourseById(Long id);
 
     boolean areAllLessonsCompletedByUser(User user, Course course);
+
     Long getCourseQuizId(long courseId);
 
     Course getCourseById(long courseId);
