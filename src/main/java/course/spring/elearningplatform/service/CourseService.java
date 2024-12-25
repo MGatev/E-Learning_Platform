@@ -16,6 +16,8 @@ public interface CourseService {
 
     Map<String, List<Course>> getCoursesGroupedByCategory();
 
+    List<Course> getCoursesByCategory(String category);
+
     Course getCourseById(Long id);
 
     boolean areAllLessonsCompletedByUser(User user, Course course);

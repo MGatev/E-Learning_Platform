@@ -72,6 +72,18 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public List<Course> getCoursesByCategory(String category) {
+        List<Course> courses = courseRepository.findAllByCategory(category);
+        return courses.stream().peek(course -> {
+                    Image image = course.getImage();
+                    if (image != null) {
+                        course.setImageBase64(image.parseImage());
+                    }
+                })
+                .toList();
+    }
+
+    @Override
     public Course getCourseById(Long id) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("There is no such course!"));
@@ -143,7 +155,7 @@ public class CourseServiceImpl implements CourseService {
 
             return questionsForUser;
         } else {
-            throw new EntityNotFoundException("There is no quiz available for that course");
+            throw new EntityNotFoundException("There is no quiz available for that course.");
         }
     }
 }

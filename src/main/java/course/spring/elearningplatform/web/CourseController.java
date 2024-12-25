@@ -116,6 +116,14 @@ public class CourseController {
         return "redirect:/courses/" + courseId;
     }
 
+    @GetMapping("/category/{category}")
+    public String showAllCoursesForCategory(@PathVariable("category") String category, Model model) {
+        model.addAttribute("category", category);
+        model.addAttribute("courses", courseService.getCoursesByCategory(category));
+
+        return "course-by-category";
+    }
+
     @ExceptionHandler(DuplicatedEntityException.class)
     public String handleDuplicatedEntityException(DuplicatedEntityException ex, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());

@@ -17,11 +17,12 @@
     <div class="container">
         <a th:href="@{/courses/create}" class="btn btn-success container">Create new course</a>
     </div>
-    <div class="card text-center" th:if="${coursesByCategory != null && !coursesByCategory.isEmpty()}">
+
+    <div class="card text-center" th:if="${top3CoursesByCategory != null && !top3CoursesByCategory.isEmpty()}">
         <div class="card-header">
             <!-- Using Bootstrap Navs with "nav-pills" for clickable tabs -->
-            <ul class="nav nav-pills justify-content-center" id="myTab" role="tablist">
-                <li class="nav-item" th:each="category, iterStat : ${coursesByCategory.keySet()}">
+            <ul class="nav nav-pills" id="myTab" role="tablist">
+                <li class="nav-item" th:each="category, iterStat : ${top3CoursesByCategory.keySet()}">
                     <a class="nav-link" th:classappend="${iterStat.index == 0} ? 'active'"
                        th:id="${category + '-tab'}"
                        th:href="'#' + ${category}"
@@ -35,16 +36,17 @@
             <!-- Tab content: corresponding content will appear here based on the active tab -->
             <div class="tab-content" id="myTabContent">
 
-                <div class="tab-pane fade" th:each="category, iterStat : ${coursesByCategory.keySet()}"
+                <div class="tab-pane fade" th:each="category, iterStat : ${top3CoursesByCategory.keySet()}"
                      th:classappend="${iterStat.index == 0} ? 'show active'"
                      th:id="${category}" role="tabpanel"
                      th:aria-labelledby="${category + '-tab'}">
                     <div class="card-deck custom-card-deck" style="justify-content: center; gap: 2rem;">
-                        <form class="card custom-card" th:each="course : ${coursesByCategory.get(category)}"
+                        <form class="card custom-card" th:each="course : ${top3CoursesByCategory.get(category)}"
                               th:action="@{/courses/{id}(id=${course.id})}" method="get"
                               th:onclick="this.closest('form').submit()"
                               style="max-width: 15rem;">
-                            <img th:src="${course.getImageBase64()}" alt="Course Image" loading="lazy" class="card-img-top custom-card-img">
+                            <img th:src="${course.getImageBase64()}" alt="Course Image" loading="lazy"
+                                 class="card-img-top custom-card-img">
                             <div class="card-body custom-card-body">
                                 <h5 class="card-title" th:text="${course.name}">Course Name</h5>
                                 <p class="card-text" th:text="${course.description}">Course description</p>
@@ -56,13 +58,14 @@
                         </form>
 
                     </div>
-                    <button type="button" class="btn btn-primary btn-lg btn-outline-success mt-5 mb-3"
-                            th:text="'Show all ' + ${category} + ' courses'"></button>
+                    <a th:href="@{/courses/category/{category}(category=${category})}"
+                       class="btn btn-primary btn-lg btn-outline-success mt-5 mb-3"
+                       th:text="'Show all ' + ${category} + ' courses'"></a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="text-center" th:unless="${coursesByCategory != null && !coursesByCategory.isEmpty()}">
+    <div class="text-center" th:unless="${top3CoursesByCategory != null && !top3CoursesByCategory.isEmpty()}">
         <h3 class="mt-5">There are no courses yet.</h3>
     </div>
 
@@ -80,7 +83,7 @@
                 <a th:href="@{/events/{id}(id=${event.id})}" class="card-title-link">
                     <h5 class="card-title" th:text="${event.title}">Event Title</h5>
                 </a>
-                <img th:src="${event.getImageBase64()}" alt="Event Image" class="event-image" />
+                <img th:src="${event.getImageBase64()}" alt="Event Image" class="event-image"/>
 
                 <span th:text="${#temporals.format(event.startTime, 'EEEE, dd MMM yyyy - HH:mm')}">Start Date</span>
             </div>
