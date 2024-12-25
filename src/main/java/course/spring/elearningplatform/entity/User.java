@@ -103,5 +103,14 @@ public class User {
         startedCourses.remove(course);
         completedCourses.add(course);
     }
+
+    public User(String username, String password, String firstName, String lastName, String email, @NonNull Set<String> roles) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.roles = roles;
+    }
 }
 
