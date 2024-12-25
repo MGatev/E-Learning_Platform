@@ -38,7 +38,7 @@
 <div class="container mt-5">
 
     <!-- Lessons Section -->
-    <div class="lessons-section mt-5">
+    <div class="lessons-section mt-5 mb-5">
         <div class="section-title">
             <h3 class="title">Lessons</h3>
             <a th:href="@{/courses/{id}/lessons/create(id=${course.id})}" class="add-button">Add Lesson</a>
@@ -68,20 +68,23 @@
     </div>
 
     <!-- Quiz Section -->
-    <div class="quiz-section mt-5">
+    <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+    <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+    <div class="quiz-section">
         <div class="section-title mb-3">
             <h3 class="title">Final Quiz</h3>
-            <a onclick="window.location.href='/quizzes/create-quiz?courseId=' + 1"
+            <a th:href="@{/quizzes/create-quiz(courseId=${course.id})}"
                class="add-button" style="color: white;">Create Quiz</a>
         </div>
         <p th:if="${!allLessonsCompleted}" class="quiz-instructions">Complete all lessons to unlock the quiz.</p>
-        <button type="button" class="btn add-button" th:unless="${!allLessonsCompleted}"
-                onclick="window.location.href='/quizzes/quiz?courseId=' + 1">
+        <a th:href="@{/quizzes/quiz(courseId=${course.id})}"
+           class="btn add-button" th:unless="${!allLessonsCompleted}">
             Start Quiz
-        </button>
-        <button th:unless="${!allLessonsCompleted}" type="button" class="btn add-button"
-                onclick="window.location.href='/questions/question-create?courseId=' + 1">Add Question
-        </button>
+        </a>
+        <a th:href="@{/questions/question-create(courseId=${course.id})}"
+           class="btn add-button" th:unless="${!allLessonsCompleted}">
+            Add Question
+        </a>
     </div>
 </div>
 
