@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("questions")
@@ -23,8 +24,13 @@ public class QuestionController {
 
 
     @PostMapping("create")
-    public String createQuestion(@RequestParam long courseId, @ModelAttribute QuestionDto questionDto) {
-        courseService.addQuestionToCourse(courseId, questionDto);
+    public String createQuestion(@RequestParam long courseId, @ModelAttribute QuestionDto questionDto, RedirectAttributes redirectAttributes) {
+        try {
+            courseService.addQuestionToCourse(courseId, questionDto);
+            redirectAttributes.addFlashAttribute("successMessage", "Question created successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to create question: " + e.getMessage());
+        }
         return "redirect:/courses/" + courseId;
     }
 

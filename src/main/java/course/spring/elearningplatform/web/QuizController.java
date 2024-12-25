@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -33,22 +34,35 @@ public class QuizController {
     }
 
     @PostMapping("create")
-    public String createQuiz(@RequestParam long courseId, @ModelAttribute QuizDto quizDto) {
-        courseService.addQuizToCourse(courseId, quizDto);
+    public String createQuiz(@RequestParam long courseId, @ModelAttribute QuizDto quizDto, RedirectAttributes redirectAttributes) {
+        try {
+            courseService.addQuizToCourse(courseId, quizDto);
+            redirectAttributes.addFlashAttribute("successMessage", "Quiz created successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to create quiz: " + e.getMessage());
+        }
+
         return "redirect:/courses/" + courseId;
     }
 
 
     @GetMapping("/quiz")
-    public String showQuizPage(@RequestParam long courseId, Model model) {
-        List<QuestionWrapper> quizQuestions = courseService.getQuestionsForCourseQuiz(courseId);
-        var quizId = courseService.getCourseQuizId(courseId);
+    public String showQuizPage(@RequestParam long courseId, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            List<QuestionWrapper> quizQuestions = courseService.getQuestionsForCourseQuiz(courseId);
+            var quizId = courseService.getCourseQuizId(courseId);
 
-        model.addAttribute("quizId", quizId);
-        model.addAttribute("courseId", courseId);
-        model.addAttribute("quizQuestions", quizQuestions);
+            model.addAttribute("quizId", quizId);
+            model.addAttribute("courseId", courseId);
+            model.addAttribute("quizQuestions", quizQuestions);
 
-        return "quiz-submission";
+            return "quiz-submission";
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to show quiz: " + e.getMessage());
+        }
+
+        return "redirect:/courses/" + courseId;
     }
 
     @PostMapping("submit")

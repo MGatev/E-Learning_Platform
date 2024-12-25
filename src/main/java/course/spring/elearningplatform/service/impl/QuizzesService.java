@@ -1,7 +1,6 @@
 package course.spring.elearningplatform.service.impl;
 
 import course.spring.elearningplatform.entity.Question;
-import course.spring.elearningplatform.entity.QuestionWrapper;
 import course.spring.elearningplatform.entity.Quiz;
 import course.spring.elearningplatform.entity.QuizDto;
 import course.spring.elearningplatform.entity.Response;
@@ -36,6 +35,10 @@ public class QuizzesService {
     }
 
     public Quiz createQuiz(QuizDto quizDto, List<Question> quizQuestions) {
+        if (quizQuestions.isEmpty()) {
+            throw new EntityNotFoundException("There are no questions for creating a quiz. Try adding some.");
+        }
+
         var quiz = new Quiz();
         quiz.setTitle(quizDto.getTitle());
 
