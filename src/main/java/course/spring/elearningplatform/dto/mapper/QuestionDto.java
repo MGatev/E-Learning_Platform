@@ -26,7 +26,4 @@ public class QuestionDto {
 
     @NotBlank(message = "Difficulty is required")
     private String difficulty;
-
-    @NotBlank(message = "Category is required")
-    private String category;
 }
