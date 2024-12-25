@@ -1,0 +1,169 @@
+/* Main container for course details */
+.course-details-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Header section with image and course info */
+.course-header {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    justify-content: space-around;
+}
+
+/* Image section for the course */
+.course-image {
+    flex: 1;
+    max-width: 300px;
+}
+
+.course-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.course-title {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.course-description {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.course-meta {
+    font-size: 1rem;
+    color: #555;
+}
+
+.course-meta .created-by,
+.course-meta .created-on {
+    margin-right: 15px;
+}
+
+.course-categories {
+    margin-top: 15px;
+    font-size: 1rem;
+}
+
+.course-categories span {
+    background-color: #4ba86f;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-left: 10px;
+}
+
+.background-div {
+    padding: 3rem;
+    background-color: #eaf4eb;
+}
+
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #328e59;
+    padding-bottom: 10px;
+}
+
+.section-title .title {
+    font-size: 1.8rem;
+    color: #328e59;
+}
+
+.add-button, .custom-button {
+    padding: 8px 16px;            /* Space around the text */
+    background-color: #328e59;    /* Main green color for background */
+    color: white;                 /* Text color */
+    font-weight: bold;            /* Bold text */
+    font-size: 1rem;
+    /* Adjust text size */
+    border-radius: 4px;           /* Slightly rounded corners */
+    text-align: center;           /* Center text */
+    cursor: pointer;             /* Pointer cursor on hover */
+    transition: background 0.5s, transform 0.3s ease; /* Smooth transition for color change and scale */
+    text-decoration: none;        /* Remove underline */
+}
+
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+    color: white;
+}
+
+/* Hover effect */
+.add-button:hover, .custom-button:hover {
+    background-color: #246b3a;    /* Darker green when hovered */
+    transform: scale(1.05);        /* Slightly enlarge the button on hover */
+}
+
+.lessons-section, .quiz-section {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-list-group-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    position: relative;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, .125);
+    cursor: pointer;
+}
+
+.lesson-item:last-child {
+    border-bottom: none;
+}
+
+.lesson-checkbox {
+    width: 20px;
+    height: 20px;
+    accent-color: #328e59;
+    cursor: pointer;
+}
+
+.lesson-title {
+    font-size: 1rem;
+    color: #333;
+    margin-left: 10px;
+    margin-bottom: 0.5rem; !important;
+}
+
+.quiz-instructions {
+    margin-top: 0.5rem;
+}
+
+.start-quiz-btn {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    background-color: #328e59;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-top: 0.5rem;
+    cursor: pointer;
+}
+
+.start-quiz-btn:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+
+.start-quiz-btn:hover:not(:disabled) {
+    background-color: #276d47;
+}

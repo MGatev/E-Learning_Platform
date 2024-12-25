@@ -1,13 +1,12 @@
 package course.spring.elearningplatform.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Entity
 @Data
@@ -22,6 +21,11 @@ public class Lesson {
     private Long id;
 
     private String title;
+    @Column(length = 65535)
     private String content;
-    private boolean completed;
+
+    private Date createdOn;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Course relatedCourse;
 }

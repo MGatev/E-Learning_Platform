@@ -1,0 +1,100 @@
+/* Custom class for card images */
+.custom-card-img {
+    width: 100%; /* Ensures the image spans the full width of its container */
+    height: 180px; /* Fixed height for uniform appearance */
+    object-fit: cover; /* Crop the image to fit the dimensions without distortion */
+    border-radius: 0.25rem; /* Match Bootstrap's default card border-radius */
+    transition: transform 0.3s ease-in-out; /* Smooth scaling effect */
+}
+
+.nav {
+    flex-wrap: nowrap;
+}
+
+/* Ensuring the categories navigation bar can scroll horizontally */
+.nav-pills {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden; /* Prevent vertical scroll */
+    margin: 0; /* Reset Bootstrap's default margin */
+    gap: 10px; /* Add spacing between items */
+    scroll-padding-left: 15px; /* Ensure the first item is not clipped */
+    scroll-behavior: smooth; /* Smooth scrolling */
+    box-sizing: border-box; /* Ensure padding doesn't break layout */
+    padding-bottom: 0.5rem;
+}
+
+.nav-pills .nav-item {
+    flex-shrink: 0; /* Prevent items from shrinking */
+}
+
+.nav-pills .nav-link {
+    white-space: nowrap; /* Prevent text wrapping */
+    padding: 0.5rem 1rem; /* Adjust padding for better fit */
+    text-align: center; /* Center align text */
+}
+
+/* Fix Bootstrap's box-shadow on active tabs */
+.nav-pills .nav-link.active {
+    box-shadow: none; /* Remove box-shadow */
+}
+
+/* Optional: Custom scrollbar styling for better visuals */
+.nav-pills::-webkit-scrollbar {
+    height: 6px;
+}
+
+.nav-pills::-webkit-scrollbar-thumb {
+    background: #888; /* Customize scrollbar thumb */
+    border-radius: 3px;
+}
+
+.nav-pills::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Custom class for cards */
+.custom-card {
+    cursor: pointer;
+    margin: 1rem; /* Adds spacing between cards */
+    min-width: 15rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for visual appeal */
+    border: 1px solid #ddd; /* Optional: light border for cleaner visuals */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transform and shadow change */
+}
+
+/* Hover effect for cards */
+.custom-card:hover {
+    transform: translateY(-10px); /* Slight lift effect */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+/* Hover effect for images */
+.custom-card:hover .custom-card-img {
+    transform: scale(1.05); /* Slight zoom on image */
+}
+
+/* Hover effect for card body */
+.custom-card-body {
+    transition: color 0.3s ease-in-out; /* Smooth transition for text color */
+}
+
+.custom-card:hover .custom-card-body {
+    color: #328e59; /* Change text color to primary on hover */
+}
+
+.card-body {
+    background-color: #eaf4eb;
+}
+
+/* Hover effect for card body */
+.custom-card-body {
+    background-color: white;
+    transition: color 0.3s ease-in-out; /* Smooth transition for text color */
+}
+
+.custom-card-button {
+    display: none; /* Hide the button completely */
+}
+
+

@@ -24,4 +24,8 @@ public class ImageDto {
 
     return null;
   }
+
+  public String getMimeType() {
+    return image.getContentType(); // Extract MIME type directly from MultipartFile
+  }
 }

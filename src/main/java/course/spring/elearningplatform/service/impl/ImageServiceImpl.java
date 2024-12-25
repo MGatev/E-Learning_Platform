@@ -25,8 +25,8 @@ public class ImageServiceImpl implements ImageService {
   }
 
   @Override
-  public Image createImage(ImageDto image) {
-    Image imageToBeSaved = new Image(image.getImageBytes());
+  public Image createImage(ImageDto imageDto) {
+    Image imageToBeSaved = new Image(imageDto.getImageBytes(), imageDto.getMimeType());
     return imageRepository.save(imageToBeSaved);
   }
 }
