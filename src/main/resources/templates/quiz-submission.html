@@ -50,6 +50,9 @@
         <h2>Quiz Result</h2>
         <p id="resultMessage"></p>
         <p id="scoreDetails"></p>
+        <div class="text-center">
+            <a th:href="@{/courses/{id}(id=${courseId})}" class="btn btn-primary btn-lg btn-outline-success mt-5 mb-3">Go Back</a>
+        </div>
     </div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"/>
