@@ -71,7 +71,7 @@
 
     <!-- Events -->
     <div class="upcoming-div">
-        <h2 class="upcoming-event" style="color: #e6f4e6;">Upcoming Events</h2>
+        <h1 class="container text-center mb-5 mt-5">Upcoming Events</h1>
     </div>
     <div class="card-deck" style="justify-content: center; gap: 2rem; padding-top: 10px;">
         <br>
@@ -83,7 +83,8 @@
                 <a th:href="@{/events/{id}(id=${event.id})}" class="card-title-link">
                     <h5 class="card-title" th:text="${event.title}">Event Title</h5>
                 </a>
-                <img th:src="${event.getImageBase64()}" alt="Event Image" class="event-image"/>
+                <img th:src="${event.getImageBase64()}" alt="Event Image" class="event-image" style="width: 95%"/>
+
 
                 <span th:text="${#temporals.format(event.startTime, 'EEEE, dd MMM yyyy - HH:mm')}">Start Date</span>
             </div>
