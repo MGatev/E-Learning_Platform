@@ -31,4 +31,6 @@ public interface CourseService {
     Course addQuizToCourse(long courseId, QuizDto quizDto);
 
     List<QuestionWrapper> getQuestionsForCourseQuiz(Long courseId);
+
+    Course save(Course course);
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -48,4 +49,11 @@ public class Course {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Quiz quiz;
+
+    @OneToMany(mappedBy = "forCourse")
+    private List<Ticket> tickets;
+
+    public void addTicket(Ticket ticket) {
+        tickets.add(ticket);
+    }
 }
