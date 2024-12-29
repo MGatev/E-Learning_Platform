@@ -63,7 +63,6 @@
         const responses = [];
         const csrfToken = document.querySelector('input[name="_csrf"]').value;
 
-
         // Gather all the selected responses (selected radio buttons)
         document.querySelectorAll('input[type="radio"]:checked').forEach(input => {
             responses.push({
@@ -72,48 +71,46 @@
             });
         });
 
-        console.log("QuizID: " + quizId);
-        console.log("Responses: ", responses);
-
-        // Make the AJAX POST request to submit the quiz
         fetch('/quizzes/submit?quizId=' + quizId, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': csrfToken
             },
-            body: JSON.stringify(responses) // Send the responses as the request body
+            body: JSON.stringify(responses)
         })
-        .then(response => {
-            if (response.ok) {
-                return response.json(); // Parse JSON if the response is OK
-            }
-            throw new Error('Failed to submit the quiz');
-        })
-        .then(result => {
-            console.log("Quiz Result:", result);
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Failed to submit the quiz');
+            })
+            .then(result => {
+                document.getElementById('quizResult').style.display = 'block';
+                document.getElementById('resultMessage').innerText = "You have completed the quiz!";
+                document.getElementById('scoreDetails').innerText = `Score: ${result.score} out of ${result.totalQuestions}`;
+                document.getElementById('scoreDetails').innerText += `\nPercentage: ${result.percentage.toFixed(2)}%`;
+                document.getElementById('quizForm').style.display = 'none';
 
-            // Display the result container and update the message
-            document.getElementById('quizResult').style.display = 'block';
-            document.getElementById('resultMessage').innerText = "You have completed the quiz!";
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
 
-            // Display score and percentage details
-            document.getElementById('scoreDetails').innerText = `Score: ${result.score} out of ${result.totalQuestions}`;
-            document.getElementById('scoreDetails').innerText += `\nPercentage: ${result.percentage.toFixed(2)}%`; // Display percentage
-            document.getElementById('quizForm').style.display = 'none';
-
-             confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 }
+                // Show a Congratulations message if score is 80 or higher
+                if (result.percentage >= 80) {
+                    setTimeout(function () {
+                        alert("Congratulations! You have earned a certificate for this course.");
+                    }, 1500);  // Delay to allow confetti to finish
+                }
+            })
+            .catch(error => {
+                alert('Error submitting quiz: ' + error.message);
             });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error submitting quiz: ' + error.message);
-        });
     });
 </script>
+
 
 <!-- Bootstrap JS (for UI components like alerts, etc.) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 import java.util.List;
@@ -21,5 +22,7 @@ public class Quiz {
     private List<StudentResult> highScores;
     @ManyToMany(cascade = CascadeType.ALL) // Ensures cascading behavior for questions
     private List<Question> questions;
+    @OneToOne(mappedBy = "quiz")
+    private Course course;
 
 }
