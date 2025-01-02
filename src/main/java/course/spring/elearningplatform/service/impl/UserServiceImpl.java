@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long id) {
-        return null;
+        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(String.valueOf(id)));
     }
 
     @Override
@@ -92,6 +93,40 @@ public class UserServiceImpl implements UserService {
         }
 
         return user;
+    }
+
+    @Override
+    public User updateUserDetails(Long id, String detail, Object value) {
+        User existingUser = getUserById(id);
+        switch (detail) {
+            case "username":
+                existingUser.setUsername((String) value);
+                break;
+            case "email":
+                existingUser.setEmail((String) value);
+                break;
+            case "name":
+                String name = (String) value;
+                String[] names = name.split(" ");
+                if (names.length != 2) {
+                    throw new IllegalArgumentException("Invalid full name: " + value);
+                }
+                existingUser.setFirstName(names[0]);
+                existingUser.setLastName(names[1]);
+                break;
+            case "role":
+                existingUser.setRoles(new HashSet<>(List.of((String) value)));
+                break;
+            case "profilePicture":
+                ImageDto imageDto = (ImageDto) value;
+                Image savedImage = imageService.createImage(imageDto);
+                existingUser.setProfilePicture(savedImage);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid user detail: " + detail);
+        }
+        save(existingUser);
+        return existingUser;
     }
 
     @Override
