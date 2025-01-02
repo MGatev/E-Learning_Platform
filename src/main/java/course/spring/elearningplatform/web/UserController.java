@@ -9,9 +9,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -44,5 +47,37 @@ public class UserController {
                 .toList();
 
         return ResponseEntity.ok(allUsernames);
+    }
+
+    @PostMapping("/users/update-role")
+    public ResponseEntity<String> updateUserRole(@RequestBody Map<String, String> payload) {
+        Long id = Long.parseLong(payload.get("id"));
+        String newRole = payload.get("role");
+        userService.updateUserDetails(id, "role", newRole);
+        return ResponseEntity.ok("Role updated successfully");
+    }
+
+    @PostMapping("/users/update-full-name")
+    public ResponseEntity<String> updateUserFullName(@RequestBody Map<String, String> payload) {
+        Long id = Long.parseLong(payload.get("id"));
+        String newName = payload.get("full-name");
+        userService.updateUserDetails(id, "name", newName);
+        return ResponseEntity.ok("Full name updated successfully");
+    }
+
+    @PostMapping("/users/update-email")
+    public ResponseEntity<String> updateUserEmail(@RequestBody Map<String, String> payload) {
+        Long id = Long.parseLong(payload.get("id"));
+        String newEmail = payload.get("email");
+        userService.updateUserDetails(id, "email", newEmail);
+        return ResponseEntity.ok("Email updated successfully");
+    }
+
+    @PostMapping("/users/update-username")
+    public ResponseEntity<String> updateUsername(@RequestBody Map<String, String> payload) {
+        Long id = Long.parseLong(payload.get("id"));
+        String newUsername = payload.get("username");
+        userService.updateUserDetails(id, "username", newUsername);
+        return ResponseEntity.ok("Username updated successfully");
     }
 }

@@ -4,25 +4,69 @@
     <title>Profile</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="/css/profile-pic.css">
     <link rel="stylesheet" href="/css/profile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
 </head>
 <body>
 <div th:replace="~{fragments/home-nav :: home-nav}"/>
 <div class="profile-container d-flex flex-wrap" th:object="${loggedInUser}">
+    <input type="hidden" id="user-id" th:value="${loggedInUser.id}">
     <!-- Profile Section -->
     <div class="profile-left text-center p-3">
         <img class="profile-picture rounded-circle mb-3"
              th:src="${loggedInUser.getProfilePicture() != null ? loggedInUser.getProfilePicture().parseImage() : '/images/default-profile.png'}"
              alt="Profile Picture">
         <div class="user-info">
-            <h2 class="user-name" th:text="${loggedInUser.firstName} + ' ' + ${loggedInUser.lastName}">John Doe</h2>
-            <h3 class="username" th:text="'@' + ${loggedInUser.username}">@johndoe</h3>
-            <p class="user-role" th:text="${loggedInUser.roles}">Student</p>
+            <h2 class="user-name d-flex align-items-center">
+                <span id="full-name-display" th:text="${loggedInUser.firstName} + ' ' + ${loggedInUser.lastName}">John Doe</span>
+                <input type="text" id="full-name-input" class="form-control d-none" value="John Doe">
+                <button type="button" id="edit-full-name-btn" class="btn btn-link btn-sm text-secondary ml-2" title="Edit Name" onclick="toggleEdit('full-name')">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+                <div id="full-name-buttons" class="d-none">
+                    <button type="button" class="btn btn-success btn-sm" onclick="saveChanges('full-name')">Save</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="cancelEdit('full-name')">Cancel</button>
+                </div>
+            </h2>
+
+            <!-- Email Section -->
+            <h3 class="username d-flex align-items-center">
+                <span id="email-display" th:text="${loggedInUser.email}">johndoe@gmail.com</span>
+                <input type="text" id="email-input" class="form-control d-none" value="johndoe@gmail.com">
+                <button type="button" id="edit-email-btn" class="btn btn-link btn-sm text-secondary ml-2" title="Edit Email" onclick="toggleEdit('email')">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+                <div id="email-buttons" class="d-none">
+                    <button type="button" class="btn btn-success btn-sm" onclick="saveChanges('email')">Save</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="cancelEdit('email')">Cancel</button>
+                </div>
+            </h3>
+
+            <!-- Username Section -->
+            <h3 class="username d-flex align-items-center">
+                <span id="username-display" th:text="'@' + ${loggedInUser.username}">@johndoe</span>
+            </h3>
+
+            <!-- Role Section -->
+            <p class="user-role d-flex align-items-center">
+                <span id="role-display" th:text="${loggedInUser.roles}">Student</span>
+                <input type="text" id="role-input" class="form-control d-none" value="Student">
+                <button type="button" id="edit-role-btn" class="btn btn-link btn-sm text-secondary ml-2" title="Edit Role" onclick="toggleEdit('role')">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+            <div id="role-buttons" class="d-none">
+                <button type="button" class="btn btn-success btn-sm" onclick="saveChanges('role')">Save</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="cancelEdit('role')">Cancel</button>
+            </div>
+            </p>
         </div>
     </div>
 
@@ -46,6 +90,55 @@
         </button>
     </div>
 </div>
+
+<script>
+    function toggleEdit(field) {
+        // Toggle visibility of display, input, and buttons
+        document.getElementById(`${field}-display`).classList.add('d-none');
+        document.getElementById(`${field}-input`).classList.remove('d-none');
+        document.getElementById(`${field}-buttons`).classList.remove('d-none');
+        document.getElementById(`edit-${field}-btn`).classList.add('d-none');
+    }
+
+    function cancelEdit(field) {
+        // Hide input and buttons, show display
+        document.getElementById(`${field}-display`).classList.remove('d-none');
+        document.getElementById(`${field}-input`).classList.add('d-none');
+        document.getElementById(`${field}-buttons`).classList.add('d-none');
+        document.getElementById(`edit-${field}-btn`).classList.remove('d-none');
+    }
+
+    function saveChanges(field) {
+        const inputValue = document.getElementById(`${field}-input`).value;
+
+        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+        const userId = document.getElementById('user-id').value;
+
+        // Simulate sending a request to the server
+        fetch(`/users/update-${field}`, {
+            method: 'POST',
+            headers: {
+                [csrfHeader]: csrfToken,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ [field]: inputValue, id: userId }),
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('Failed to save changes');
+                }
+            })
+            .then(message => {
+                console.log(message); // Optional: log the success message
+                document.getElementById(`${field}-display`).textContent = field === 'username' ? `@${inputValue}` : inputValue;
+                cancelEdit(field);
+            })
+            .catch(error => alert(error.message));
+    }
+</script>
 
 <div th:replace="~{fragments/footer :: footer}"/>
 </body>
