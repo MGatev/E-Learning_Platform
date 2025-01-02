@@ -28,7 +28,7 @@
             <td th:text="${iterStat.index + 1}"></td>
             <td th:text="${ticket.getForCourse().getName()}"></td>
             <td th:text="${ticket.content}"></td>
-            <td th:text="${ticket.getResolved()}"></td>
+            <td th:text="${ticket.getResolved() ? 'Resolved' : 'Unresolved'}"></td>
             <td th:text="${#dates.format(ticket.getCreatedOn(), 'yyyy-MM-dd HH:mm')}"></td>
         </tr>
         <tr th:if="${#lists.isEmpty(user.getTickets())}">
