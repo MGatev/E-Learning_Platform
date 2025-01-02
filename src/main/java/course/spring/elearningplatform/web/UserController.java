@@ -1,5 +1,7 @@
 package course.spring.elearningplatform.web;
 
+import course.spring.elearningplatform.dto.ImageDto;
+import course.spring.elearningplatform.entity.Image;
 import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -79,5 +82,13 @@ public class UserController {
         String newUsername = payload.get("username");
         userService.updateUserDetails(id, "username", newUsername);
         return ResponseEntity.ok("Username updated successfully");
+    }
+
+    @PostMapping("/users/update-profile-picture")
+    public ResponseEntity<String> updateProfilePicture(@RequestParam("profilePicture") MultipartFile file,
+                                                       @RequestParam("id") Long userId) {
+        ImageDto imageDto = new ImageDto(file);
+        userService.updateUserDetails(userId, "profilePicture", imageDto);
+        return ResponseEntity.ok("Profile picture updated successfully");
     }
 }

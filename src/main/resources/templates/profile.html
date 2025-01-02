@@ -21,9 +21,17 @@
     <input type="hidden" id="user-id" th:value="${loggedInUser.id}">
     <!-- Profile Section -->
     <div class="profile-left text-center p-3">
-        <img class="profile-picture rounded-circle mb-3"
-             th:src="${loggedInUser.getProfilePicture() != null ? loggedInUser.getProfilePicture().parseImage() : '/images/default-profile.png'}"
-             alt="Profile Picture">
+        <div class="profile-picture-container position-relative mb-3">
+            <img id="profile-picture-preview" class="profile-picture rounded-circle"
+                 th:src="${loggedInUser.getProfilePicture() != null ? loggedInUser.getProfilePicture().parseImage() : '/images/default-profile.png'}"
+                 alt="Profile Picture">
+            <label for="profile-picture-input" class="upload-icon position-absolute">
+                <i class="fas fa-camera"></i>
+            </label>
+            <input type="file" id="profile-picture-input" class="d-none" accept="image/*" onchange="previewProfilePicture(event)">
+        </div>
+        <button type="button" class="btn btn-success btn-sm d-none" id="save-profile-picture-btn" onclick="saveProfilePicture()">Save</button>
+        <button type="button" class="btn btn-danger btn-sm d-none" id="cancel-profile-picture-btn" onclick="cancelProfilePicture()">Cancel</button>
         <div class="user-info">
             <h2 class="user-name d-flex align-items-center">
                 <span id="full-name-display" th:text="${loggedInUser.firstName} + ' ' + ${loggedInUser.lastName}">John Doe</span>
@@ -92,6 +100,66 @@
 </div>
 
 <script>
+    function previewProfilePicture(event) {
+        const fileInput = event.target;
+        const saveButton = document.getElementById('save-profile-picture-btn');
+        const cancelButton = document.getElementById('cancel-profile-picture-btn');
+        const previewImage = document.getElementById('profile-picture-preview');
+
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImage.src = e.target.result;
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+
+            // Show Save and Cancel buttons
+            saveButton.classList.remove('d-none');
+            cancelButton.classList.remove('d-none');
+        }
+    }
+
+    function cancelProfilePicture() {
+        const fileInput = document.getElementById('profile-picture-input');
+        const previewImage = document.getElementById('profile-picture-preview');
+        const saveButton = document.getElementById('save-profile-picture-btn');
+        const cancelButton = document.getElementById('cancel-profile-picture-btn');
+
+        // Reset input and preview
+        fileInput.value = '';
+        previewImage.src = previewImage.getAttribute('th:src'); // Restore original src
+        saveButton.classList.add('d-none');
+        cancelButton.classList.add('d-none');
+    }
+
+    function saveProfilePicture() {
+        const fileInput = document.getElementById('profile-picture-input');
+        const userId = document.getElementById('user-id').value;
+        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        const formData = new FormData();
+        formData.append('profilePicture', fileInput.files[0]);
+        formData.append('id', userId);
+
+        fetch('/users/update-profile-picture', {
+            method: 'POST',
+            headers: {
+                [csrfHeader]: csrfToken,
+            },
+            body: formData,
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Profile picture updated successfully!');
+                    cancelProfilePicture(); // Reset the interface
+                } else {
+                    throw new Error('Failed to update profile picture');
+                }
+            })
+            .catch(error => alert(error.message));
+    }
+
     function toggleEdit(field) {
         // Toggle visibility of display, input, and buttons
         document.getElementById(`${field}-display`).classList.add('d-none');

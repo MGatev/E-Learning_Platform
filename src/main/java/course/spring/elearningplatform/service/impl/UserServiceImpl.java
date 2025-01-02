@@ -96,17 +96,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUserDetails(Long id, String detail, String value) {
+    public User updateUserDetails(Long id, String detail, Object value) {
         User existingUser = getUserById(id);
         switch (detail) {
             case "username":
-                existingUser.setUsername(value);
+                existingUser.setUsername((String) value);
                 break;
             case "email":
-                existingUser.setEmail(value);
+                existingUser.setEmail((String) value);
                 break;
             case "name":
-                String[] names = value.split(" ");
+                String name = (String) value;
+                String[] names = name.split(" ");
                 if (names.length != 2) {
                     throw new IllegalArgumentException("Invalid full name: " + value);
                 }
@@ -114,7 +115,12 @@ public class UserServiceImpl implements UserService {
                 existingUser.setLastName(names[1]);
                 break;
             case "role":
-                existingUser.setRoles(new HashSet<>(List.of(value)));
+                existingUser.setRoles(new HashSet<>(List.of((String) value)));
+                break;
+            case "profilePicture":
+                ImageDto imageDto = (ImageDto) value;
+                Image savedImage = imageService.createImage(imageDto);
+                existingUser.setProfilePicture(savedImage);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid user detail: " + detail);
