@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -53,6 +54,9 @@ public class User {
     @OneToMany
     private Set<Course> courses;
 
+    @OneToMany(mappedBy = "issuer")
+    private List<Ticket> tickets;
+
     @ManyToMany
     @JoinTable(
             name = "user_completed_lessons",
@@ -60,5 +64,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "lesson_id")
     )
     private Set<Lesson> completedLessons = new HashSet<>();
+
+    public void addTicket(Ticket ticket) {
+        tickets.add(ticket);
+    }
 }
 

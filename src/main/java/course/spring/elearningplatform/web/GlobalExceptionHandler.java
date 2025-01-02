@@ -25,6 +25,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleServerError(Exception ex, Model model) {
+        ex.printStackTrace();
         model.addAttribute("errorMessage", "Something went wrong on our side. Please try again later.");
         return "error";
     }

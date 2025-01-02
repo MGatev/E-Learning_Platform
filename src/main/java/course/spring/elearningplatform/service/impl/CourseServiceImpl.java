@@ -158,4 +158,9 @@ public class CourseServiceImpl implements CourseService {
             throw new EntityNotFoundException("There is no quiz available for that course.");
         }
     }
+
+    @Override
+    public Course save(Course course) {
+        return courseRepository.save(course);
+    }
 }
