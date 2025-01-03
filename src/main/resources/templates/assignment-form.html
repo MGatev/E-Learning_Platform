@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Assignment Form Page')}">
+    <link rel="stylesheet" th:href="@{/css/assignment-form.css}" />
+    <title>Create Assignment</title>
+</head>
+<body>
+<div th:replace="~{fragments/home-nav :: home-nav}"></div>
+<div class="assignment-form-wrapper">
+    <div class="assignment-form-container">
+        <h1 class="assignment-form-header">Create New Assignment</h1>
+        <form th:action="@{/assignments}" th:object="${assignment}" method="post">
+            <div class="assignment-form-group">
+                <label class="assignment-form-label">Title:</label>
+                <input type="text" class="assignment-form-input" th:field="*{title}" />
+            </div>
+            <div class="assignment-form-group">
+                <label class="assignment-form-label">Description:</label>
+                <textarea class="assignment-form-textarea" th:field="*{description}"></textarea>
+            </div>
+            <div class="assignment-form-group">
+                <label class="assignment-form-label">Course ID:</label>
+                <input type="number" class="assignment-form-input" th:field="*{courseId}" />
+            </div>
+            <button type="submit" class="assignment-form-button">Save</button>
+        </form>
+    </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
