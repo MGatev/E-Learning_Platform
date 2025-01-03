@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Assignments Page')}">
+    <title>Assignments</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css">
+</head>
+<body style="background-color: #eaf4ea;">
+<div th:replace="~{fragments/home-nav :: home-nav}"></div>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Assignments</h1>
+
+    <!-- Filters Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <button class="btn btn-outline-secondary mr-2" onclick="showAllAssignments()">All</button>
+            <button class="btn btn-outline-secondary mr-2" onclick="sortAssignmentsByDueDate()">Sort by Due Date</button>
+
+            <!-- Dropdown Menu for Filtering by Course -->
+            <div class="dropdown d-inline">
+                <button class="btn btn-outline-secondary dropdown-toggle"
+                        type="button"
+                        id="courseDropdown"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Show by Course
+                </button>
+                <ul class="dropdown-menu shadow" aria-labelledby="courseDropdown" id="courseDropdownMenu">
+                    <li th:each="course : ${courses}">
+                        <a class="dropdown-item" href="#"
+                           th:text="${course.name}"
+                           th:attr="data-course-id=${course.id}"
+                           onclick="filterByCourse(this)"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assignments List -->
+    <div class="row" id="assignmentsList">
+        <div th:if="${assignments.isEmpty()}" class="text-center text-muted col-12">
+            <p>No assignments found.</p>
+        </div>
+        <div th:each="assignment : ${assignments}"
+             class="col-lg-4 col-md-6 mb-4"
+             th:attr="data-due-date=${assignment.dueDate}, data-course-id=${assignment.courseId}, data-assignment-id=${assignment.id}">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title font-weight-bold" th:text="${assignment.title}">Assignment Title</h5>
+                    <p class="card-text text-muted">Due Date:
+                        <span th:text="${#temporals.format(assignment.dueDate, 'EEEE, dd MMM yyyy - HH:mm')}">Due Date</span>
+                    </p>
+                    <p class="card-text text-muted">
+                        Course: <span th:text="${coursesMap[assignment.courseId]}">Course Name</span>
+                    </p>
+                </div>
+                <div class="card-footer text-right bg-white">
+                    <a th:href="@{/assignments/{id}(id=${assignment.id})}"
+                       class="btn btn-success"
+                       title="View Details">
+                        View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add New Assignment Button -->
+    <div class="text-center mt-4">
+        <a href="/assignments/new" class="btn btn-success btn-lg">Add New Assignment</a>
+    </div>
+</div>
+
+<!-- JavaScript for Sorting and Filtering -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("Bootstrap dropdown initialized.");
+    });
+
+    function sortAssignmentsByDueDate() {
+        const assignmentsList = document.getElementById('assignmentsList');
+        const assignments = Array.from(assignmentsList.getElementsByClassName('col-lg-4'));
+
+        assignments.sort((a, b) => {
+            const dateA = new Date(a.getAttribute('data-due-date'));
+            const dateB = new Date(b.getAttribute('data-due-date'));
+            return dateA - dateB;
+        });
+
+        assignmentsList.innerHTML = '';
+        assignments.forEach(assignment => assignmentsList.appendChild(assignment));
+    }
+
+    function filterByCourse(selectedCourse) {
+        const courseId = selectedCourse.getAttribute('data-course-id');
+        const assignmentsList = document.getElementById('assignmentsList');
+        const assignments = Array.from(assignmentsList.getElementsByClassName('col-lg-4'));
+
+        assignments.forEach(assignment => {
+            const assignmentCourseId = assignment.getAttribute('data-course-id');
+            assignment.style.display = assignmentCourseId === courseId ? "block" : "none";
+        });
+    }
+
+    // Function to show all assignments
+    function showAllAssignments() {
+        const assignmentsList = document.getElementById('assignmentsList');
+        const assignments = Array.from(assignmentsList.getElementsByClassName('col-lg-4'));
+
+        assignments.forEach(assignment => {
+            assignment.style.display = "block";
+        });
+    }
+</script>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

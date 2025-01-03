@@ -8,6 +8,7 @@ import course.spring.elearningplatform.dto.mapper.QuestionDto;
 import course.spring.elearningplatform.entity.QuestionWrapper;
 import course.spring.elearningplatform.entity.QuizDto;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -33,4 +34,9 @@ public interface CourseService {
     List<QuestionWrapper> getQuestionsForCourseQuiz(Long courseId);
 
     Course save(Course course);
+
+    List<Course> getAllCourses();
+
+    Course findById(Long courseId);
 }
+

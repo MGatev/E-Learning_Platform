@@ -1,0 +1,141 @@
+/* Container styling */
+.custom-assignments-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Header styling */
+.custom-assignments-header {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Filter buttons and search bar */
+.custom-assignments-filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.custom-filter-button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #5cb85c;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.custom-filter-button:hover {
+    background-color: #4cae4c;
+}
+
+.custom-search-bar {
+    flex-grow: 1;
+    margin-left: 15px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Assignments list */
+.custom-assignments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Assignment item */
+.custom-assignment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.custom-assignment-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Assignment time */
+.custom-assignment-time {
+    font-size: 14px;
+    color: #666;
+    margin-right: 15px;
+}
+
+/* Assignment details */
+.custom-assignment-details {
+    flex-grow: 1;
+}
+
+.custom-assignment-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.custom-assignment-description {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Assignment actions */
+.custom-assignment-actions {
+    margin-left: 15px;
+}
+
+.custom-add-solution-button {
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.custom-add-solution-button:hover {
+    background-color: #0056b3;
+}
+
+/* Add Assignment button */
+.custom-add-assignment-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.custom-add-assignment-button {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.custom-add-assignment-button:hover {
+    background-color: #218838;
+}
+
+.custom-add-solution-button.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

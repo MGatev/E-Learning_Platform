@@ -10,7 +10,8 @@
     <link rel="stylesheet" th:href="@{/css/profile-pic.css}">
     <link rel="stylesheet" th:href="@{/css/card-courses.css}">
 </head>
-<body>
+
+<body style="background-color: #f8f9fa !important;">
 <div th:replace="~{fragments/home-nav :: home-nav}"/>
 <h1 class="container text-center mb-5 mt-5">Browse Courses</h1>
 <div class="container">
@@ -33,7 +34,6 @@
         </div>
 
         <div class="card-body">
-            <!-- Tab content: corresponding content will appear here based on the active tab -->
             <div class="tab-content" id="myTabContent">
 
                 <div class="tab-pane fade" th:each="category, iterStat : ${top3CoursesByCategory.keySet()}"
@@ -69,30 +69,66 @@
         <h3 class="mt-5">There are no courses yet.</h3>
     </div>
 
-    <!-- Events -->
-    <div class="upcoming-div">
-        <h1 class="container text-center mb-5 mt-5">Upcoming Events</h1>
-    </div>
-    <div class="card-deck" style="justify-content: center; gap: 2rem; padding-top: 10px;">
-        <br>
-        <div th:if="${upcomingEvents.isEmpty()}" class="text-center">
-            <p>No upcoming events found.</p>
-        </div>
-        <div class="card" style="max-width: 15rem;" th:each="event : ${upcomingEvents}">
-            <div class="card-body">
-                <a th:href="@{/events/{id}(id=${event.id})}" class="card-title-link">
-                    <h5 class="card-title" th:text="${event.title}">Event Title</h5>
-                </a>
-                <img th:src="${event.getImageBase64()}" alt="Event Image" class="event-image" style="width: 95%"/>
-
-
-                <span th:text="${#temporals.format(event.startTime, 'EEEE, dd MMM yyyy - HH:mm')}">Start Date</span>
+    <div class="lessons-section mt-5 mb-5">
+        <h1 class="text-center">Assignments</h1>
+        <div class="container p-4" style="background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <div th:if="${assignments.isEmpty()}" class="text-center text-muted">
+                <p>No assignments found.</p>
+            </div>
+            <div th:each="assignment : ${assignments}" class="card mb-3" style="box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+                <div class="card-body">
+                    <h5 class="card-title font-weight-bold text-dark" th:text="${assignment.title}">Assignment Title</h5>
+                    <p class="card-text text-muted">Due Date:
+                        <span th:text="${#temporals.format(assignment.dueDate, 'EEEE, dd MMM yyyy - HH:mm')}">Date</span>
+                    </p>
+                    <div class="text-right">
+                        <a th:href="@{/assignments/{id}(id=${assignment.id})}" class="btn btn-success">
+                            View Details
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="text-center mt-4">
-        <a href="/events" class="btn btn-primary btn-lg btn-outline-success">Show More Events</a>
+
+
+    <!-- Events Section -->
+    <div class="lessons-section mt-5 mb-5">
+        <h1 class="text-center mb-5">Upcoming Events</h1>
+        <div class="container p-4" style="background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <div th:if="${upcomingEvents.isEmpty()}" class="text-center text-muted">
+                <p>No upcoming events found.</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4" th:each="event : ${upcomingEvents}">
+                    <div class="card h-100" style="box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+                        <img th:src="${event.getImageBase64()}" alt="Event Image" class="card-img-top" style="height: 150px; object-fit: cover;">
+                        <div class="card-body">
+                            <a th:href="@{/events/{id}(id=${event.id})}" class="card-title-link">
+                                <h5 class="card-title font-weight-bold text-dark" th:text="${event.title}">Event Title</h5>
+                            </a>
+                            <p class="card-text text-muted mb-3">
+                                <span th:text="${#temporals.format(event.startTime, 'EEEE, dd MMM yyyy - HH:mm')}">Start Date</span>
+                            </p>
+                        </div>
+                        <div class="card-footer bg-white text-center">
+                            <a th:href="@{/events/{id}(id=${event.id})}" class="btn btn-success btn-sm"
+                               style="width: 100%; background-color: #28a745; border-color: #28a745;"
+                               onmouseover="this.style.backgroundColor='#218838';"
+                               onmouseout="this.style.backgroundColor='#28a745';">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="/events" class="btn btn-success btn-lg">Show More Events</a>
+        </div>
     </div>
+
+
 </div>
 <div th:replace="~{fragments/footer :: footer}"/>
 <script>
@@ -107,7 +143,6 @@
             }
         };
 
-        // Run checkOverflow initially and on window resize
         checkOverflow();
         window.addEventListener("resize", checkOverflow);
     });

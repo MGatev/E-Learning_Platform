@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
@@ -162,5 +163,16 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course save(Course course) {
         return courseRepository.save(course);
+    }
+
+    @Override
+    public List<Course> getAllCourses() {
+        return courseRepository.findAll();
+    }
+
+    @Override
+    public Course findById(Long courseId) {
+        return courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Course not found with ID: " + courseId));
     }
 }

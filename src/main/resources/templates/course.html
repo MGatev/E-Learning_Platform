@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/css/profile-pic.css}">
     <link rel="stylesheet" th:href="@{/css/card.css}">
     <link rel="stylesheet" th:href="@{/css/tickets.css}">
+    <link rel="stylesheet" th:href="@{/css/assignments.css}">
 </head>
 <body>
 <div th:replace="~{fragments/home-nav :: home-nav}"/>
@@ -68,6 +69,86 @@
         </ul>
     </div>
 
+    <!-- Assignments Section -->
+    <div class="lessons-section mt-5 mb-5">
+        <div class="section-title">
+            <h3 class="title">Assignments</h3>
+            <a th:if="${user.roles.contains('INSTRUCTOR')}" th:href="@{/assignments/new}" class="add-button">Add Assignment</a>
+        </div>
+        <ul class="list-group" style="list-style: none; padding: 0; margin: 0;">
+            <li th:each="assignment : ${assignments}" style="margin-bottom: 15px;">
+                <div class="assignment-item"
+                     style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <div>
+                        <a th:href="@{/assignments/{id}(id=${assignment.id})}"
+                           style="font-weight: bold; text-decoration: none; color: black;">
+                            <strong th:text="${assignment.title}" style="font-weight: bold;">Assignment Title</strong>
+                        </a>
+                        <p class="assignment-due-date" style="margin: 10px 0; color: #555;">
+                            Due Date: <span th:text="${#temporals.format(assignment.dueDate, 'EEEE, dd MMM yyyy - HH:mm')}">Due Date</span>
+                        </p>
+                    </div>
+                    <div class="assignment-actions" style="text-align: right;">
+                        <button th:if="${userSolutionStatus[assignment.id]}"
+                                class="btn btn-success"
+                                disabled
+                                style="cursor: not-allowed;"
+                                title="Solution added">
+                            Solution Added
+                        </button>
+                        <button th:if="!${userSolutionStatus[assignment.id]}"
+                                class="btn btn-success"
+                                data-bs-toggle="modal"
+                                data-bs-target="#uploadModal"
+                                th:attr="data-assignment-id=${assignment.id}"
+                                onclick="setAssignmentId(this)">
+                            Add Solution
+                        </button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Upload Solution Modal -->
+    <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadModalLabel">Upload Solution</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{/assignments/upload}" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <input type="hidden" id="assignmentId" name="assignmentId">
+                        <div class="mb-3">
+                            <label for="solutionFile" class="form-label">Choose file:</label>
+                            <input type="file" id="solutionFile" name="solutionFile" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Upload</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setAssignmentId(button) {
+            const assignmentId = button.getAttribute('data-assignment-id');
+            document.getElementById('assignmentId').value = assignmentId;
+        }
+    </script>
+
+    <!-- Include Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+    <!-- Tickets-->
     <div class="tickets-section">
         <!--th:if="${user.roles.contains("ROLE_INSTRUCTOR"")}"-->
         <!--To be added as an attribute of the div tag on the line above-->

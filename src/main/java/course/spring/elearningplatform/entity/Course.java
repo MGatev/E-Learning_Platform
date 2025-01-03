@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -52,6 +53,10 @@ public class Course {
 
     @OneToMany(mappedBy = "forCourse")
     private List<Ticket> tickets;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Assignment> assignments = new ArrayList<>();
+
 
     public void addTicket(Ticket ticket) {
         tickets.add(ticket);
