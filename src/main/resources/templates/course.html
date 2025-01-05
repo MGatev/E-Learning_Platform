@@ -205,6 +205,10 @@
            class="btn add-button" th:unless="${!allLessonsCompleted}">
             Add Question
         </a>
+        <a th:href="@{/questions(courseId=${course.id})}"
+           class="btn add-button" th:unless="${!allLessonsCompleted}">
+            Delete Question
+        </a>
     </div>
 </div>
 

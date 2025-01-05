@@ -161,6 +161,17 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public List<Question> getAllQuestionsForCourse(Long courseId) {
+        Course course = getCourseById(courseId);
+
+        if (course != null) {
+            return course.getQuestions();
+        } else {
+            throw new EntityNotFoundException("There is no quiz available for that course.");
+        }
+    }
+
+    @Override
     public Course save(Course course) {
         return courseRepository.save(course);
     }

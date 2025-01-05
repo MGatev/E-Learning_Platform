@@ -115,5 +115,14 @@ public class QuizzesService {
         }
     }
 
+    public void deleteQuestionFromQuiz(long quizId, Question question) {
+        var quiz = getQuizById(quizId);
+        quiz.getQuestions().remove(question);
+        quizRepository.save(quiz);
+    }
+
+    public Quiz getQuizForQuestion(long id) {
+        return quizRepository.findByQuestionId(id);
+    }
 
 }
