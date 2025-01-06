@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class AnnouncementsController {
 
   @GetMapping
   public ResponseEntity<List<String>> getAllActiveAnnouncements() {
-    return ResponseEntity.ok(announcementService.getAllActiveAnnouncements());
+    return ResponseEntity.ok(announcementService.getAllActiveAnnouncementsAsStrings());
   }
 
   @GetMapping("/add-announcement")
@@ -39,6 +40,21 @@ public class AnnouncementsController {
   @PostMapping("/add-announcement")
   public String addAnnouncement(AnnouncementDto announcement) {
     announcementService.addAnnouncement(announcement);
+    return "redirect:/home";
+  }
+
+  @GetMapping("/delete-announcements")
+  public String getDeleteAnnouncementForm(Model model) {
+    model.addAttribute("announcements", announcementService.getAllActiveAnnouncements());
+    return "delete-announcement";
+  }
+
+  @PostMapping("/delete-announcements")
+  public String deleteAnnouncement(@RequestParam(required = false) List<Long> selectedAnnouncements) {
+    if (selectedAnnouncements == null || selectedAnnouncements.isEmpty()) {
+      return "redirect:/home";
+    }
+    announcementService.deleteAnnouncements(selectedAnnouncements);
     return "redirect:/home";
   }
 

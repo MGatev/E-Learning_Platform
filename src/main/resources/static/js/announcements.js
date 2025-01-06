@@ -24,17 +24,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function rotateAnnouncements() {
-        const banner = document.getElementById('announcementText');
+        const bannerText = document.getElementById('announcementText');
+        const banner = document.getElementById('announcementBanner');
         if (announcements.length > 0) {
-            banner.classList.add('fade-out');
+            banner.classList.remove('hide');
+            bannerText.classList.add('fade-out');
             setTimeout(() => {
-                banner.textContent = announcements[currentAnnouncement];
-                banner.classList.remove('fade-out');
-                banner.style.opacity = "1";
+                bannerText.textContent = announcements[currentAnnouncement];
+                bannerText.classList.remove('fade-out');
+                bannerText.style.opacity = "1";
                 currentAnnouncement = (currentAnnouncement + 1) % announcements.length;
             }, 1000);
         } else {
-            banner.textContent = "No announcements at the moment.";
+            banner.classList.add('hide');
         }
     }
 });

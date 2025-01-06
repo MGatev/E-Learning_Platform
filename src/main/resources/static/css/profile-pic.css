@@ -99,6 +99,10 @@
     animation: fade-out 1.2s ease-in-out;
 }
 
+.hide {
+    display: none;
+}
+
 @keyframes fade-in {
     from {
         opacity: 0;

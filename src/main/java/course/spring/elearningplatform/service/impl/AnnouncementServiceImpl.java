@@ -25,18 +25,15 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
 
   @Override
-  public List<String> getAllActiveAnnouncements() {
-    List<Announcement> allAnnouncements = announcementRepository.findAll();
-    List<Announcement> activeAnnouncements = allAnnouncements.stream()
-            .filter(Announcement::isActive)
-            .toList();
+  @SuppressWarnings("unchecked")
+  public List<String> getAllActiveAnnouncementsAsStrings() {
+    return (List<String>) getAllActiveAnnouncements(true);
+  }
 
-    allAnnouncements.removeAll(activeAnnouncements);
-    announcementRepository.deleteAll(allAnnouncements);
-
-    return activeAnnouncements.stream().map(announcement ->
-            String.format("%s: %s! Available until: %s!", announcement.getTitle(), announcement.getContent(), announcement.getExpiresAt().toString()))
-            .toList();
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<Announcement> getAllActiveAnnouncements() {
+    return (List<Announcement>) getAllActiveAnnouncements(false);
   }
 
   @Override
@@ -60,5 +57,28 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
     Announcement announcementToAdd = AnnouncementDtoToAnnouncementMapper.mapArticleDtoToArticle(announcement);
     return announcementRepository.save(announcementToAdd);
+  }
+
+  @Override
+  public void deleteAnnouncements(List<Long> ids) {
+    announcementRepository.deleteAllById(ids);
+  }
+
+  private List<?> getAllActiveAnnouncements(boolean asStrings) {
+    List<Announcement> allAnnouncements = announcementRepository.findAll();
+    List<Announcement> activeAnnouncements = allAnnouncements.stream()
+            .filter(Announcement::isActive)
+            .toList();
+
+    allAnnouncements.removeAll(activeAnnouncements);
+    announcementRepository.deleteAll(allAnnouncements);
+
+    if (asStrings) {
+      return activeAnnouncements.stream().map(announcement ->
+              String.format("%s: %s! Available until: %s!", announcement.getTitle(), announcement.getContent(), announcement.getExpiresAt().toString()))
+              .toList();
+    } else {
+      return activeAnnouncements;
+    }
   }
 }
