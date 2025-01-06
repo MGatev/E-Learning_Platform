@@ -168,6 +168,24 @@ a:link, a:visited, a:hover, a:active {
     background-color: #276d47;
 }
 
+.dashboard-button {
+    background-color: #328e59;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block; /* Keeps button shape consistent */
+    margin-top: 15px; /* Creates space above the button */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.dashboard-button:hover {
+    background-color: #246b3a;
+    transform: scale(1.05);
+}
+
+
  .disabled {
      pointer-events: none;
      opacity: 0.5;

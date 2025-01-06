@@ -31,6 +31,10 @@
                 <strong>Categories:</strong>
                 <span th:each="category : ${course.categories}" th:text="${category}">Category</span>
             </div>
+            <a th:href="@{/courses/{courseId}/progress(courseId=${course.id})}"
+               class="custom-button dashboard-button" style="margin-top: 15px; display: block;">
+                📚 Dashboard
+            </a>
             <div th:if="${isCourseCompleted}" class="course-completion">
                 <p>You have completed this course successfully!</p>
                 <a th:href="'/users/' + ${user.id} + '/certificates'" class="btn">Go to Certificates</a>
