@@ -13,7 +13,10 @@
                     <a class="nav-link" th:href="@{/help}">FAQ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
+                    <a class="nav-link" th:href="@{/announcements/add-announcement}">Make an announcement</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/announcements/delete-announcements}">Delete an announcement</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
@@ -74,7 +77,6 @@
                         })
                         .catch(error => {
                             console.error('Error fetching profile picture:', error);
-                            // Optionally handle errors by keeping the default image
                         });
                 });
             </script>

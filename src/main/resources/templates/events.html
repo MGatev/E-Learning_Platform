@@ -6,6 +6,7 @@
 </head>
 <body>
 <div th:replace="~{fragments/home-nav :: home-nav}"></div>
+<div th:replace="~{fragments/announcements :: announcement-banner}"/>
 <div class="custom-page-container">
   <h1 class="custom-page-header">Events</h1>
   <a href="/events/new" class="custom-create-link">Create New Event</a>
@@ -24,5 +25,6 @@
   </ul>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
+<script src="/js/announcements.js" defer></script>
 </body>
 </html>
