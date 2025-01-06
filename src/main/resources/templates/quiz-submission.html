@@ -55,6 +55,28 @@
         </div>
     </div>
 </div>
+
+<!-- Congratulations Modal -->
+<div class="modal fade" id="congratulationsModal" tabindex="-1" aria-labelledby="congratulationsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="congratulationsModalLabel">Congratulations!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>You have earned a certificate!</p>
+                <p>Score: <span id="modalScore"></span></p>
+                <p>Percentage: <span id="modalPercentage"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                <button type="button" class="btn btn-primary" th:onclick="'window.location.href=\'/users/' + ${loggedInUser.getId()} + '/certificates\';'">Go to Your Certificates</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:replace="~{fragments/footer :: footer}"/>
 
 <script>
@@ -80,10 +102,10 @@
             body: JSON.stringify(responses)
         })
             .then(response => {
-                if (response.ok) {
-                    return response.json();
+                if (!response.ok) {
+                    throw new Error('Failed to submit the quiz');
                 }
-                throw new Error('Failed to submit the quiz');
+                return response.json();
             })
             .then(result => {
                 document.getElementById('quizResult').style.display = 'block';
@@ -98,11 +120,11 @@
                     origin: { y: 0.6 }
                 });
 
-                // Show a Congratulations message if score is 80 or higher
                 if (result.percentage >= 80) {
-                    setTimeout(function () {
-                        alert("Congratulations! You have earned a certificate for this course.");
-                    }, 1500);  // Delay to allow confetti to finish
+                    document.getElementById('modalScore').innerText = `${result.score} out of ${result.totalQuestions}`;
+                    document.getElementById('modalPercentage').innerText = `${result.percentage.toFixed(2)}%`;
+                    const modal = new bootstrap.Modal(document.getElementById('congratulationsModal'));
+                    modal.show();
                 }
             })
             .catch(error => {
@@ -111,11 +133,9 @@
     });
 </script>
 
-
-<!-- Bootstrap JS (for UI components like alerts, etc.) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </body>
 </html>

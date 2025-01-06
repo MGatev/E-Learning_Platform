@@ -3,10 +3,14 @@ package course.spring.elearningplatform.web;
 import course.spring.elearningplatform.entity.QuestionWrapper;
 import course.spring.elearningplatform.entity.QuizDto;
 import course.spring.elearningplatform.entity.Response;
+import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.service.CourseService;
+import course.spring.elearningplatform.service.UserService;
 import course.spring.elearningplatform.service.impl.QuizzesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,11 +30,13 @@ public class QuizController {
 
     private final QuizzesService quizzesService;
     private final CourseService courseService;
+    private final UserService userService;
 
     @Autowired
-    public QuizController(QuizzesService quizzesService, CourseService courseService) {
+    public QuizController(QuizzesService quizzesService, CourseService courseService, UserService userService) {
         this.courseService = courseService;
         this.quizzesService = quizzesService;
+        this.userService = userService;
     }
 
     @PostMapping("create")
@@ -52,6 +58,11 @@ public class QuizController {
             List<QuestionWrapper> quizQuestions = courseService.getQuestionsForCourseQuiz(courseId);
             var quizId = courseService.getCourseQuizId(courseId);
 
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username = ((UserDetails) principal).getUsername();
+            User loggedInUser = userService.getUserByUsername(username);
+
+            model.addAttribute("loggedInUser", loggedInUser);
             model.addAttribute("quizId", quizId);
             model.addAttribute("courseId", courseId);
             model.addAttribute("quizQuestions", quizQuestions);
