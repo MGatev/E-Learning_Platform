@@ -11,6 +11,7 @@ import lombok.NonNull;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -64,6 +65,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "lesson_id")
     )
     private Set<Lesson> completedLessons = new HashSet<>();
+
+    @OneToMany(mappedBy = "issuedTo", cascade = CascadeType.ALL)
+    private List<Certificate> certificates;
+
+    public void addCertificate(Certificate certificate) {
+        certificates.add(certificate);
+    }
 
     public void addTicket(Ticket ticket) {
         tickets.add(ticket);

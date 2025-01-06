@@ -1,13 +1,18 @@
 package course.spring.elearningplatform.service.impl;
 
+import course.spring.elearningplatform.entity.Certificate;
+import course.spring.elearningplatform.entity.Course;
 import course.spring.elearningplatform.entity.Question;
 import course.spring.elearningplatform.entity.Quiz;
 import course.spring.elearningplatform.entity.QuizDto;
 import course.spring.elearningplatform.entity.Response;
 import course.spring.elearningplatform.entity.StudentResult;
+import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.exception.EntityNotFoundException;
+import course.spring.elearningplatform.repository.CertificateRepository;
 import course.spring.elearningplatform.repository.QuizRepository;
 import course.spring.elearningplatform.repository.StudentResultRepository;
+import course.spring.elearningplatform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +20,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +33,18 @@ import java.util.Optional;
 public class QuizzesService {
     private final QuizRepository quizRepository;
     private final StudentResultRepository studentResultRepository;
+    private final CertificateRepository certificateRepository;
+    private final UserService userService;
 
     @Autowired
     public QuizzesService(QuizRepository quizRepository,
-                          StudentResultRepository studentResultRepository) {
+                          StudentResultRepository studentResultRepository,
+                          CertificateRepository certificateRepository,
+                          UserService userService) {
         this.quizRepository = quizRepository;
         this.studentResultRepository = studentResultRepository;
+        this.certificateRepository = certificateRepository;
+        this.userService = userService;
     }
 
     public Quiz createQuiz(QuizDto quizDto, List<Question> quizQuestions) {
@@ -103,6 +116,10 @@ public class QuizzesService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails) principal).getUsername();
 
+        if (newPercentage >= 80) {
+            issueCertificate(username, quiz.getCourse(), newPercentage);
+        }
+
         if (!studentResultRepository.existsById(username)) {
             var studentResult = studentResultRepository.save(new StudentResult(username, newPercentage));
             quiz.getHighScores().add(studentResult);
@@ -115,6 +132,22 @@ public class QuizzesService {
         }
     }
 
+    public void issueCertificate(String username, Course course, int scorePercentage) {
+        if (scorePercentage >= 80) {
+            User user = userService.getUserByUsername(username);
+
+            Certificate certificate = new Certificate();
+            certificate.setCourseName(course.getName());
+            certificate.setIssuedTo(user);
+            certificate.setScorePercentage(scorePercentage);
+            certificate.setIssuedOn(Date.from(Instant.now()));
+
+            Certificate savedCertificate = certificateRepository.save(certificate);
+            user.addCertificate(savedCertificate);
+            userService.save(user);
+        }
+    }
+
     public void deleteQuestionFromQuiz(long quizId, Question question) {
         var quiz = getQuizById(quizId);
         quiz.getQuestions().remove(question);
@@ -124,5 +157,4 @@ public class QuizzesService {
     public Quiz getQuizForQuestion(long id) {
         return quizRepository.findByQuestionId(id);
     }
-
 }

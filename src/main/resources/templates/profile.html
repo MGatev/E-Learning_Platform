@@ -89,7 +89,7 @@
             <span class="emoji">🏅</span> View Badges
         </button>
         <button type="button" class="button-view-certificates"
-                onclick="window.location.href='/certificates'">
+                th:onclick="'window.location.href=\'/users/' + ${loggedInUser.getId()} + '/certificates\';'">
             <span class="emoji">📜</span> View Certificates
         </button>
         <button type="button" class="button-view-certificates"

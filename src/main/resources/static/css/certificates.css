@@ -1,0 +1,66 @@
+/* General Body Styling */
+body {
+    background-color: #e8f5e9;  /* Light green background */
+    font-family: Arial, sans-serif;
+    color: #2c3e50;
+}
+
+h1, h2 {
+    color: #2e7d32;  /* Darker green for headers */
+    font-weight: 600;
+}
+
+.container {
+    margin: 50px auto;
+    max-width: 800px;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Certificate Card Styling */
+.certificate-card {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #c8e6c9;  /* Light green border */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease-in-out;
+    text-align: left;
+}
+
+.certificate-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.certificate-card h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #2e7d32;
+}
+
+.certificate-card p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Button Styling */
+.button-primary {
+    background-color: #4caf50; /* Fresh green */
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.button-primary:hover {
+    background-color: #388e3c; /* Darker green */
+    transform: translateY(-2px); /* Lift effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
