@@ -1,0 +1,89 @@
+/* styles.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background: #f0f9f4;
+}
+
+.form-container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+h2 {
+    color: #2f855a; /* Dark green for the heading */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    color: #2f855a; /* Dark green for labels */
+    margin-bottom: 5px;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #c6f6d5; /* Light green border */
+    border-radius: 4px;
+    background: #f0fff4; /* Very light green background */
+    font-size: 1rem;
+    color: #2f855a; /* Dark green for text */
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #38a169; /* Medium green for focus */
+    box-shadow: 0 0 4px rgba(56, 161, 105, 0.5);
+}
+
+textarea {
+    resize: none;
+}
+
+.btn {
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    background: #38a169; /* Medium green for button */
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 10px;
+}
+.btn:last-child {
+    margin-bottom: 0; /* Ensure no margin below the last button */
+}
+
+.btn:hover {
+    background: #2f855a; /* Darker green on hover */
+}
+
+.btn:active {
+    background: #276749; /* Even darker green on active */
+}
+
+.alert {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+

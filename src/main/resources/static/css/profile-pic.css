@@ -50,7 +50,7 @@
     background-color: #343a40; /* Matching the navbar's dark background */
     border-radius: 0.25rem;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Add some shadow for depth */
-    z-index: 10; /* Ensure it's on top of other content */
+    z-index: 1050;/* Ensure it's on top of other content */
 }
 
 /* Make dropdown visible when profile image container is hovered */
@@ -75,4 +75,44 @@
 
 .custom-dropdown-menu .dropdown-item:hover {
     background-color: #495057; /* Slightly lighter background on hover */
+}
+
+.announcement-banner {
+    background-color: #ec834c;
+    color: white;
+    text-align: center;
+    padding: 0.5em;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.announcement-text {
+    opacity: 1;
+    animation: fade-in 1s ease-in-out;
+}
+
+.fade-out {
+    opacity: 0;
+    animation: fade-out 1.2s ease-in-out;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }

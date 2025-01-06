@@ -12,9 +12,11 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/announcements.js" defer></script>
 </head>
 <body>
 <div th:replace="~{fragments/home-nav :: home-nav}"></div>
+<div th:replace="~{fragments/announcements :: announcement-banner}"/>
 <div class="container mt-5">
     <h1 class="text-center mb-4">Frequently Asked Questions</h1>
 
