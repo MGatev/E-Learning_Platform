@@ -101,5 +101,32 @@
 .custom-card-button {
     display: none; /* Hide the button completely */
 }
+.course-completion {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    margin: 20px 0;
+}
+.course-completion p {
+    font-size: 18px;
+    color: #333;
+}
+.course-completion .btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #328e59;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.course-completion .btn:hover {
+    background-color: #246b3a;
+}
 
 

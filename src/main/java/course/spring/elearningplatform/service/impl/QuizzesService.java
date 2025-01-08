@@ -10,6 +10,7 @@ import course.spring.elearningplatform.entity.StudentResult;
 import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.exception.EntityNotFoundException;
 import course.spring.elearningplatform.repository.CertificateRepository;
+import course.spring.elearningplatform.repository.CourseRepository;
 import course.spring.elearningplatform.repository.QuizRepository;
 import course.spring.elearningplatform.repository.StudentResultRepository;
 import course.spring.elearningplatform.service.UserService;
@@ -35,16 +36,18 @@ public class QuizzesService {
     private final StudentResultRepository studentResultRepository;
     private final CertificateRepository certificateRepository;
     private final UserService userService;
+    private final CourseRepository courseRepository;
 
     @Autowired
     public QuizzesService(QuizRepository quizRepository,
                           StudentResultRepository studentResultRepository,
                           CertificateRepository certificateRepository,
-                          UserService userService) {
+                          UserService userService, CourseRepository courseRepository) {
         this.quizRepository = quizRepository;
         this.studentResultRepository = studentResultRepository;
         this.certificateRepository = certificateRepository;
         this.userService = userService;
+        this.courseRepository = courseRepository;
     }
 
     public Quiz createQuiz(QuizDto quizDto, List<Question> quizQuestions) {
@@ -143,9 +146,19 @@ public class QuizzesService {
             certificate.setIssuedOn(Date.from(Instant.now()));
 
             Certificate savedCertificate = certificateRepository.save(certificate);
-            user.addCertificate(savedCertificate);
-            userService.save(user);
+            completeCourse(course, user, savedCertificate);
         }
+    }
+
+    private void completeCourse(Course course, User user, Certificate savedCertificate) {
+        user.addCertificate(savedCertificate);
+
+        course.removeParticipant(user);
+        course.addStudentCompletedCourse(user);
+        Course savedCourse = courseRepository.save(course);
+        user.addCompletedCourse(savedCourse);
+
+        userService.save(user);
     }
 
     public void deleteQuestionFromQuiz(long quizId, Question question) {

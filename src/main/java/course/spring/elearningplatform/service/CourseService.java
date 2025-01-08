@@ -41,5 +41,9 @@ public interface CourseService {
     List<Course> getAllCourses();
 
     Course findById(Long courseId);
+
+    Course startCourse(Long courseId, User user);
+
+    Course completeCourse(Course course, User user);
 }
 

@@ -186,4 +186,18 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException("Course not found with ID: " + courseId));
     }
+
+    @Override
+    public Course startCourse(Long courseId, User user) {
+        Course course = getCourseById(courseId);
+        course.addParticipant(user);
+        return courseRepository.save(course);
+    }
+
+    @Override
+    public Course completeCourse(Course course, User user) {
+        course.removeParticipant(user);
+        course.addStudentCompletedCourse(user);
+        return courseRepository.save(course);
+    }
 }

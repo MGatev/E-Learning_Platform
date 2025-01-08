@@ -55,6 +55,22 @@ public class User {
     @OneToMany
     private Set<Course> courses;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_started_courses",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> startedCourses;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_completed_courses",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> completedCourses;
+
     @OneToMany(mappedBy = "issuer")
     private List<Ticket> tickets;
 
@@ -75,6 +91,15 @@ public class User {
 
     public void addTicket(Ticket ticket) {
         tickets.add(ticket);
+    }
+
+    public void addStartedCourse(Course course) {
+        startedCourses.add(course);
+    }
+
+    public void addCompletedCourse(Course course) {
+        startedCourses.remove(course);
+        completedCourses.add(course);
     }
 }
 

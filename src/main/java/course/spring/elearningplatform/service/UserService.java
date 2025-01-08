@@ -1,6 +1,7 @@
 package course.spring.elearningplatform.service;
 
 import course.spring.elearningplatform.dto.UserDto;
+import course.spring.elearningplatform.entity.Course;
 import course.spring.elearningplatform.entity.Role;
 import course.spring.elearningplatform.entity.User;
 
@@ -15,6 +16,8 @@ public interface UserService {
     List<User> getAllUsers();
     List<User> getAllUsersByRole(Role role);
     User updateUserDetails(Long id, String detail, Object value);
+    User addStartedCourse(User user, Course course);
+    User addCompletedCourse(User user, Course course);
 
     void save(User user);
 }
