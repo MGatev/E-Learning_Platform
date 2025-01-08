@@ -42,6 +42,12 @@ public class Course {
     @Transient
     private String imageBase64;
 
+    @ManyToMany(mappedBy = "startedCourses")
+    private List<User> participants;
+
+    @ManyToMany(mappedBy = "completedCourses")
+    private List<User> studentsCompletedCourse;
+
     @OneToMany
     private List<Lesson> lessons;
 
@@ -57,8 +63,19 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Assignment> assignments = new ArrayList<>();
 
-
     public void addTicket(Ticket ticket) {
         tickets.add(ticket);
+    }
+
+    public void addParticipant(User user) {
+        participants.add(user);
+    }
+
+    public void removeParticipant(User user) {
+        participants.remove(user);
+    }
+
+    public void addStudentCompletedCourse(User user) {
+        studentsCompletedCourse.add(user);
     }
 }

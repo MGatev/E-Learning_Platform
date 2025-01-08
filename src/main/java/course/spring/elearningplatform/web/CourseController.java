@@ -15,6 +15,7 @@ import course.spring.elearningplatform.service.SolutionService;
 import course.spring.elearningplatform.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -86,8 +87,11 @@ public class CourseController {
         model.addAttribute("course", course);
         model.addAttribute("assignments", assignments);
         model.addAttribute("user", user);
-        model.addAttribute("userSolutionStatus", userSolutionStatus); // Add this to the model
+        model.addAttribute("userSolutionStatus", userSolutionStatus);
         model.addAttribute("allLessonsCompleted", courseService.areAllLessonsCompletedByUser(user, course));
+        model.addAttribute("isCreator", course.getCreatedBy().getId().equals(user.getId()));
+        model.addAttribute("isCourseStarted", user.getStartedCourses().contains(course));
+        model.addAttribute("isCourseCompleted", user.getCompletedCourses().contains(course));
 
         return "course";
     }
@@ -147,6 +151,14 @@ public class CourseController {
         model.addAttribute("courses", courseService.getCoursesByCategory(category));
 
         return "course-by-category";
+    }
+
+    @PostMapping("/{id}/start")
+    public String startCourse(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.getUserByUsername(userDetails.getUsername());
+        Course startedCourse = courseService.startCourse(id, user);
+        userService.addStartedCourse(user, startedCourse);
+        return "redirect:/courses/" + id;
     }
 
     @ExceptionHandler(DuplicatedEntityException.class)

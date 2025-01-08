@@ -2,6 +2,7 @@ package course.spring.elearningplatform.service.impl;
 
 import course.spring.elearningplatform.dto.ImageDto;
 import course.spring.elearningplatform.dto.UserDto;
+import course.spring.elearningplatform.entity.Course;
 import course.spring.elearningplatform.entity.Image;
 import course.spring.elearningplatform.entity.Role;
 import course.spring.elearningplatform.entity.User;
@@ -127,6 +128,18 @@ public class UserServiceImpl implements UserService {
         }
         save(existingUser);
         return existingUser;
+    }
+
+    @Override
+    public User addStartedCourse(User user, Course course) {
+        user.addStartedCourse(course);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User addCompletedCourse(User user, Course course) {
+        user.addCompletedCourse(course);
+        return userRepository.save(user);
     }
 
     @Override
