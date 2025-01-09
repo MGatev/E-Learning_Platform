@@ -45,5 +45,7 @@ public interface CourseService {
     Course startCourse(Long courseId, User user);
 
     Course completeCourse(Course course, User user);
+
+    Course updateCourseDetails(Long id, String detail, Object value);
 }
 

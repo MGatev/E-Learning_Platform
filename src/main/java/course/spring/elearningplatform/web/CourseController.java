@@ -67,6 +67,30 @@ public class CourseController {
         return "redirect:/courses/" + newCourse.getId();
     }
 
+    @PostMapping("/update-course-name")
+    public ResponseEntity<String> updateCourseName(@RequestBody Map<String, String> payload) {
+        Long id = Long.parseLong(payload.get("id"));
+        String newName = payload.get("course-name");
+        courseService.updateCourseDetails(id, "course-name", newName);
+        return ResponseEntity.ok("Name updated successfully");
+    }
+
+    @PostMapping("/update-course-description")
+    public ResponseEntity<String> updateCourseDescription(@RequestBody Map<String, String> payload) {
+        Long id = Long.parseLong(payload.get("id"));
+        String newDescription = payload.get("course-description");
+        courseService.updateCourseDetails(id, "course-description", newDescription);
+        return ResponseEntity.ok("Description updated successfully");
+    }
+
+    @PostMapping("/update-add-category")
+    public ResponseEntity<String> updateAddCategory(@RequestBody Map<String, String> payload) {
+        Long id = Long.parseLong(payload.get("id"));
+        String newCategory = payload.get("add-category");
+        courseService.updateCourseDetails(id, "add-category", newCategory);
+        return ResponseEntity.ok("New category added successfully");
+    }
+
     @GetMapping("/{id}")
     public String getCourseById(@PathVariable("id") Long id,
                                 @AuthenticationPrincipal UserDetails userDetails,
