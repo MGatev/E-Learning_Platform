@@ -91,8 +91,8 @@ button[type="submit"]:hover {
     background-color: #ffffff;
     border: 1px solid #c8e6c9;  /* Light green border */
     border-radius: 8px;
-    margin-bottom: 15px;
-    padding: 20px;
+    margin-bottom: 20px;
+    padding: 30px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     transition: box-shadow 0.3s ease-in-out;
 }
@@ -128,8 +128,8 @@ button[type="submit"]:hover {
 
 /* Writer Image Styling */
 .writer-img {
-    width: 60px;
-    height: 60px;
+    height: 100px;
+    width: 100px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #c8e6c9;  /* Light green border */
