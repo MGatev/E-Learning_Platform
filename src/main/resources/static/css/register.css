@@ -4,12 +4,12 @@
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    background-color: #f2f2f2;
+    background-color: #ffffff;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px dashed #ddd;
+    border: 2px dashed #246b3a;
     cursor: pointer;
 }
 
@@ -21,7 +21,7 @@
 }
 
 .profile-picture-container:hover {
-    border-color: #007bff;
+    border-color: #6fa574;
 }
 
 .profile-picture-container input[type="file"] {
@@ -36,8 +36,69 @@
     font-size: 16px;
     border: 1px solid #a5d6a7; /* Light green border */
     border-radius: 5px;
-    background-color: #f9f9f9; /* Light input background */
     width: 100%;
     box-sizing: border-box; /* Ensures padding doesn't add to width */
     margin-bottom: 15px;
+}
+
+body {
+    background-color: #e8f5e9; /* Light green background */
+    font-family: 'Arial', sans-serif;
+}
+
+h1 {
+    color: #388e3c; /* Dark green for titles */
+}
+
+.form-group label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #4caf50; /* Medium green for labels */
+}
+
+.form-control {
+    border: 2px solid #328e59; /* Medium green border */
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 1rem;
+    background-color: #f1f8e9; /* Light green background */
+    color: #388e3c; /* Dark green text */
+}
+
+.form-control:focus {
+    border-color: #2e7d32; /* Darker green for focus */
+    box-shadow: 0 0 5px rgba(46, 125, 50, 0.5);
+}
+
+.errors {
+    font-size: 0.9rem;
+    color: #d32f2f; /* Red for errors */
+    background-color: #ffebee; /* Light red background */
+    padding: 8px;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.button-33 {
+    background-color: #c2fbd7;
+    border-radius: 100px;
+    box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+    color: green;
+    cursor: pointer;
+    display: inline-block;
+    font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.button-33:hover {
+    box-shadow: rgba(44, 187, 99, .35) 0 -25px 18px -14px inset, rgba(44, 187, 99, .25) 0 1px 2px, rgba(44, 187, 99, .25) 0 2px 4px, rgba(44, 187, 99, .25) 0 4px 8px, rgba(44, 187, 99, .25) 0 8px 16px, rgba(44, 187, 99, .25) 0 16px 32px;
+    transform: scale(1.05) rotate(-1deg);
 }

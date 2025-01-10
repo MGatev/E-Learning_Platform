@@ -13,7 +13,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/register", "/login", "/css/**").permitAll() // Public pages
+                .requestMatchers("/register", "/login", "/css/**", "/images/**").permitAll() // Public pages
                 .requestMatchers("/logout").authenticated() // Ensure these endpoints are protected
                 .requestMatchers("/quizzes/submit").permitAll()
                 .anyRequest().authenticated() // Protect other endpoints

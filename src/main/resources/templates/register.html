@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Register</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<!--    <link rel="stylesheet" th:href="@{/css/profile-pic.css}">-->
     <link rel="stylesheet" th:href="@{/css/register.css}">
 </head>
 <body>
@@ -13,60 +14,57 @@
     <div class="text-center alert alert-danger" th:text="${error}"></div>
 </div>
 <div class="container mt-3">
-    <h1 class="text-center">Register</h1>
-    <form class="container main-form mx-auto d-flex flex-column justify-content-center align-items-center"
+    <h1 class="text-center text-success font-weight-bold">Register</h1>
+    <form class="container mx-auto d-flex flex-column justify-content-center align-items-center"
           th:action="@{/register}" th:object="${user}" method="post" enctype="multipart/form-data">
 
         <div class="profile-picture-container" id="profilePictureContainer">
             <img id="profilePicturePreview" alt="Profile Picture">
             <input type="file" id="profilePictureInput" th:field="*{profilePicture.image}" name="profilePicture" accept="image/*" class="form-input" required>
         </div>
-        <div class="form-group col-md-8">
-            <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" placeholder="Username" th:field="*{username}"
-                   th:errorclass="field-error">
-            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
-               class="errors alert alert-danger">
-            </p>
-        </div>
-        <div class="form-group col-md-8">
-            <label for="password">Password</label>
-            <input type="text" class="form-control" id="password" placeholder="Password" th:field="*{password}"
-                   th:errorclass="field-error">
-            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
-               class="errors alert alert-danger">
-            </p>
-        </div>
-        <div class="form-group col-md-8">
-            <label for="firstName">First Name</label>
-            <input type="text" class="form-control" id="firstName" placeholder="First Name" th:field="*{firstName}"
-                   th:errorclass="field-error">
-            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
-               class="errors alert alert-danger">
-            </p>
-        </div>
-        <div class="form-group col-md-8">
-            <label for="lastName">Last Name</label>
-            <input type="text" class="form-control" id="lastName" placeholder="Last Name" th:field="*{lastName}"
-                   th:errorclass="field-error">
-            <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
-               class="errors alert alert-danger">
-            </p>
-        </div>
-        <div class="form-group col-md-8">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="Email" th:field="*{email}"
-                   th:errorclass="field-error">
-            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-               class="errors alert alert-danger">
-            </p>
-        </div>
-        <button type="submit" class="btn btn-primary">Register</button>
-    </form>
 
-    <script>
-        const groupImageInput = document.getElementById('profilePictureInput');
-        const profilePicturePreview = document.getElementById('profilePicturePreview');
+        <div class="form-group col-md-8">
+            <label for="username" class="text-success">Username</label>
+            <input type="text" class="form-control" id="username" placeholder="Enter your username" th:field="*{username}"
+                   th:errorclass="field-error">
+            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="errors alert alert-danger"></p>
+        </div>
+
+        <div class="form-group col-md-8">
+            <label for="password" class="text-success">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Enter your password" th:field="*{password}"
+                   th:errorclass="field-error">
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="errors alert alert-danger"></p>
+        </div>
+
+        <div class="form-group col-md-8">
+            <label for="firstName" class="text-success">First Name</label>
+            <input type="text" class="form-control" id="firstName" placeholder="Enter your first name" th:field="*{firstName}"
+                   th:errorclass="field-error">
+            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="errors alert alert-danger"></p>
+        </div>
+
+        <div class="form-group col-md-8">
+            <label for="lastName" class="text-success">Last Name</label>
+            <input type="text" class="form-control" id="lastName" placeholder="Enter your last name" th:field="*{lastName}"
+                   th:errorclass="field-error">
+            <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="errors alert alert-danger"></p>
+        </div>
+
+        <div class="form-group col-md-8">
+            <label for="email" class="text-success">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter your email" th:field="*{email}"
+                   th:errorclass="field-error">
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="errors alert alert-danger"></p>
+        </div>
+
+        <button type="submit" class="button-33 btn-lg px-5">Register</button>
+    </form>
+</div>
+
+<script>
+    const groupImageInput = document.getElementById('profilePictureInput');
+    const profilePicturePreview = document.getElementById('profilePicturePreview');
 
         groupImageInput.addEventListener('change', function (event) {
             const file = event.target.files[0];
