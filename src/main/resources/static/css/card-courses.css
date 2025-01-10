@@ -26,12 +26,14 @@
 
 .nav-pills .nav-item {
     flex-shrink: 0; /* Prevent items from shrinking */
+    font-weight: bold;
 }
 
 .nav-pills .nav-link {
     white-space: nowrap; /* Prevent text wrapping */
     padding: 0.5rem 1rem; /* Adjust padding for better fit */
     text-align: center; /* Center align text */
+    color: #246b3a;
 }
 
 .nav-pills.centered {
@@ -42,6 +44,7 @@
 /* Fix Bootstrap's box-shadow on active tabs */
 .nav-pills .nav-link.active {
     box-shadow: none; /* Remove box-shadow */
+    background-color: #6fa574;
 }
 
 /* Optional: Custom scrollbar styling for better visuals */
@@ -127,6 +130,32 @@
 }
 .course-completion .btn:hover {
     background-color: #246b3a;
+}
+
+.button-33 {
+    background-color: rgba(118, 169, 123, 0.92);
+    border-radius: 100px;
+    box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.button-33:hover {
+    box-shadow: rgba(44, 187, 99, .35) 0 -25px 18px -14px inset, rgba(44, 187, 99, .25) 0 1px 2px, rgba(44, 187, 99, .25) 0 2px 4px, rgba(44, 187, 99, .25) 0 4px 8px, rgba(44, 187, 99, .25) 0 8px 16px, rgba(44, 187, 99, .25) 0 16px 32px;
+    transform: scale(1.05) rotate(-1deg);
+    text-decoration: none;
+    color: white;
 }
 
 
