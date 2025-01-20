@@ -216,6 +216,55 @@
             Delete Question
         </a>
     </div>
+    <div class="analytics-section mt-5">
+        <div class="section-title">
+            <h3 class="title">Course Analytics</h3>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Analytics Overview</h5>
+                <p class="card-text"><strong>Total Participants:</strong> <span th:text="${analytics.totalParticipants}">0</span></p>
+                <p class="card-text"><strong>Average Percentage:</strong> <span th:text="${analytics.averagePercentage}">0</span>%</p>
+                <p class="card-text"><strong>Fastest Completion Time:</strong>
+                    <span th:text="${#numbers.formatDecimal(analytics.fastestTime / 60, 0, '0')} + 'm ' + ${analytics.fastestTime % 60} + 's'">
+                    0m 0s
+                </span>
+                </p>
+                <p class="card-text"><strong>Average Completion Time:</strong>
+                    <span th:text="${#numbers.formatDecimal(analytics.averageTime / 60, 0, '0')} + 'm ' + ${analytics.averageTime % 60} + 's'">
+                    0m 0s
+                </span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- Leaderboard Section -->
+    <div class="leaderboard-section mt-5">
+        <div class="section-title">
+            <h3 class="title">Leaderboard</h3>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Username</th>
+                <th>Percentage</th>
+                <th>Time Taken</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Iterate over highscores -->
+            <tr th:each="score, iterStat : ${highscores}">
+                <td th:text="${iterStat.count}"></td> <!-- Display rank -->
+                <td th:text="${score.username}"></td> <!-- Display username -->
+                <td th:text="${score.percentage + '%' }"></td> <!-- Display percentage -->
+                <td th:text="${#numbers.formatDecimal(score.elapsedTime / 60, 0, '0')} + 'm ' + ${score.elapsedTime % 60} + 's'"></td> <!-- Display elapsed time -->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
 </div>
 
 <div th:replace="~{fragments/footer :: footer}"/>
