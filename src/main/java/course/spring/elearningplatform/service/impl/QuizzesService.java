@@ -12,6 +12,7 @@ import course.spring.elearningplatform.exception.EntityNotFoundException;
 import course.spring.elearningplatform.repository.CertificateRepository;
 import course.spring.elearningplatform.repository.QuizRepository;
 import course.spring.elearningplatform.repository.StudentResultRepository;
+import course.spring.elearningplatform.service.CourseService;
 import course.spring.elearningplatform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,19 +33,13 @@ import java.util.Optional;
 @Service
 public class QuizzesService {
     private final QuizRepository quizRepository;
-    private final StudentResultRepository studentResultRepository;
-    private final CertificateRepository certificateRepository;
-    private final UserService userService;
+    private final CourseService courseService;
 
     @Autowired
     public QuizzesService(QuizRepository quizRepository,
-                          StudentResultRepository studentResultRepository,
-                          CertificateRepository certificateRepository,
-                          UserService userService) {
+                          CourseService courseService) {
         this.quizRepository = quizRepository;
-        this.studentResultRepository = studentResultRepository;
-        this.certificateRepository = certificateRepository;
-        this.userService = userService;
+        this.courseService = courseService;
     }
 
     public Quiz createQuiz(QuizDto quizDto, List<Question> quizQuestions) {
@@ -73,8 +68,8 @@ public class QuizzesService {
 
     }
 
-    public ResponseEntity<Map<String, Integer>> calculateQuizResult(long id, List<Response> answers) {
-        Optional<Quiz> quizOptional = quizRepository.findById(id);
+    public ResponseEntity<Map<String, Integer>> calculateQuizResult(long courseId, long quizId, List<Response> answers, long elapsedTime) {
+        Optional<Quiz> quizOptional = quizRepository.findById(quizId);
         if (quizOptional.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -91,7 +86,7 @@ public class QuizzesService {
         int percentage = Math.toIntExact(Math.round((rightAnswers * 100.0) / questionsDB.size()));
         result.put("percentage", percentage);
 
-        addNewStudentResult(percentage, quiz);
+        courseService.addNewStudentResult(percentage, elapsedTime, courseId);
 
         return ResponseEntity.ok(result);
     }
@@ -105,47 +100,24 @@ public class QuizzesService {
             .orElse(false);
     }
 
-    private boolean isNewStudentRecord(int currentPercentage, String username, List<StudentResult> highScores) {
-        return highScores.stream()
-            .filter(score -> score.getUsername().equals(username))
-            .map(score -> score.getPercentage())
-            .anyMatch(percent -> percent < currentPercentage);
-    }
-
     private void addNewStudentResult(int newPercentage, Quiz quiz) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails) principal).getUsername();
-
-        if (newPercentage >= 80) {
-            issueCertificate(username, quiz.getCourse(), newPercentage);
-        }
-
-        if (!studentResultRepository.existsById(username)) {
-            var studentResult = studentResultRepository.save(new StudentResult(username, newPercentage));
-            quiz.getHighScores().add(studentResult);
-            quizRepository.save(quiz);
-            return;
-        }
-
-        if (isNewStudentRecord(newPercentage, username, quiz.getHighScores())) {
-            studentResultRepository.updateStudentResult(username, newPercentage);
-        }
-    }
-
-    public void issueCertificate(String username, Course course, int scorePercentage) {
-        if (scorePercentage >= 80) {
-            User user = userService.getUserByUsername(username);
-
-            Certificate certificate = new Certificate();
-            certificate.setCourseName(course.getName());
-            certificate.setIssuedTo(user);
-            certificate.setScorePercentage(scorePercentage);
-            certificate.setIssuedOn(Date.from(Instant.now()));
-
-            Certificate savedCertificate = certificateRepository.save(certificate);
-            user.addCertificate(savedCertificate);
-            userService.save(user);
-        }
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        String username = ((UserDetails) principal).getUsername();
+//
+//        if (newPercentage >= 80) {
+//            issueCertificate(username, quiz.getCourse(), newPercentage);
+//        }
+//
+//        if (!studentResultRepository.existsById(username)) {
+//            var studentResult = studentResultRepository.save(new StudentResult(username, newPercentage));
+//            quiz.getHighScores().add(studentResult);
+//            quizRepository.save(quiz);
+//            return;
+//        }
+//
+//        if (isNewStudentRecord(newPercentage, username, quiz.getHighScores())) {
+//            studentResultRepository.updateStudentResult(username, newPercentage);
+//        }
     }
 
     public void deleteQuestionFromQuiz(long quizId, Question question) {
@@ -156,5 +128,10 @@ public class QuizzesService {
 
     public Quiz getQuizForQuestion(long id) {
         return quizRepository.findByQuestionId(id);
+    }
+
+    public Course addQuizToCourse(long courseId, QuizDto quizDto) {
+        var quiz = createQuiz(quizDto, courseService.getAllQuestionsForCourse(courseId));
+        return courseService.addQuizToCourse(courseId, quiz);
     }
 }

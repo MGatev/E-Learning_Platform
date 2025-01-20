@@ -83,8 +83,11 @@ public class CourseController {
                         assignment -> solutionService.hasUserUploadedSolution(user.getId(), assignment.getId())
                 ));
 
+
+        model.addAttribute("highscores", courseService.getHighScoresForCourse(id));
         model.addAttribute("course", course);
         model.addAttribute("assignments", assignments);
+        model.addAttribute("analytics", course.getAnalytics());
         model.addAttribute("user", user);
         model.addAttribute("userSolutionStatus", userSolutionStatus); // Add this to the model
         model.addAttribute("allLessonsCompleted", courseService.areAllLessonsCompletedByUser(user, course));

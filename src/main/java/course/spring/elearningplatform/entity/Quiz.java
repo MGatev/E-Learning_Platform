@@ -18,8 +18,6 @@ public class Quiz {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    @ManyToMany(cascade = CascadeType.ALL) // Ensures cascading behavior for highScores
-    private List<StudentResult> highScores;
     @ManyToMany(cascade = CascadeType.ALL) // Ensures cascading behavior for questions
     private List<Question> questions;
     @OneToOne(mappedBy = "quiz")
