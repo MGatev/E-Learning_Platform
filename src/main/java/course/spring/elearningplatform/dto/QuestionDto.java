@@ -1,4 +1,4 @@
-package course.spring.elearningplatform.dto.mapper;
+package course.spring.elearningplatform.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

@@ -5,11 +5,10 @@ import course.spring.elearningplatform.entity.Course;
 import course.spring.elearningplatform.entity.Question;
 import course.spring.elearningplatform.entity.User;
 
-import course.spring.elearningplatform.dto.mapper.QuestionDto;
+import course.spring.elearningplatform.dto.QuestionDto;
 import course.spring.elearningplatform.entity.QuestionWrapper;
 import course.spring.elearningplatform.entity.QuizDto;
 
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 

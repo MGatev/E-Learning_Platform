@@ -1,7 +1,7 @@
 package course.spring.elearningplatform.service.impl;
 
 import course.spring.elearningplatform.dto.mapper.EntityMapper;
-import course.spring.elearningplatform.dto.mapper.QuestionDto;
+import course.spring.elearningplatform.dto.QuestionDto;
 import course.spring.elearningplatform.entity.*;
 import course.spring.elearningplatform.exception.EntityNotFoundException;
 import course.spring.elearningplatform.repository.CourseRepository;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;

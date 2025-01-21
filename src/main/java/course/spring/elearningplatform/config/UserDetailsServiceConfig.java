@@ -1,6 +1,5 @@
 package course.spring.elearningplatform.config;
 
-import course.spring.elearningplatform.repository.UserRepository;
 import course.spring.elearningplatform.service.UserService;
 import course.spring.elearningplatform.service.impl.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
