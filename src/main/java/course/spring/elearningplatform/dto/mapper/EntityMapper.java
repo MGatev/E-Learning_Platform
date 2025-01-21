@@ -2,14 +2,7 @@ package course.spring.elearningplatform.dto.mapper;
 
 import org.springframework.beans.BeanUtils;
 
-public class EntityMapper<T, K> {
-    private final Class<T> entityClass;
-    private final Class<K> dtoClass;
-
-    public EntityMapper(Class<T> entityClass, Class<K> dtoClass) {
-        this.entityClass = entityClass;
-        this.dtoClass = dtoClass;
-    }
+public class EntityMapper {
 
     public static <T, K> T mapCreateDtoToEntity(K dto, Class<T> entityClass) {
         T entity = BeanUtils.instantiateClass(entityClass);

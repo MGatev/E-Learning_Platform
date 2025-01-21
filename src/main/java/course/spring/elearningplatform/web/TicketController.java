@@ -45,7 +45,7 @@ public class TicketController {
   }
 
   @PostMapping("/open")
-  public String openTicket(@RequestParam("courseId") Long courseId, TicketDto ticketDto, @AuthenticationPrincipal UserDetails userDetails, Model model) {
+  public String openTicket(@RequestParam("courseId") Long courseId, TicketDto ticketDto, @AuthenticationPrincipal UserDetails userDetails) {
     ticketService.saveTicket(ticketDto, courseId, userDetails.getUsername());
     return "redirect:/courses/" + courseId;
   }

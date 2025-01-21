@@ -37,11 +37,6 @@ public class AnnouncementServiceImpl implements AnnouncementService {
   }
 
   @Override
-  public Announcement getAnnouncementById(Long id) {
-    return null;
-  }
-
-  @Override
   public Announcement addAnnouncement(AnnouncementDto announcement) {
     List<Announcement> allAnnouncements = announcementRepository.findAll();
     List<Announcement> activeAnnouncements = allAnnouncements.stream()

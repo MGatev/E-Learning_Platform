@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public class FAQServiceImpl implements FAQService {
-    private FAQRepository faqRepository;
+    private final FAQRepository faqRepository;
 
     @Autowired
     public FAQServiceImpl(FAQRepository faqRepository) {
