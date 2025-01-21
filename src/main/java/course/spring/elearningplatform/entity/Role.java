@@ -1,5 +1,8 @@
 package course.spring.elearningplatform.entity;
 
+import lombok.Getter;
+
+@Getter
 public enum Role {
 
     STUDENT("ROLE_STUDENT"),
@@ -7,12 +10,8 @@ public enum Role {
     ADMIN("ROLE_ADMIN"),
     UNREGISTERED("ROLE_UNREGISTERED");
 
-    private Role(String description) {
+    Role(String description) {
         this.description = description;
     }
-    private String description;
-
-    public String getDescription() {
-        return description;
-    }
+    private final String description;
 }

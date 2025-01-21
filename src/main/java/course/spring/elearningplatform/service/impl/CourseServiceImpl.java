@@ -1,7 +1,7 @@
 package course.spring.elearningplatform.service.impl;
 
 import course.spring.elearningplatform.dto.mapper.EntityMapper;
-import course.spring.elearningplatform.dto.mapper.QuestionDto;
+import course.spring.elearningplatform.dto.QuestionDto;
 import course.spring.elearningplatform.entity.*;
 import course.spring.elearningplatform.exception.EntityNotFoundException;
 import course.spring.elearningplatform.repository.CourseRepository;
@@ -163,12 +163,11 @@ public class CourseServiceImpl implements CourseService {
 
         if (quiz != null) {
             List<Question> questionsDB = quiz.getQuestions();
-            List<QuestionWrapper> questionsForUser = questionsDB.stream()
-                .map(question -> new QuestionWrapper(question.getId(), question.getQuestionTitle(),
-                    question.getOption1(), question.getOption2(), question.getOption3(), question.getOption4()))
-                .toList();
 
-            return questionsForUser;
+          return questionsDB.stream()
+              .map(question -> new QuestionWrapper(question.getId(), question.getQuestionTitle(),
+                  question.getOption1(), question.getOption2(), question.getOption3(), question.getOption4()))
+              .toList();
         } else {
             throw new EntityNotFoundException("There is no quiz available for that course.");
         }

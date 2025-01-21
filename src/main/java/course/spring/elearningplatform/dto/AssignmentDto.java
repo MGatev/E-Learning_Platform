@@ -1,6 +1,5 @@
 package course.spring.elearningplatform.dto;
 
-import course.spring.elearningplatform.entity.Assignment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

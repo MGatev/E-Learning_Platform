@@ -111,6 +111,47 @@ public class QuizzesService {
             .orElse(false);
     }
 
+    private boolean isNewStudentRecord(int currentPercentage, String username, List<StudentResult> highScores) {
+        return highScores.stream()
+            .filter(score -> score.getUsername().equals(username))
+            .map(StudentResult::getPercentage)
+            .anyMatch(percent -> percent < currentPercentage);
+    }
+
+    private void addNewStudentResult(int newPercentage, Quiz quiz) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+
+        if (newPercentage >= 80) {
+            issueCertificate(username, quiz.getCourse(), newPercentage);
+        }
+
+        if (!studentResultRepository.existsById(username)) {
+            var studentResult = studentResultRepository.save(new StudentResult(username, newPercentage));
+            quiz.getHighScores().add(studentResult);
+            quizRepository.save(quiz);
+            return;
+        }
+
+        if (isNewStudentRecord(newPercentage, username, quiz.getHighScores())) {
+            studentResultRepository.updateStudentResult(username, newPercentage);
+        }
+    }
+
+    public void issueCertificate(String username, Course course, int scorePercentage) {
+        if (scorePercentage >= 80) {
+            User user = userService.getUserByUsername(username);
+
+            Certificate certificate = new Certificate();
+            certificate.setCourseName(course.getName());
+            certificate.setIssuedTo(user);
+            certificate.setScorePercentage(scorePercentage);
+            certificate.setIssuedOn(Date.from(Instant.now()));
+
+            Certificate savedCertificate = certificateRepository.save(certificate);
+            completeCourse(course, user, savedCertificate);
+        }
+    }
 
     private void completeCourse(Course course, User user, Certificate savedCertificate) {
         user.addCertificate(savedCertificate);

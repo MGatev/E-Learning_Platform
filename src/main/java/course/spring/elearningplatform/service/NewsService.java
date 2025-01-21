@@ -1,7 +1,6 @@
 package course.spring.elearningplatform.service;
 
 import course.spring.elearningplatform.entity.News;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
