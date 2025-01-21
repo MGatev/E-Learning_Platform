@@ -23,12 +23,12 @@ import static course.spring.elearningplatform.dto.mapper.EntityMapper.mapCreateD
 @Service
 public class SolutionServiceImpl implements SolutionService {
 
-    @Autowired
-    private SolutionRepository solutionRepository;
+    private final SolutionRepository solutionRepository;
     private final AssignmentService assignmentService;
 
     @Autowired
-    public SolutionServiceImpl(AssignmentService assignmentService) {
+    public SolutionServiceImpl(AssignmentService assignmentService, SolutionRepository solutionRepository) {
+        this.solutionRepository = solutionRepository;
         this.assignmentService = assignmentService;
     }
 

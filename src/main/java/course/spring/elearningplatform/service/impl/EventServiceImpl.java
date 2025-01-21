@@ -3,9 +3,7 @@ package course.spring.elearningplatform.service.impl;
 import course.spring.elearningplatform.dto.EventDto;
 import course.spring.elearningplatform.dto.ImageDto;
 import course.spring.elearningplatform.entity.Event;
-import course.spring.elearningplatform.entity.Group;
 import course.spring.elearningplatform.entity.Image;
-import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.exception.DuplicatedEntityException;
 import course.spring.elearningplatform.repository.EventRepository;
 import course.spring.elearningplatform.service.EventService;
@@ -14,11 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Service

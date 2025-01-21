@@ -1,7 +1,6 @@
 package course.spring.elearningplatform.web;
 
 import course.spring.elearningplatform.dto.FAQDto;
-import course.spring.elearningplatform.dto.GroupDto;
 import course.spring.elearningplatform.service.FAQService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class FAQController {
 
-    private FAQService faqService;
+    private final FAQService faqService;
 
     public FAQController(FAQService faqService) {
         this.faqService = faqService;

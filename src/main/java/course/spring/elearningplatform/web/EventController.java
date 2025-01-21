@@ -1,39 +1,33 @@
 package course.spring.elearningplatform.web;
 
 import course.spring.elearningplatform.dto.EventDto;
-import course.spring.elearningplatform.dto.ImageDto;
 import course.spring.elearningplatform.dto.mapper.EntityMapper;
 import course.spring.elearningplatform.entity.Event;
-import course.spring.elearningplatform.entity.Group;
-import course.spring.elearningplatform.service.EventService;
-import course.spring.elearningplatform.service.ImageService;
 import course.spring.elearningplatform.service.impl.EventServiceImpl;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Controller
 @RequestMapping("/events")
 public class EventController {
 
-    @Autowired
-    private EventServiceImpl eventService;
+    private final EventServiceImpl eventService;
 
-    private final ImageService imageService;
+    @Autowired
+    public EventController(EventServiceImpl eventService) {
+        this.eventService = eventService;
+    }
 
     @GetMapping
     public String getAllEvents(Model model) {

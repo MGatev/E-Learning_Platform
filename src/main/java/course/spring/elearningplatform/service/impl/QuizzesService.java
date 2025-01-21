@@ -111,7 +111,7 @@ public class QuizzesService {
     private boolean isNewStudentRecord(int currentPercentage, String username, List<StudentResult> highScores) {
         return highScores.stream()
             .filter(score -> score.getUsername().equals(username))
-            .map(score -> score.getPercentage())
+            .map(StudentResult::getPercentage)
             .anyMatch(percent -> percent < currentPercentage);
     }
 
