@@ -1,4 +1,4 @@
-![E-Learning Platform Logo](src/main/resources/static/images/logo/e-learning-platform-logo.png)
+<img src="src/main/resources/static/images/logo/e-learning-platform-logo.png" alt="E-Learning Platform Logo" width="500"/>
 
 # E-Learning Platform
 
