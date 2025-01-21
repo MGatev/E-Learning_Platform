@@ -54,31 +54,31 @@ The **E-Learning Platform** is a robust web application for online education, de
 
 ### Core Functionalities
 1. **Course Management**:
-  - Create and edit courses with detailed descriptions, categories, prerequisites, and multimedia resources.
-  - Finish lessons, take the quiz, pass it and receive the desired certificate.
+    - Create and edit courses with detailed descriptions, categories, prerequisites, and multimedia resources.
+    - Finish lessons, take the quiz, pass it and receive the desired certificate.
 2. **Participate in Groups**
-  - Join the desired groups and find other students to discuss urgent topics.
-  - Write articles and enjoy communicating while studying together.
+    - Join the desired groups and find other students to discuss urgent topics.
+    - Write articles and enjoy communicating while studying together.
 3. **Progress Tracking**:
-  - Track student progress at both course and lesson levels.
-  - Provide feedback and analytics on course performance.
+    - Track student progress at both course and lesson levels.
+    - Provide feedback and analytics on course performance.
 4. **Interactive Learning**:
-  - Quizzes, assignments, and tickets for engaging and responsive education.
-  - Events and announcements to enhance community interaction.
+    - Quizzes, assignments, and tickets for engaging and responsive education.
+    - Events and announcements to enhance community interaction.
 5. **Certificates**:
-  - Automatically issue certificates upon successful course completion.
+    - Automatically issue certificates upon successful course completion.
 6. **Dashboard and Analytics**:
-  - Personalized dashboards for students, instructors, and administrators.
-  - Visualize progress, performance, and overall platform statistics.
+    - Personalized dashboards for students, instructors, and administrators.
+    - Visualize progress, performance, and overall platform statistics.
 7. **Group Collaboration**:
-   - Students, instructors, and administrators can create and manage groups.
-   - Add articles and discussions within groups.
+    - Students, instructors, and administrators can create and manage groups.
+    - Add articles and discussions within groups.
 8. **Announcements and News**:
-   - Publish announcements specific to courses or system-wide.
-   - View latest news updates in the dashboard.
+    - Publish announcements specific to courses or system-wide.
+    - View latest news updates in the dashboard.
 9. **Events**:
-   - Schedule events and notify relevant users.
-   - View upcoming events on the Events tab.
+    - Schedule events and notify relevant users.
+    - View upcoming events on the Events tab.
 
 ---
 
