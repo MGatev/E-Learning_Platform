@@ -1,3 +1,5 @@
+![E-Learning Platform Logo](src/main/resources/static/images/logo/e-learning-platform-logo.png)
+
 # E-Learning Platform
 
 The E-Learning Platform is a comprehensive online system for delivering and managing educational content, enabling seamless interaction between instructors, students, and administrators. Designed using Spring Framework v6, it offers robust functionalities tailored for modern online learning environments.
