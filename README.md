@@ -4,7 +4,7 @@
 
 # E-Learning Platform
 
-The E-Learning Platform is a comprehensive online system for delivering and managing educational content, enabling seamless interaction between instructors, students, and administrators. Designed using Spring Framework v6, it offers robust functionalities tailored for modern online learning environments.
+The **E-Learning Platform** is a robust web application for online education, developed using **Spring Framework v6**. It facilitates seamless collaboration between students, instructors, and administrators by providing a suite of features designed for modern e-learning environments. This platform offers tools for course creation, student progress tracking, and administrative management while ensuring a user-friendly experience for all roles.
 
 ---
 
@@ -14,37 +14,71 @@ The E-Learning Platform is a comprehensive online system for delivering and mana
 1. **Unregistered Users**:
    - View general platform information and sample content without registration.
 2. **Students**:
-   - Enroll in courses, complete lessons and quizzes, and track progress.
-   - Submit assignments, view course results, and earn certificates upon course completion.
-   - Be informed for upcoming events and news related to the learning process.
-   - Join student groups where students can collaborate
+   - **Enroll in Courses**: Browse and enroll in available courses.
+   - **Complete Lessons**: Mark lessons as finished to track progress.
+   - **Quizzes and Assignments**:
+     - Take quizzes linked to lessons or courses.
+     - Submit assignments and receive instructor feedback.
+   - **Groups**: Join student groups where students can collaborate
+   - **Track Progress**: View a personalized dashboard showing completed lessons and quiz scores.
+   - **Certificates**: Earn certificates after successfully completing courses.
+   - **Support**: Create tickets for lesson or course issues.
+   - **Events and News**: Be informed for upcoming events and news related to the learning process.
+
 3. **Instructors**:
-   - Create and manage courses, lessons, and quizzes.
-   - Monitor student performance, resolve support tickets, and view course analytics.
-   - Host events and manage student groups.
+   - **Course Management**:
+     - Create, edit, and delete courses.
+     - Add lessons with multimedia content (e.g., videos, PDFs, images).
+     - Assign quizzes, assignments, and student groups to courses.
+   - **Student Management**:
+     - Monitor student progress through dashboards.
+     - Provide feedback on assignments.
+     - Resolve student-created tickets.
+   - **Analytics**:
+     - View course performance analytics, including student success rates and quiz results.
+   - **Events and Announcements**:
+     - Create and manage events for specific dates.
+     - Post course announcements.
 4. **Administrators**:
-   - Oversee platform operations, manage users, and monitor activity logs.
-   - Moderate courses, groups, and articles.
-   - Configure system-wide settings, including ranks, categories, and announcements.
+   - **User Management**:
+     - Create, edit, and delete users.
+     - Assign user roles (Student, Instructor, or Administrator).
+   - **System Oversight**:
+     - Monitor platform activity logs.
+     - Moderate courses, lessons, and user-created content (e.g., articles).
+     - Create system-wide settings like categories, ranks, and announcements.
+   - **Content Moderation**:
+     - Review and delete inappropriate articles or posts.
+   - **System-wide Features**:
+     - Post news, manage upcoming events and make announcements.
 
 ### Core Functionalities
-- **Course Management**:
+1. **Course Management**:
   - Create and edit courses with detailed descriptions, categories, prerequisites, and multimedia resources.
   - Finish lessons, take the quiz, pass it and receive the desired certificate.
-- **Participate in Groups**
+2. **Participate in Groups**
   - Join the desired groups and find other students to discuss urgent topics.
   - Write articles and enjoy communicating while studying together.
-- **Progress Tracking**:
+3. **Progress Tracking**:
   - Track student progress at both course and lesson levels.
   - Provide feedback and analytics on course performance.
-- **Interactive Learning**:
+4. **Interactive Learning**:
   - Quizzes, assignments, and tickets for engaging and responsive education.
   - Events and announcements to enhance community interaction.
-- **Certificates**:
+5. **Certificates**:
   - Automatically issue certificates upon successful course completion.
-- **Dashboard and Analytics**:
+6. **Dashboard and Analytics**:
   - Personalized dashboards for students, instructors, and administrators.
   - Visualize progress, performance, and overall platform statistics.
+7. **Group Collaboration**:
+   - Students, instructors, and administrators can create and manage groups.
+   - Add articles and discussions within groups.
+8. **Announcements and News**:
+   - Publish announcements specific to courses or system-wide.
+   - View latest news updates in the dashboard.
+9. **Events**:
+   - Schedule events and notify relevant users.
+   - View upcoming events on the Events tab.
 
 ---
 
