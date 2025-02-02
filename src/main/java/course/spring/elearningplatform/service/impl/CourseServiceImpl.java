@@ -132,10 +132,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course getCourseById(long courseId) {
-        //todo change redirect url
         return courseRepository.findById(courseId)
             .orElseThrow(() -> new EntityNotFoundException(String.format("Course with id %s not found", courseId),
-                "redirect:/groups"));
+                "redirect:/home"));
     }
 
     @Transactional
