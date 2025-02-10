@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -57,11 +56,16 @@ public class Course {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Quiz quiz;
 
+    @ManyToMany(cascade = CascadeType.ALL) // Ensures cascading behavior for highScores
+    private List<StudentResult> highScores;
     @OneToMany(mappedBy = "forCourse")
     private List<Ticket> tickets;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Assignment> assignments = new ArrayList<>();
+
+    @OneToOne
+    private CourseAnalytics analytics;
 
     public void addTicket(Ticket ticket) {
         tickets.add(ticket);

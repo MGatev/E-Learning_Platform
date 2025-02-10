@@ -1,7 +1,6 @@
 package course.spring.elearningplatform.service.impl;
 
 import course.spring.elearningplatform.entity.CustomUserDetails;
-import course.spring.elearningplatform.repository.UserRepository;
 import course.spring.elearningplatform.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

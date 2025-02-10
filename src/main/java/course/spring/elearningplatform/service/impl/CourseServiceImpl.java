@@ -1,7 +1,7 @@
 package course.spring.elearningplatform.service.impl;
 
 import course.spring.elearningplatform.dto.mapper.EntityMapper;
-import course.spring.elearningplatform.dto.mapper.QuestionDto;
+import course.spring.elearningplatform.dto.QuestionDto;
 import course.spring.elearningplatform.entity.*;
 import course.spring.elearningplatform.exception.EntityNotFoundException;
 import course.spring.elearningplatform.repository.CourseRepository;
@@ -9,10 +9,14 @@ import course.spring.elearningplatform.repository.QuestionRepository;
 import course.spring.elearningplatform.dto.CourseDto;
 import course.spring.elearningplatform.dto.mapper.CourseDtoToCourseMapper;
 import course.spring.elearningplatform.exception.DuplicatedEntityException;
+import course.spring.elearningplatform.repository.StudentResultRepository;
 import course.spring.elearningplatform.service.CourseService;
 import course.spring.elearningplatform.service.ImageService;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.AbstractMap;
@@ -23,20 +27,30 @@ import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImpl implements CourseService {
-    private final QuizzesService quizzesService;
     private final CourseRepository courseRepository;
     private final QuestionRepository questionRepository;
     private final ImageService imageService;
+    private final CertificateService certificateService;
+    private final StudentResultRepository studentResultRepository;
+    private final AnalyticsService analyticsService;
+    private final EntityManager entityManager;
+
 
     @Autowired
     public CourseServiceImpl(CourseRepository courseRepository,
                              QuestionRepository questionRepository,
-                             QuizzesService quizzesService,
-                             ImageService imageService) {
+                             ImageService imageService,
+                             CertificateService certificateService,
+                             StudentResultRepository studentResultRepository,
+                             AnalyticsService analyticsService,
+                             EntityManager entityManager) {
         this.courseRepository = courseRepository;
         this.questionRepository = questionRepository;
-        this.quizzesService = quizzesService;
         this.imageService = imageService;
+        this.certificateService = certificateService;
+        this.studentResultRepository = studentResultRepository;
+        this.analyticsService = analyticsService;
+        this.entityManager = entityManager;
     }
 
 
@@ -44,10 +58,12 @@ public class CourseServiceImpl implements CourseService {
     public Course addCourse(CourseDto courseDto, User user) {
         if (courseRepository.existsByName(courseDto.getName())) {
             throw new DuplicatedEntityException(String.format(
-                    "Cannot create a course with name '%s' because it already exists. Please choose other name.", courseDto.getName()));
+                "Cannot create a course with name '%s' because it already exists. Please choose other name.",
+                courseDto.getName()));
         }
 
         Course course = CourseDtoToCourseMapper.mapCourseDtoToCourse(courseDto, user, imageService);
+        course.setAnalytics(analyticsService.addAnalytics(new CourseAnalytics()));
         return courseRepository.save(course);
     }
 
@@ -55,38 +71,38 @@ public class CourseServiceImpl implements CourseService {
     public Map<String, List<Course>> getCoursesGroupedByCategory() {
         List<Course> allCourses = courseRepository.findAll();
         allCourses = allCourses.stream().peek(course -> {
-                    Image image = course.getImage();
-                    if (image != null) {
-                        course.setImageBase64(image.parseImage());
-                    }
-                })
-                .toList();
+                Image image = course.getImage();
+                if (image != null) {
+                    course.setImageBase64(image.parseImage());
+                }
+            })
+            .toList();
 
         return allCourses.stream()
-                .flatMap(course -> course.getCategories().stream()
-                        .map(category -> new AbstractMap.SimpleEntry<>(category, course)))
-                .collect(Collectors.groupingBy(
-                        AbstractMap.SimpleEntry::getKey,
-                        Collectors.mapping(AbstractMap.SimpleEntry::getValue, Collectors.toList())
-                ));
+            .flatMap(course -> course.getCategories().stream()
+                .map(category -> new AbstractMap.SimpleEntry<>(category, course)))
+            .collect(Collectors.groupingBy(
+                AbstractMap.SimpleEntry::getKey,
+                Collectors.mapping(AbstractMap.SimpleEntry::getValue, Collectors.toList())
+            ));
     }
 
     @Override
     public List<Course> getCoursesByCategory(String category) {
         List<Course> courses = courseRepository.findAllByCategory(category);
         return courses.stream().peek(course -> {
-                    Image image = course.getImage();
-                    if (image != null) {
-                        course.setImageBase64(image.parseImage());
-                    }
-                })
-                .toList();
+                Image image = course.getImage();
+                if (image != null) {
+                    course.setImageBase64(image.parseImage());
+                }
+            })
+            .toList();
     }
 
     @Override
     public Course getCourseById(Long id) {
         Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("There is no such course!"));
+            .orElseThrow(() -> new EntityNotFoundException("There is no such course!"));
         Image image = course.getImage();
         if (image != null) {
             course.setImageBase64(image.parseImage());
@@ -116,10 +132,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course getCourseById(long courseId) {
-        //todo change redirect url
         return courseRepository.findById(courseId)
             .orElseThrow(() -> new EntityNotFoundException(String.format("Course with id %s not found", courseId),
-                "redirect:/groups"));
+                "redirect:/home"));
     }
 
     @Transactional
@@ -133,9 +148,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Transactional
     @Override
-    public Course addQuizToCourse(long courseId, QuizDto quizDto) {
+    public Course addQuizToCourse(long courseId, Quiz quiz) {
         Course course = getCourseById(courseId);
-        var quiz = quizzesService.createQuiz(quizDto, course.getQuestions());
         course.setQuiz(quiz);
         return courseRepository.saveAndFlush(course);
     }
@@ -148,12 +162,11 @@ public class CourseServiceImpl implements CourseService {
 
         if (quiz != null) {
             List<Question> questionsDB = quiz.getQuestions();
-            List<QuestionWrapper> questionsForUser = questionsDB.stream()
-                .map(question -> new QuestionWrapper(question.getId(), question.getQuestionTitle(),
-                    question.getOption1(), question.getOption2(), question.getOption3(), question.getOption4()))
-                .toList();
 
-            return questionsForUser;
+          return questionsDB.stream()
+              .map(question -> new QuestionWrapper(question.getId(), question.getQuestionTitle(),
+                  question.getOption1(), question.getOption2(), question.getOption3(), question.getOption4()))
+              .toList();
         } else {
             throw new EntityNotFoundException("There is no quiz available for that course.");
         }
@@ -196,7 +209,69 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course findById(Long courseId) {
         return courseRepository.findById(courseId)
-                .orElseThrow(() -> new EntityNotFoundException("Course not found with ID: " + courseId));
+            .orElseThrow(() -> new EntityNotFoundException("Course not found with ID: " + courseId));
+    }
+
+    @Override
+    public void addNewStudentResult(int percentage, long elapsedTime, long courseId) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+        Course course = getCourseById(courseId);
+        if (percentage >= 80) {
+            certificateService.issueCertificate(username, course, percentage);
+        }
+        var highScores = course.getHighScores();
+        if (highScores.stream().filter(score -> score.getUsername().equals(username)).count() == 0) {
+            var sResult = new StudentResult();
+            sResult.setUsername(username);
+            sResult.setPercentage(percentage);
+            sResult.setElapsedTime(elapsedTime);
+            var studentResult = studentResultRepository.save(sResult);
+            course.getHighScores().add(studentResult);
+            courseRepository.save(course);
+            analyticsService.addNewParticipantAnalytics(course, studentResult, course.getHighScores());
+            return;
+        }
+
+        if (isNewStudentRecord(percentage, elapsedTime, username, course.getHighScores())) {
+            StudentResult result = course.getHighScores().stream()
+                .filter(score -> score.getUsername().equals(username))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Student result not found"));
+            studentResultRepository.updateStudentResult(result.getId(), percentage, elapsedTime);
+            studentResultRepository.flush();
+            entityManager.clear(); // Clear the persistence context
+            var updatedResult = studentResultRepository.findById(result.getId()).orElseThrow(() -> new EntityNotFoundException("Student result not found"));
+            course.getHighScores().removeIf(score -> score.getId().equals(updatedResult.getId()));
+            course.getHighScores().add(updatedResult);
+            courseRepository.save(course);
+            analyticsService.addNewHighScoreInAnalytics(course, updatedResult, course.getHighScores());
+        }
+    }
+
+    private boolean isNewStudentRecord(int currentPercentage, long elapsedTime, String username, List<StudentResult> highScores) {
+        return highScores.stream()
+            .filter(score -> score.getUsername().equals(username))
+            .anyMatch(score -> score.getPercentage() < currentPercentage || score.getPercentage() == currentPercentage && score.getElapsedTime() > elapsedTime);
+    }
+
+    public List<Question> getQuestionsForCourse(Long courseId) {
+        Course course = getCourseById(courseId);
+        return course.getQuestions();
+    }
+
+    @Override
+    public List<StudentResult> getHighScoresForCourse(Long courseId) {
+        Course course = getCourseById(courseId);
+        return course.getHighScores().stream()
+            .sorted((a, b) -> {
+                int percentageComparison = Integer.compare(b.getPercentage(), a.getPercentage());
+                if (percentageComparison != 0) {
+                    return percentageComparison;
+                }
+                return Long.compare(a.getElapsedTime(), b.getElapsedTime());
+            })
+            .toList();
     }
 
     @Override

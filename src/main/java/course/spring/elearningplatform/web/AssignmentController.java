@@ -1,19 +1,16 @@
 package course.spring.elearningplatform.web;
 
 import course.spring.elearningplatform.dto.AssignmentDto;
-import course.spring.elearningplatform.dto.mapper.Mapper;
 import course.spring.elearningplatform.entity.*;
 import course.spring.elearningplatform.service.AssignmentService;
 import course.spring.elearningplatform.service.CourseService;
 import course.spring.elearningplatform.service.SolutionService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -38,7 +35,7 @@ public class AssignmentController {
     @GetMapping
     public String getAllAssignments(Model model) {
         CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = customUserDetails.getUser();
+        User user = customUserDetails.user();
 
         List<AssignmentDto> assignments = assignmentService.getAllAssignments();
         List<Course> courses = courseService.getAllCourses();
@@ -72,7 +69,7 @@ public class AssignmentController {
     @GetMapping("/{id}")
     public String getAssignmentById(@PathVariable Long id, Model model) {
         CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = customUserDetails.getUser();
+        User user = customUserDetails.user();
 
         AssignmentDto assignment = assignmentService.getAssignmentById(id);
         model.addAttribute("assignment", assignment);
@@ -115,7 +112,7 @@ public class AssignmentController {
             Model model) {
         try {
             CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            User user = customUserDetails.getUser();
+            User user = customUserDetails.user();
 
             if (solutionService.hasUserUploadedSolution(user.getId(), assignmentId)) {
                 model.addAttribute("error", "You have already uploaded a solution for this assignment.");

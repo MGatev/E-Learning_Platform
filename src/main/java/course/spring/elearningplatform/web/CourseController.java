@@ -9,10 +9,12 @@ import course.spring.elearningplatform.entity.CustomUserDetails;
 import course.spring.elearningplatform.entity.Lesson;
 import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.exception.DuplicatedEntityException;
+import course.spring.elearningplatform.service.CourseDashboardService;
 import course.spring.elearningplatform.service.CourseService;
 import course.spring.elearningplatform.service.LessonService;
 import course.spring.elearningplatform.service.SolutionService;
 import course.spring.elearningplatform.service.UserService;
+import course.spring.elearningplatform.service.impl.CourseDashboardServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,13 +37,16 @@ public class CourseController {
     private final LessonService lessonService;
     private final UserService userService;
     private final SolutionService solutionService;
+    private final CourseDashboardService courseDashboardService;
 
     @Autowired
-    public CourseController(final CourseService courseService, LessonService lessonService, UserService userService, SolutionService solutionService) {
+    public CourseController(final CourseService courseService, LessonService lessonService, UserService userService,
+                            SolutionService solutionService, CourseDashboardService courseDashboardService) {
         this.courseService = courseService;
         this.lessonService = lessonService;
         this.userService = userService;
         this.solutionService = solutionService;
+        this.courseDashboardService = courseDashboardService;
     }
 
     @GetMapping("/create")
@@ -63,7 +68,7 @@ public class CourseController {
             return "create-course";
         }
 
-        Course newCourse = courseService.addCourse(course, userDetails.getUser());
+        Course newCourse = courseService.addCourse(course, userDetails.user());
         return "redirect:/courses/" + newCourse.getId();
     }
 
@@ -108,8 +113,11 @@ public class CourseController {
                         assignment -> solutionService.hasUserUploadedSolution(user.getId(), assignment.getId())
                 ));
 
+
+        model.addAttribute("highscores", courseService.getHighScoresForCourse(id));
         model.addAttribute("course", course);
         model.addAttribute("assignments", assignments);
+        model.addAttribute("analytics", course.getAnalytics());
         model.addAttribute("user", user);
         model.addAttribute("userSolutionStatus", userSolutionStatus);
         model.addAttribute("allLessonsCompleted", courseService.areAllLessonsCompletedByUser(user, course));
@@ -193,6 +201,17 @@ public class CourseController {
 
         lessonService.updateLessonDetails(course, id, "lesson-content", newContent);
         return ResponseEntity.ok("Lesson content updated successfully");
+    }
+
+
+    @GetMapping("/{courseId}/progress")
+    public String getCourseDashboardPage(@PathVariable("courseId") Long courseId, Model model) {
+        Course course = courseService.getCourseById(courseId);
+        Map<User, CourseDashboardServiceImpl.ProgressInfo> userProgress = courseDashboardService.getUserProgressInCourse(courseId);
+
+        model.addAttribute("course", course);
+        model.addAttribute("userProgress", userProgress);
+        return "course-dashboard";
     }
 
     @GetMapping("/category/{category}")

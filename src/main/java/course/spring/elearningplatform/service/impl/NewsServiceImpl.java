@@ -1,7 +1,6 @@
 package course.spring.elearningplatform.service.impl;
 
 import course.spring.elearningplatform.entity.News;
-import course.spring.elearningplatform.repository.GroupRepository;
 import course.spring.elearningplatform.repository.NewsRepository;
 import course.spring.elearningplatform.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;

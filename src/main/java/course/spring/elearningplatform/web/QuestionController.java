@@ -1,6 +1,6 @@
 package course.spring.elearningplatform.web;
 
-import course.spring.elearningplatform.dto.mapper.QuestionDto;
+import course.spring.elearningplatform.dto.QuestionDto;
 import course.spring.elearningplatform.service.CourseService;
 import course.spring.elearningplatform.service.impl.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;

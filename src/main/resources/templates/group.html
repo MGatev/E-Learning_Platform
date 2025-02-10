@@ -59,7 +59,7 @@
         <h2>Articles</h2>
         <ul class="list-group col-md-8 text-left pl-0">
             <li class="list-group-item d-flex align-items-start" th:each="article : ${group.articles}">
-                <!--<img th:src="${article.author.photoUrl}" alt="Writer Image" class="writer-img mr-3" /> -->
+                <img th:src="${article.author.profilePictureBase64}" alt="Writer Image" class="writer-img mr-3" />
 
                 <div>
                     <div class="mb-2">

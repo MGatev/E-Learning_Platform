@@ -8,7 +8,6 @@ import java.util.List;
 public interface AnnouncementService {
   List<String> getAllActiveAnnouncementsAsStrings();
   List<Announcement> getAllActiveAnnouncements();
-  Announcement getAnnouncementById(Long id);
   Announcement addAnnouncement(AnnouncementDto announcement);
   void deleteAnnouncements(List<Long> ids);
 }

@@ -16,10 +16,6 @@
 <div th:replace="~{fragments/announcements :: announcement-banner}"/>
 <h1 class="container text-center mb-5 mt-5">Browse Courses</h1>
 <div class="container">
-    <div class="container">
-        <a th:href="@{/courses/create}" class="btn btn-success container">Create new course</a>
-    </div>
-
     <div class="card text-center" th:if="${top3CoursesByCategory != null && !top3CoursesByCategory.isEmpty()}">
         <div class="card-header">
             <!-- Using Bootstrap Navs with "nav-pills" for clickable tabs -->
@@ -68,6 +64,9 @@
     </div>
     <div class="text-center" th:unless="${top3CoursesByCategory != null && !top3CoursesByCategory.isEmpty()}">
         <h3 class="mt-5">There are no courses yet.</h3>
+    </div>
+    <div class="button-container-create">
+        <a th:href="@{/courses/create}" class="button-33">Create new course</a>
     </div>
 
     <div class="lessons-section mt-5 mb-5">
@@ -125,7 +124,7 @@
             </div>
         </div>
         <div class="text-center mt-4">
-            <a href="/events" class="btn btn-success btn-lg">Show More Events</a>
+            <a href="/events" class="button-33">Show More Events</a>
         </div>
     </div>
 
