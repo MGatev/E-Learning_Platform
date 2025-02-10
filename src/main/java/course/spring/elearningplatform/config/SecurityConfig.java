@@ -16,12 +16,13 @@ public class SecurityConfig {
     private static final String STATIC_RESOURCES = "/css/**";
     private static final String HOME_PAGE = "/home";
     private static final String LOGOUT_SUCCESS_URL = "/login?logout";
+    private static final String IMAGES = "/images/**";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(REGISTER_PAGE, LOGIN_PAGE, STATIC_RESOURCES).permitAll()
+                        .requestMatchers(REGISTER_PAGE, LOGIN_PAGE, STATIC_RESOURCES, IMAGES).permitAll()
                         .requestMatchers(LOGOUT_PAGE).authenticated()
                         .requestMatchers("/quizzes/submit").permitAll()
                         .anyRequest().authenticated()
