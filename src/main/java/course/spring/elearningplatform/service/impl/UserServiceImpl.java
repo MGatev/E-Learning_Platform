@@ -8,10 +8,15 @@ import course.spring.elearningplatform.entity.Role;
 import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.exception.DuplicateEmailException;
 import course.spring.elearningplatform.exception.DuplicateUsernameException;
+import course.spring.elearningplatform.exception.EntityNotFoundException;
+import course.spring.elearningplatform.repository.CourseRepository;
 import course.spring.elearningplatform.repository.UserRepository;
 import course.spring.elearningplatform.service.ImageService;
 import course.spring.elearningplatform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,12 +29,15 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final CourseRepository courseRepository;
     private final ImageService imageService;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, ImageService imageService) {
+    public UserServiceImpl(UserRepository userRepository, CourseRepository courseRepository,
+                           BCryptPasswordEncoder passwordEncoder, ImageService imageService) {
         this.userRepository = userRepository;
+        this.courseRepository = courseRepository;
         this.passwordEncoder = passwordEncoder;
         this.imageService = imageService;
     }
@@ -49,13 +57,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UserDto user) {
-        return null;
+    public User updateUser(User user) {
+        userRepository.findById(user.getId())
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Post with ID = '%d' not found", user.getId())));
+        return userRepository.save(user);
     }
 
     @Override
-    public User deleteUser(User user) {
-        return null;
+    public void deleteUser(User user) {
+        User deletedUser = userRepository.findByUsername("deletedUser")
+                .orElseThrow(() -> new IllegalStateException("'Deleted User' not found. Please seed it."));
+
+        List<Course> courses = courseRepository.findAllByCreatedBy(user);
+        for (Course course : courses) {
+            course.setCreatedBy(deletedUser);
+        }
+
+        courseRepository.saveAll(courses);
+
+        userRepository.delete(user);
     }
 
     @Override
@@ -74,6 +94,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getAllUsersExcept(List<String> users) {
+        return userRepository.findAllByUsernameNotIn(users);
+    }
+
+    @Override
     public List<User> getAllUsersByRole(Role role) {
         return null;
     }
@@ -82,13 +107,19 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRoles(Set.of(Role.STUDENT.getDescription()));
+
+        if (userDto.getRoles() == null || userDto.getRoles().isEmpty()) {
+            user.setRoles(Set.of(Role.STUDENT.getDescription()));
+        } else {
+            user.setRoles(userDto.getRoles());
+        }
+
         user.setUsername(userDto.getUsername());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
 
         ImageDto imageDto = userDto.getProfilePicture();
-        if (imageDto != null) {
+        if (imageDto != null && imageDto.getImage() != null && !imageDto.getImage().isEmpty()) {
             Image savedImage = imageService.createImage(imageDto);
             user.setProfilePicture(savedImage);
         }
@@ -145,5 +176,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public Page<User> getAllUsers(int page, int size, String loggedInUsername) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        return userRepository.findAllByUsernameNotIn(List.of("deletedUser", loggedInUsername, "admin"), pageable);
+    }
+
+    @Override
+    public Page<User> searchUsers(String searchQuery, int page, int size, String loggedInUsername) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        if (searchQuery.contains(" ")) {
+            String[] nameParts = searchQuery.split("\\s+", 2);
+            String firstNameQuery = nameParts[0];
+            String lastNameQuery = nameParts[1];
+
+            return userRepository.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCaseAndUsernameNotIn(
+                    firstNameQuery, lastNameQuery, List.of(loggedInUsername, "admin"), pageable);
+        }
+
+        return userRepository.searchUsersExcluding(searchQuery, List.of(loggedInUsername, "deletedUser", "admin"), pageable);
     }
 }
