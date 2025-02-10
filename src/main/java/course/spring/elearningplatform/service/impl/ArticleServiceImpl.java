@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -53,13 +54,21 @@ public class ArticleServiceImpl implements ArticleService {
         }).toList();
     }
 
+    @Transactional
     @Override
     public Article deleteArticleById(Long id) {
         Article article = articleRepository.findById(id).orElse(null);
         if (article == null) {
             throw new EntityNotFoundException(String.format("Article with id=%s not found", id), "redirect:/groups");
         }
-        articleRepository.deleteById(id);
+
+        Group group = article.getGroup();
+        if (group != null) {
+            group.getArticles().remove(article);
+            article.setGroup(null);
+        }
+
+        articleRepository.delete(article);
         return article;
     }
 }
