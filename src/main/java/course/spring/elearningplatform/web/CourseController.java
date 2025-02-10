@@ -9,12 +9,15 @@ import course.spring.elearningplatform.entity.CustomUserDetails;
 import course.spring.elearningplatform.entity.Lesson;
 import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.exception.DuplicatedEntityException;
+import course.spring.elearningplatform.service.CourseDashboardService;
 import course.spring.elearningplatform.service.CourseService;
 import course.spring.elearningplatform.service.LessonService;
 import course.spring.elearningplatform.service.SolutionService;
 import course.spring.elearningplatform.service.UserService;
+import course.spring.elearningplatform.service.impl.CourseDashboardServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -34,13 +37,16 @@ public class CourseController {
     private final LessonService lessonService;
     private final UserService userService;
     private final SolutionService solutionService;
+    private final CourseDashboardService courseDashboardService;
 
     @Autowired
-    public CourseController(final CourseService courseService, LessonService lessonService, UserService userService, SolutionService solutionService) {
+    public CourseController(final CourseService courseService, LessonService lessonService, UserService userService,
+                            SolutionService solutionService, CourseDashboardService courseDashboardService) {
         this.courseService = courseService;
         this.lessonService = lessonService;
         this.userService = userService;
         this.solutionService = solutionService;
+        this.courseDashboardService = courseDashboardService;
     }
 
     @GetMapping("/create")
@@ -145,6 +151,17 @@ public class CourseController {
 
         redirectAttributes.addFlashAttribute("message", "Lesson marked as completed!");
         return "redirect:/courses/" + courseId;
+    }
+
+
+    @GetMapping("/{courseId}/progress")
+    public String getCourseDashboardPage(@PathVariable("courseId") Long courseId, Model model) {
+        Course course = courseService.getCourseById(courseId);
+        Map<User, CourseDashboardServiceImpl.ProgressInfo> userProgress = courseDashboardService.getUserProgressInCourse(courseId);
+
+        model.addAttribute("course", course);
+        model.addAttribute("userProgress", userProgress);
+        return "course-dashboard";
     }
 
     @GetMapping("/category/{category}")
