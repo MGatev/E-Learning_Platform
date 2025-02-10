@@ -51,7 +51,7 @@ public class User {
         return firstName + " " + lastName;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Group> groups;
 
     @OneToMany
@@ -111,6 +111,14 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.roles = roles;
+    }
+
+    public boolean isAdmin() {
+        return roles.contains(Role.ADMIN.getDescription());
+    }
+
+    public boolean hasRole(String role) {
+        return roles.contains(role);
     }
 }
 
