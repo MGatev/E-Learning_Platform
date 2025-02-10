@@ -38,6 +38,9 @@ public class User {
     @JoinColumn(name = "profile_picture_id")
     private Image profilePicture;
 
+    @Transient
+    private String profilePictureBase64;
+
     @NonNull
     @NotEmpty
     @ElementCollection(fetch = FetchType.EAGER)
