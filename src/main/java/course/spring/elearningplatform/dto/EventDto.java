@@ -1,7 +1,5 @@
 package course.spring.elearningplatform.dto;
 
-import course.spring.elearningplatform.entity.Image;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

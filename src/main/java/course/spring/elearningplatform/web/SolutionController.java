@@ -11,8 +11,12 @@ import java.util.List;
 @RequestMapping("/solutions")
 public class SolutionController {
 
+    private final SolutionService solutionService;
+
     @Autowired
-    private SolutionService solutionService;
+    public SolutionController(SolutionService solutionService) {
+        this.solutionService = solutionService;
+    }
 
     @PostMapping
     public Solution uploadSolution(@RequestBody Solution solution) {

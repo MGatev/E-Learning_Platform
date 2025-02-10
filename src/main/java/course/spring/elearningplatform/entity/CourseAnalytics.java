@@ -12,11 +12,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentResult {
+public class CourseAnalytics {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    private int percentage;
-    private long elapsedTime;
+    private int totalParticipants;
+    private double averagePercentage;
+    private long fastestTime = Long.MAX_VALUE;
+    private double averageTime;
 }

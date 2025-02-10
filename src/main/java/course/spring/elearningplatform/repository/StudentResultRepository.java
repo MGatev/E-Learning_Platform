@@ -8,11 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface StudentResultRepository extends JpaRepository<StudentResult, String> {
+public interface StudentResultRepository extends JpaRepository<StudentResult, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE StudentResult sr SET sr.percentage = :percentage WHERE sr.username = :username")
-    int updateStudentResult(@Param("username") String username, @Param("percentage") int percentage);
+    @Query("UPDATE StudentResult sr SET sr.percentage = :percentage, sr.elapsedTime = :elapsedTime WHERE sr.id = :id")
+    int updateStudentResult(@Param("id") long id, @Param("percentage") int percentage, @Param("elapsedTime") long elapsedTime);
 }
 
