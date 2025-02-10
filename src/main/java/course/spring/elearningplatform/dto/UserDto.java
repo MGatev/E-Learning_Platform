@@ -1,10 +1,8 @@
 package course.spring.elearningplatform.dto;
 
 import course.spring.elearningplatform.entity.Group;
-import course.spring.elearningplatform.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 

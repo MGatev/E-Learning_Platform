@@ -1,7 +1,6 @@
 package course.spring.elearningplatform.web;
 
 import course.spring.elearningplatform.dto.ImageDto;
-import course.spring.elearningplatform.entity.Image;
 import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

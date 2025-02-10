@@ -1,0 +1,94 @@
+body {
+    background-color: #f4fdf4;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.course-dashboard-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.course-header h1 {
+    font-size: 2rem;
+    color: #388e3c;
+    margin-bottom: 20px;
+}
+
+.user-progress-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.user-item {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-item h2 {
+    font-size: 1.25rem;
+    color: #388e3c;
+    margin-bottom: 10px;
+}
+
+.user-item p {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+.progress-bar-container {
+    background-color: #e8f5e9;
+    border-radius: 25px;
+    height: 20px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 25px;
+    background-color: #4caf50;
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-text {
+    font-size: 14px;
+    color: #388e3c;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.button-primary {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.button-primary:hover {
+    background-color: #388e3c;
+}
+
+.button-disabled {
+    background-color: #c8e6c9;
+    color: #2e7d32;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: not-allowed;
+    font-weight: bold;
+    border: none;
+}

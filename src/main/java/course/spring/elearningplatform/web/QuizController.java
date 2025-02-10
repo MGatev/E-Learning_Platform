@@ -1,5 +1,6 @@
 package course.spring.elearningplatform.web;
 
+import course.spring.elearningplatform.dto.QuizSubmissionRequest;
 import course.spring.elearningplatform.entity.QuestionWrapper;
 import course.spring.elearningplatform.entity.QuizDto;
 import course.spring.elearningplatform.entity.Response;
@@ -42,7 +43,7 @@ public class QuizController {
     @PostMapping("create")
     public String createQuiz(@RequestParam long courseId, @ModelAttribute QuizDto quizDto, RedirectAttributes redirectAttributes) {
         try {
-            courseService.addQuizToCourse(courseId, quizDto);
+            quizzesService.addQuizToCourse(courseId, quizDto);
             redirectAttributes.addFlashAttribute("successMessage", "Quiz created successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to create quiz: " + e.getMessage());
@@ -77,8 +78,11 @@ public class QuizController {
     }
 
     @PostMapping("submit")
-    public ResponseEntity<Map<String, Integer>> submitQuiz(@RequestParam("quizId") long quizId, @RequestBody() List<Response> answers) {
-        return quizzesService.calculateQuizResult(quizId, answers);
+    public ResponseEntity<Map<String, Integer>> submitQuiz(@RequestParam("courseId") long courseId, @RequestParam("quizId") long quizId, @RequestBody
+    QuizSubmissionRequest submission) {
+        List<Response> answers = submission.getAnswers();
+        long elapsedTime = submission.getElapsedTime();
+        return quizzesService.calculateQuizResult(courseId, quizId, answers, elapsedTime);
     }
 
     @GetMapping("create-quiz")

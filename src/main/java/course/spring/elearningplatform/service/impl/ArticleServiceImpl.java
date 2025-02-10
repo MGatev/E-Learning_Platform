@@ -4,6 +4,7 @@ import course.spring.elearningplatform.dto.ArticleDto;
 import course.spring.elearningplatform.dto.mapper.ArticleDtoToArticleMapper;
 import course.spring.elearningplatform.entity.Article;
 import course.spring.elearningplatform.entity.Group;
+import course.spring.elearningplatform.entity.Image;
 import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.exception.EntityNotFoundException;
 import course.spring.elearningplatform.repository.ArticleRepository;
@@ -42,7 +43,14 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<Article> getAllArticlesForAGroup(Long groupId) {
-        return articleRepository.findByGroupId(groupId) != null ? articleRepository.findByGroupId(groupId) : List.of();
+        List<Article> articles = articleRepository.findByGroupId(groupId) != null ? articleRepository.findByGroupId(groupId) : List.of();
+        return articles.stream().peek(article -> {
+            User author = article.getAuthor();
+            Image profilePicture = author.getProfilePicture();
+            if (profilePicture != null) {
+                author.setProfilePictureBase64(profilePicture.parseImage());
+            }
+        }).toList();
     }
 
     @Override

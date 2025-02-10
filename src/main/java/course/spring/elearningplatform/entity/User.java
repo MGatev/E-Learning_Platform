@@ -11,7 +11,6 @@ import lombok.NonNull;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -38,6 +37,9 @@ public class User {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_picture_id")
     private Image profilePicture;
+
+    @Transient
+    private String profilePictureBase64;
 
     @NonNull
     @NotEmpty
