@@ -14,6 +14,7 @@ import course.spring.elearningplatform.service.CourseService;
 import course.spring.elearningplatform.service.LessonService;
 import course.spring.elearningplatform.service.SolutionService;
 import course.spring.elearningplatform.service.UserService;
+import course.spring.elearningplatform.service.impl.CourseDashboardServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -156,7 +157,7 @@ public class CourseController {
     @GetMapping("/{courseId}/progress")
     public String getCourseDashboardPage(@PathVariable("courseId") Long courseId, Model model) {
         Course course = courseService.getCourseById(courseId);
-        Map<User, Double> userProgress = courseDashboardService.getUserProgressInCourse(courseId);
+        Map<User, CourseDashboardServiceImpl.ProgressInfo> userProgress = courseDashboardService.getUserProgressInCourse(courseId);
 
         model.addAttribute("course", course);
         model.addAttribute("userProgress", userProgress);

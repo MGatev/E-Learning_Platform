@@ -23,22 +23,25 @@
     <div class="user-progress-list">
         <div th:each="entry : ${userProgress}">
             <div class="user-item">
+                <!-- User Name -->
                 <h2 th:text="${entry.key.username}"></h2>
 
-                <p th:text="'Progress: ' + ${entry.value} + '%'"></p>
+                <!-- Progress X/Y -->
+                <p th:text="'Progress: ' + ${entry.value.completedLessons} + '/' + ${entry.value.totalLessons}"></p> <!-- Shows "2/5" -->
 
+                <!-- Progress Bar -->
                 <div class="progress-bar-container">
-                    <div class="progress-bar-fill" th:style="'width: ' + ${entry.value} + '%'"></div>
+                    <div class="progress-bar-fill" th:style="'width: ' + ${entry.value.progressWidth} + '%'"></div>
                 </div>
 
+                <!-- Progress Text Below Bar -->
                 <div class="progress-text">
-                    <span th:text="${entry.value} + '%'"></span>
+                    <span th:text="${entry.value.progressWidth} + '%'"></span> <!-- Shows "2/5" -->
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <div th:replace="~{fragments/footer :: footer}"/>
 </body>
