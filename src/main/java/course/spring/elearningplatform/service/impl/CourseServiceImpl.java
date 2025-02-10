@@ -184,6 +184,19 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public Course updateCourseDetails(Long id, String detail, Object value) {
+        Course existingCourse = getCourseById(id);
+        switch (detail) {
+            case "course-name" -> existingCourse.setName((String) value);
+            case "course-description" -> existingCourse.setDescription((String) value);
+            case "add-category" -> existingCourse.addCategory((String) value);
+            default -> throw new IllegalArgumentException("Invalid user detail: " + detail);
+        }
+        save(existingCourse);
+        return existingCourse;
+    }
+
+    @Override
     public Course save(Course course) {
         return courseRepository.save(course);
     }

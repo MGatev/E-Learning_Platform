@@ -39,4 +39,21 @@ public class LessonServiceImpl implements LessonService {
     public Lesson getLessonById(Long lessonId) {
         return lessonRepository.findById(lessonId).orElseThrow(() -> new EntityNotFoundException("Lesson not found"));
     }
+
+    @Override
+    public Lesson updateLessonDetails(Course course, Long id, String detail, Object value) {
+        Lesson existingLesson = course.getLessonById(id);
+        switch (detail) {
+            case "lesson-title" -> existingLesson.setTitle((String) value);
+            case "lesson-content" -> existingLesson.setContent((String) value);
+            default -> throw new IllegalArgumentException("Invalid user detail: " + detail);
+        }
+        save(existingLesson);
+        return existingLesson;
+    }
+
+    @Override
+    public Lesson save(Lesson lesson) {
+        return lessonRepository.save(lesson);
+    }
 }

@@ -52,5 +52,7 @@ public interface CourseService {
     void addNewStudentResult(int percentage, long elapsedTime, long courseId);
 
     List<StudentResult> getHighScoresForCourse(Long courseId);
+
+    Course updateCourseDetails(Long id, String detail, Object value);
 }
 
