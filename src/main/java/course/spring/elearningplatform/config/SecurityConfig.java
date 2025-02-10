@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -25,6 +26,7 @@ public class SecurityConfig {
                         .requestMatchers(REGISTER_PAGE, LOGIN_PAGE, STATIC_RESOURCES, IMAGES).permitAll()
                         .requestMatchers(LOGOUT_PAGE).authenticated()
                         .requestMatchers("/quizzes/submit").permitAll()
+                        .requestMatchers("/admin/**", "/users/{id}", "/users/edit/{id}").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -39,10 +41,19 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
-                        .logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT_PAGE, "GET"))
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+                )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(customAccessDeniedHandler())
                 );
 
+
         return http.build();
+    }
+
+    @Bean
+    public AccessDeniedHandler customAccessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
     }
 
     @Bean
