@@ -8,6 +8,7 @@ import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.exception.DuplicatedEntityException;
 import course.spring.elearningplatform.exception.EntityNotFoundException;
 import course.spring.elearningplatform.repository.GroupRepository;
+import course.spring.elearningplatform.repository.UserRepository;
 import course.spring.elearningplatform.service.GroupService;
 import course.spring.elearningplatform.service.ImageService;
 import course.spring.elearningplatform.service.UserService;
@@ -26,12 +27,14 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final UserService userService;
     private final ImageService imageService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public GroupServiceImpl(GroupRepository groupRepository, UserService userService, ImageService imageService) {
+    public GroupServiceImpl(GroupRepository groupRepository, UserService userService, ImageService imageService, UserRepository userRepository) {
         this.groupRepository = groupRepository;
         this.userService = userService;
         this.imageService = imageService;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -68,10 +71,17 @@ public class GroupServiceImpl implements GroupService {
         return groupRepository.save(groupForCreate);
     }
 
+    @Transactional
     @Override
     public Group deleteGroup(Long id) {
         Group group = groupRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id %s not found", id), "redirect:/groups"));
+
+        for (User user : group.getMembers()) {
+            user.getGroups().remove(group);
+        }
+        userRepository.saveAll(group.getMembers());
+
         groupRepository.deleteById(id);
         return group;
     }
@@ -100,6 +110,8 @@ public class GroupServiceImpl implements GroupService {
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id %s not found", id), "redirect:/groups/" + id));
         User user = userService.getUserByUsername(username);
         group.addMember(user);
+        user.getGroups().add(group);
+        userRepository.save(user);
         return groupRepository.save(group);
     }
 
@@ -108,6 +120,8 @@ public class GroupServiceImpl implements GroupService {
         Group group = groupRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id %s not found", id), "redirect:/groups/" + id));
         group.removeMember(user);
+        user.getGroups().remove(group);
+        userRepository.save(user);
         return groupRepository.save(group);
     }
 }
