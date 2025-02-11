@@ -26,19 +26,22 @@ public class QuestionService {
         this.quizzesService = quizzesService;
         this.courseService = courseService;
     }
+
     public ResponseEntity<List<Question>> getAllQuestions() {
         return new ResponseEntity<>(questionRepository.findAll(), HttpStatus.OK);
     }
 
     public Question getQuestionById(long id) {
         return questionRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException(String.format("Question with id %s not found", id)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Question with id %s not found", id)));
     }
 
     public void deleteQuestionFromQuiz(long id) {
         Quiz quizForQuestion = quizzesService.getQuizForQuestion(id);
         Question question = getQuestionById(id);
-        quizzesService.deleteQuestionFromQuiz(quizForQuestion.getId(), question);
+        if (quizForQuestion != null) {
+            quizzesService.deleteQuestionFromQuiz(quizForQuestion.getId(), question);
+        }
         questionRepository.delete(question);
     }
 
