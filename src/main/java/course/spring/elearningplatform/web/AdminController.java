@@ -1,14 +1,13 @@
 package course.spring.elearningplatform.web;
 
 import course.spring.elearningplatform.dto.UserDto;
+import course.spring.elearningplatform.entity.Announcement;
 import course.spring.elearningplatform.entity.Article;
 import course.spring.elearningplatform.entity.Role;
 import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.exception.DuplicateEmailException;
 import course.spring.elearningplatform.exception.DuplicateUsernameException;
-import course.spring.elearningplatform.service.ArticleService;
-import course.spring.elearningplatform.service.GroupService;
-import course.spring.elearningplatform.service.UserService;
+import course.spring.elearningplatform.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +36,18 @@ public class AdminController {
     private final UserService userService;
     private final GroupService groupService;
     private final ArticleService articleService;
+    private final AnnouncementService announcementService;
+    private final FAQService faqService;
+    private final NewsService newsService;
 
     @Autowired
-    public AdminController(UserService userService, GroupService groupService, ArticleService articleService) {
+    public AdminController(UserService userService, GroupService groupService, ArticleService articleService, AnnouncementService announcementService, FAQService faqService, NewsService newsService) {
         this.userService = userService;
         this.groupService = groupService;
         this.articleService = articleService;
+        this.announcementService = announcementService;
+        this.faqService = faqService;
+        this.newsService = newsService;
     }
 
     @GetMapping
@@ -189,5 +194,38 @@ public class AdminController {
         articleService.deleteArticleById(id);
         redirectAttributes.addFlashAttribute("message","Article successfully deleted!");
         return "redirect:/admin/studentGroups/" + groupId;
+    }
+
+    @GetMapping("/announcements")
+    public String showAnnouncements(Model model) {
+        List<Announcement> announcements = announcementService.getAllActiveAnnouncements();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy h:mm a");
+
+        Map<Announcement, String> announcementDateMap = new HashMap<>();
+
+        for (Announcement announcement : announcements) {
+            if (announcement.getExpiresAt() != null) {
+                String formattedDate = announcement.getExpiresAt().format(formatter);
+                announcementDateMap.put(announcement, formattedDate);
+            }
+        }
+
+        model.addAttribute("announcementDateMap", announcementDateMap);
+        model.addAttribute("requestURI", "/admin/announcements");
+        return "admin-announcements";
+    }
+
+    @GetMapping("/faq")
+    public String showFAQ(Model model) {
+        model.addAttribute("faqs", faqService.getAllQuestions());
+        model.addAttribute("requestURI", "/admin/faq");
+        return "admin-faq";
+    }
+
+    @GetMapping("/news")
+    public String showNews(Model model) {
+        model.addAttribute("requestURI", "/admin/news");
+        model.addAttribute("newsList", newsService.getAllNews());
+        return "admin-news";
     }
 }

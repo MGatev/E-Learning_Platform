@@ -9,5 +9,5 @@ public interface AnnouncementService {
   List<String> getAllActiveAnnouncementsAsStrings();
   List<Announcement> getAllActiveAnnouncements();
   Announcement addAnnouncement(AnnouncementDto announcement);
-  void deleteAnnouncements(List<Long> ids);
+  void deleteAnnouncement(Long id);
 }
