@@ -16,11 +16,14 @@
                 </li>
             </ul>
             <ul class="navbar-nav mr-auto" th:unless="${(loggedInUser != null && loggedInUser.hasRole('ROLE_INSTRUCTOR')) || (loggedUser != null && loggedUser.hasRole('ROLE_INSTRUCTOR'))}">
-                <li class="nav-item">
+                <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()') && #authentication.principal != null && !#authentication.principal.getUser().isAdmin()}">
                     <a class="nav-link" th:href="@{/home}">Home</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()') && #authentication.principal != null && !#authentication.principal.getUser().isAdmin()}">
                     <a class="nav-link" th:href="@{/courses/student/{id}(id=${#authentication.principal.getUser().id})}">My Courses</a>
+                </li>
+                <li class="nav-item" th:if="${!#authorization.expression('isAuthenticated()') or (#authentication.principal != null && #authentication.principal.getUser().isAdmin())}">
+                    <a class="nav-link" th:href="@{/courses}">All Courses</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/news}">News</a>
@@ -31,7 +34,7 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/events}">Events</a>
                 </li>
-                <li th:if="${#authentication.principal != null && #authentication.principal.getUser().isAdmin()}"
+                <li th:if="${#authorization.expression('isAuthenticated()') && #authentication.principal != null && #authentication.principal.getUser().isAdmin()}"
                     class="nav-item">
                     <a class="nav-link" th:href="@{/admin}">Admin Panel</a>
                 </li>
@@ -42,7 +45,7 @@
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
             <ul class="navbar-nav text-light my-2 my-lg-0 ml-auto">
-                <li th:if="${#authentication.principal}" class="nav-item">
+                <li th:if="${#authorization.expression('isAuthenticated()') && #authentication.principal != null}" class="nav-item">
                     <div class="profile-container">
                         <div class="profile-pic-container" th:data-username="${#authentication.principal.username}">
                             <img class="rounded-circle profile-pic"
@@ -57,6 +60,12 @@
                             </div>
                         </div>
                     </div>
+                </li>
+                <li th:if="${!#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link btn btn-outline-secondary mx-1" th:href="@{/login}">Login</a>
+                </li>
+                <li th:if="${!#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link btn btn-outline-success mx-1 text-white" th:href="@{/register}">Register</a>
                 </li>
             </ul>
 
