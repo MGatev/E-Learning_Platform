@@ -70,6 +70,7 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String showUser(@PathVariable Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
+        model.addAttribute("requestURI", "/admin/users");
         return "user";
     }
 
