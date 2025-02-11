@@ -51,12 +51,11 @@
     </p>
     <div style="display: flex; justify-content: space-between; margin-top: 1.5rem;">
         <p><strong>Created On:</strong> <span th:text="${#dates.format(lesson.createdOn, 'yyyy-MM-dd')}"></span></p>
-        <p><strong>Completed:</strong> <span
-                th:text="${#lists.contains(user.completedLessons, lesson) ? 'Yes' : 'No'}"></span></p>
+        <p th:if="${!loggedUser.hasRole('ROLE_INSTRUCTOR')}"><strong>Completed:</strong> <span th:text="${#lists.contains(user.completedLessons, lesson) ? 'Yes' : 'No'}"></span></p>
     </div>
 
     <!-- Mark as Completed Button -->
-    <div style="text-align: center; margin: 20px;">
+    <div style="text-align: center; margin: 20px;" th:if="${!loggedUser.hasRole('ROLE_INSTRUCTOR')}">
         <p th:if="${#lists.contains(user.completedLessons, lesson)}" class="completed-message">Already Completed</p>
         <form th:unless="${#lists.contains(user.completedLessons, lesson)}"
               th:action="@{/courses/{courseId}/lessons/{lessonId}/complete(courseId=${course.id}, lessonId=${lesson.id})}"
@@ -68,7 +67,7 @@
     </div>
 
     <!-- Back to Course Button -->
-    <div style="display: flex; justify-content: center; align-items: center; margin-top: 1.5rem;">
+    <div style="display: flex; justify-content: center; align-items: center; margin-top: 1.5rem; margin-bottom: 3.5rem;">
         <a th:href="@{/courses/{courseId}(courseId=${course.id})}" class="back-btn">
             Back to Course
         </a>
