@@ -4,9 +4,23 @@
             <img src="/images/logo/e-learning-platform-logo-nav.png" alt="E-Learning Logo" style="height: 60px;">
         </a>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto" th:if="${(loggedInUser != null && loggedInUser.hasRole('ROLE_INSTRUCTOR')) || (loggedUser != null && loggedUser.hasRole('ROLE_INSTRUCTOR'))}">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/instructor/courses}">My Courses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/courses/create}">Create Course</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/instructor/events}">Manage Events</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav mr-auto" th:unless="${(loggedInUser != null && loggedInUser.hasRole('ROLE_INSTRUCTOR')) || (loggedUser != null && loggedUser.hasRole('ROLE_INSTRUCTOR'))}">
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/home}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/courses/student/{id}(id=${#authentication.principal.getUser().id})}">My Courses</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/news}">News</a>
@@ -15,21 +29,7 @@
                     <a class="nav-link" th:href="@{/help}">FAQ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/announcements/add-announcement}">Make an announcement</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/announcements/delete-announcements}">Delete an announcement</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        Dropdown link
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
+                    <a class="nav-link" th:href="@{/events}">Events</a>
                 </li>
                 <li th:if="${#authentication.principal != null && #authentication.principal.getUser().isAdmin()}"
                     class="nav-item">
