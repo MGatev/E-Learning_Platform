@@ -53,6 +53,7 @@ public class AssignmentController {
         model.addAttribute("userSolutionStatus", userSolutionStatus);
         model.addAttribute("courses", courses);
         model.addAttribute("coursesMap", coursesMap);
+        model.addAttribute("loggedUser", user);
 
         return "assignments";
     }
