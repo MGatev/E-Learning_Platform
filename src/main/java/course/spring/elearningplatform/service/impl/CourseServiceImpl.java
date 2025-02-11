@@ -10,8 +10,10 @@ import course.spring.elearningplatform.dto.CourseDto;
 import course.spring.elearningplatform.dto.mapper.CourseDtoToCourseMapper;
 import course.spring.elearningplatform.exception.DuplicatedEntityException;
 import course.spring.elearningplatform.repository.StudentResultRepository;
+import course.spring.elearningplatform.repository.UserRepository;
 import course.spring.elearningplatform.service.CourseService;
 import course.spring.elearningplatform.service.ImageService;
+import course.spring.elearningplatform.service.UserService;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.transaction.Transactional;
@@ -34,6 +36,8 @@ public class CourseServiceImpl implements CourseService {
     private final StudentResultRepository studentResultRepository;
     private final AnalyticsService analyticsService;
     private final EntityManager entityManager;
+    private final UserRepository userRepository;
+    private final UserService userService;
 
 
     @Autowired
@@ -43,7 +47,7 @@ public class CourseServiceImpl implements CourseService {
                              CertificateService certificateService,
                              StudentResultRepository studentResultRepository,
                              AnalyticsService analyticsService,
-                             EntityManager entityManager) {
+                             EntityManager entityManager, UserRepository userRepository, UserService userService) {
         this.courseRepository = courseRepository;
         this.questionRepository = questionRepository;
         this.imageService = imageService;
@@ -51,6 +55,8 @@ public class CourseServiceImpl implements CourseService {
         this.studentResultRepository = studentResultRepository;
         this.analyticsService = analyticsService;
         this.entityManager = entityManager;
+        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
 
@@ -97,6 +103,31 @@ public class CourseServiceImpl implements CourseService {
                 }
             })
             .toList();
+    }
+
+    @Override
+    public List<Course> getAllInProgressCoursesByUser(Long id) {
+        List<Course> completedCourses = findCompletedCoursesByUserId(id);
+        return userRepository.findStartedCoursesByUserId(id).stream()
+                .peek(course -> {
+                    Image image = course.getImage();
+                    if (image != null) {
+                        course.setImageBase64(image.parseImage());
+                    }
+                })
+                .filter(course -> !completedCourses.contains(course)) // Remove completed courses
+                .toList();
+    }
+
+    @Override
+    public List<Course> getAllCoursesByUser(User user) {
+        return courseRepository.findAllByCreatedBy(user).stream().peek(course -> {
+                    Image image = course.getImage();
+                    if (image != null) {
+                        course.setImageBase64(image.parseImage());
+                    }
+                })
+                .toList();
     }
 
     @Override
@@ -216,9 +247,14 @@ public class CourseServiceImpl implements CourseService {
     public void addNewStudentResult(int percentage, long elapsedTime, long courseId) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails) principal).getUsername();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Course course = getCourseById(courseId);
         if (percentage >= 80) {
             certificateService.issueCertificate(username, course, percentage);
+            course.addStudentCompletedCourse(user);
+            Course savedCourse = save(course);
+            user.addCompletedCourse(savedCourse);
+            userService.save(user);
         }
         var highScores = course.getHighScores();
         if (highScores.stream().filter(score -> score.getUsername().equals(username)).count() == 0) {
@@ -272,6 +308,17 @@ public class CourseServiceImpl implements CourseService {
                 return Long.compare(a.getElapsedTime(), b.getElapsedTime());
             })
             .toList();
+    }
+
+    @Override
+    public List<Course> findCompletedCoursesByUserId(Long id) {
+        return userRepository.findCompletedCoursesByUserId(id).stream()
+                .peek(course -> {
+                    Image image = course.getImage();
+                    if (image != null) {
+                        course.setImageBase64(image.parseImage());
+                    }
+                }).toList();
     }
 
     @Override

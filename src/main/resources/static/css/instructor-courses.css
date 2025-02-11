@@ -1,0 +1,39 @@
+.course-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-card:hover {
+    transform: scale(1.05);
+}
+
+.course-card .card-img-top {
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+.course-card .card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.course-card .card-text {
+    flex-grow: 1; /* Ensures description expands without pushing button out */
+}
+
+.course-card .btn {
+    background-color: #218838;
+    border: none;
+    margin-top: auto; /* Forces the button to stay at the bottom */
+}
+
+.course-card .btn:hover {
+    background-color: #1a6e30;
+}

@@ -9,7 +9,6 @@ import course.spring.elearningplatform.entity.User;
 
 import course.spring.elearningplatform.dto.QuestionDto;
 import course.spring.elearningplatform.entity.QuestionWrapper;
-import course.spring.elearningplatform.entity.QuizDto;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -21,6 +20,10 @@ public interface CourseService {
     Map<String, List<Course>> getCoursesGroupedByCategory();
 
     List<Course> getCoursesByCategory(String category);
+
+    List<Course> getAllInProgressCoursesByUser(Long id);
+
+    List<Course> getAllCoursesByUser(User user);
 
     Course getCourseById(Long id);
 
@@ -54,5 +57,7 @@ public interface CourseService {
     List<StudentResult> getHighScoresForCourse(Long courseId);
 
     Course updateCourseDetails(Long id, String detail, Object value);
+
+    List<Course> findCompletedCoursesByUserId(Long id);
 }
 
