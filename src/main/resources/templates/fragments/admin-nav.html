@@ -1,7 +1,7 @@
 <div th:fragment="admin-nav" xmlns:th="http://www.thymeleaf.org" class="custom-navbar">
     <div class="custom-navbar-title">Admin Panel</div>
     <ul class="custom-navbar-menu">
-        <li><a href="#"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
+        <li><a th:href="@{/admin/courses}" th:classappend="${requestURI == '/admin/courses'} ? 'active' : ''"><i class="fas fa-tachometer-alt"></i>Courses</a></li>
         <li><a th:href="@{/admin/users}" th:classappend="${requestURI == '/admin/users' || requestURI == '/admin'} ? 'active' : ''"><i class="fas fa-users"></i>Users</a></li>
         <li><a th:href="@{/admin/studentGroups}" th:classappend="${requestURI == '/admin/studentGroups'} ? 'active' : ''"><i class="fas fa-book"></i>Student Groups</a></li>
         <li><a href="#"><i class="fas fa-chart-line"></i>Activity Log</a></li>
