@@ -20,6 +20,7 @@ public interface UserService {
     User updateUserDetails(Long id, String detail, Object value);
     User addStartedCourse(User user, Course course);
     User addCompletedCourse(User user, Course course);
+    User findByIdWithCompletedLessons(Long id);
 
     void save(User user);
     Page<User> getAllUsers(int page, int size, String loggedInUsername);

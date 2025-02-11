@@ -1,5 +1,6 @@
 package course.spring.elearningplatform.repository;
 
+import course.spring.elearningplatform.entity.Course;
 import course.spring.elearningplatform.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,4 +34,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Page<User> findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCaseAndUsernameNotIn(
             String firstNameQuery, String lastNameQuery, List<String> excludedUsernames, Pageable pageable);
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.completedLessons WHERE u.id = :userId")
+    Optional<User> findByIdWithCompletedLessons(@Param("userId") Long userId);
+
+    @Query("SELECT u.startedCourses FROM User u WHERE u.id = :userId")
+    List<Course> findStartedCoursesByUserId(@Param("userId") Long userId);
+
+    @Query("SELECT u.completedCourses FROM User u WHERE u.id = :userId")
+    List<Course> findCompletedCoursesByUserId(@Param("userId") Long userId);
 }

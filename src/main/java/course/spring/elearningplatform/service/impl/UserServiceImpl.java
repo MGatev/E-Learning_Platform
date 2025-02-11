@@ -174,6 +174,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByIdWithCompletedLessons(Long id) {
+        return userRepository.findByIdWithCompletedLessons(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
     public void save(User user) {
         userRepository.save(user);
     }

@@ -85,7 +85,7 @@
                     </tr>
                     <tr>
                         <th>Courses:</th>
-                        <td th:each="course : ${user.courses}" th:text="${course.name + ' '}"></td>
+                        <td th:each="course : ${user.startedCourses}" th:text="${course.name + ' '}"></td>
                     </tr>
                     <tr>
                         <th>Completed Lessons:</th>
