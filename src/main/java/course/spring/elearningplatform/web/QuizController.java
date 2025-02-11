@@ -64,6 +64,7 @@ public class QuizController {
             User loggedInUser = userService.getUserByUsername(username);
 
             model.addAttribute("loggedInUser", loggedInUser);
+            model.addAttribute("loggedUser", loggedInUser);
             model.addAttribute("quizId", quizId);
             model.addAttribute("courseId", courseId);
             model.addAttribute("quizQuestions", quizQuestions);
