@@ -4,6 +4,7 @@ import course.spring.elearningplatform.dto.EventDto;
 import course.spring.elearningplatform.dto.mapper.EntityMapper;
 import course.spring.elearningplatform.entity.CustomUserDetails;
 import course.spring.elearningplatform.entity.Event;
+import course.spring.elearningplatform.service.ActivityLogService;
 import course.spring.elearningplatform.service.impl.EventServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,10 +26,12 @@ import java.util.stream.Collectors;
 public class EventController {
 
     private final EventServiceImpl eventService;
+    private final ActivityLogService activityLogService;
 
     @Autowired
-    public EventController(EventServiceImpl eventService) {
+    public EventController(EventServiceImpl eventService, ActivityLogService activityLogService) {
         this.eventService = eventService;
+        this.activityLogService = activityLogService;
     }
 
     @GetMapping
@@ -65,6 +68,7 @@ public class EventController {
     public String saveEvent(@ModelAttribute EventDto eventDTO, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         eventDTO.setInstructor(customUserDetails.getUsername());
         eventService.saveEvent(eventDTO);
+        activityLogService.logActivity("New event created", customUserDetails.getUsername());
         return "redirect:/instructor/events";
     }
 
@@ -86,8 +90,9 @@ public class EventController {
 
 
     @GetMapping("/delete/{id}")
-    public String deleteEvent(@PathVariable Long id) {
+    public String deleteEvent(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         eventService.deleteEvent(id);
+        activityLogService.logActivity("Deleted event", customUserDetails.getUsername());
         return "redirect:/instructor/events";
     }
 }
