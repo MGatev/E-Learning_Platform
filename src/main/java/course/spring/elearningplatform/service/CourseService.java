@@ -13,11 +13,12 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface CourseService {
     Course addCourse(CourseDto course, User user);
 
-    Map<String, List<Course>> getCoursesGroupedByCategory();
+    Map<String, Set<Course>> getCoursesGroupedByCategory();
 
     List<Course> getCoursesByCategory(String category);
 

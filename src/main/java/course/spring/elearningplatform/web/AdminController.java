@@ -1,10 +1,7 @@
 package course.spring.elearningplatform.web;
 
 import course.spring.elearningplatform.dto.UserDto;
-import course.spring.elearningplatform.entity.Announcement;
-import course.spring.elearningplatform.entity.Article;
-import course.spring.elearningplatform.entity.Role;
-import course.spring.elearningplatform.entity.User;
+import course.spring.elearningplatform.entity.*;
 import course.spring.elearningplatform.exception.DuplicateEmailException;
 import course.spring.elearningplatform.exception.DuplicateUsernameException;
 import course.spring.elearningplatform.service.*;
@@ -40,9 +37,10 @@ public class AdminController {
     private final FAQService faqService;
     private final NewsService newsService;
     private final CourseService courseService;
+    private final ActivityLogService activityLogService;
 
     @Autowired
-    public AdminController(UserService userService, GroupService groupService, ArticleService articleService, AnnouncementService announcementService, FAQService faqService, NewsService newsService, CourseService courseService) {
+    public AdminController(UserService userService, GroupService groupService, ArticleService articleService, AnnouncementService announcementService, FAQService faqService, NewsService newsService, CourseService courseService, ActivityLogService activityLogService) {
         this.userService = userService;
         this.groupService = groupService;
         this.articleService = articleService;
@@ -50,6 +48,7 @@ public class AdminController {
         this.faqService = faqService;
         this.newsService = newsService;
         this.courseService = courseService;
+        this.activityLogService = activityLogService;
     }
 
     @GetMapping
@@ -236,5 +235,12 @@ public class AdminController {
         model.addAttribute("requestURI", "/admin/courses");
         model.addAttribute("courses", courseService.getAllCourses());
         return "admin-courses";
+    }
+
+    @GetMapping("/activity-log")
+    public String viewActivityLog(Model model) {
+        model.addAttribute("logsMap", activityLogService.getAllLogs());
+        model.addAttribute("requestURI", "/admin/activity-log");
+        return "admin-activity-log";
     }
 }

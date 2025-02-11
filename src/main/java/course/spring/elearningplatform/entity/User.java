@@ -76,7 +76,7 @@ public class User {
     @OneToMany(mappedBy = "issuer")
     private List<Ticket> tickets;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_completed_lessons",
             joinColumns = @JoinColumn(name = "user_id"),

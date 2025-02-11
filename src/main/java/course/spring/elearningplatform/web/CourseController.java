@@ -9,11 +9,7 @@ import course.spring.elearningplatform.entity.CustomUserDetails;
 import course.spring.elearningplatform.entity.Lesson;
 import course.spring.elearningplatform.entity.User;
 import course.spring.elearningplatform.exception.DuplicatedEntityException;
-import course.spring.elearningplatform.service.CourseDashboardService;
-import course.spring.elearningplatform.service.CourseService;
-import course.spring.elearningplatform.service.LessonService;
-import course.spring.elearningplatform.service.SolutionService;
-import course.spring.elearningplatform.service.UserService;
+import course.spring.elearningplatform.service.*;
 import course.spring.elearningplatform.service.impl.CourseDashboardServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -38,15 +35,17 @@ public class CourseController {
     private final UserService userService;
     private final SolutionService solutionService;
     private final CourseDashboardService courseDashboardService;
+    private final ActivityLogService activityLogService;
 
     @Autowired
     public CourseController(final CourseService courseService, LessonService lessonService, UserService userService,
-                            SolutionService solutionService, CourseDashboardService courseDashboardService) {
+                            SolutionService solutionService, CourseDashboardService courseDashboardService, ActivityLogService activityLogService) {
         this.courseService = courseService;
         this.lessonService = lessonService;
         this.userService = userService;
         this.solutionService = solutionService;
         this.courseDashboardService = courseDashboardService;
+        this.activityLogService = activityLogService;
     }
 
     @GetMapping
@@ -59,7 +58,7 @@ public class CourseController {
     }
 
     static void getTop3CoursesGroupedByCategory(Model model, CourseService courseService) {
-        Map<String, List<Course>> coursesByCategory = courseService.getCoursesGroupedByCategory();
+        Map<String, Set<Course>> coursesByCategory = courseService.getCoursesGroupedByCategory();
         Map<String, List<Course>> top3CoursesByCategory = coursesByCategory.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey, // Keep the category key as it is
@@ -92,30 +91,34 @@ public class CourseController {
         }
 
         Course newCourse = courseService.addCourse(course, userDetails.user());
+        activityLogService.logActivity("New course created", userDetails.getUsername());
         return "redirect:/courses/" + newCourse.getId();
     }
 
     @PostMapping("/update-course-name")
-    public ResponseEntity<String> updateCourseName(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<String> updateCourseName(@RequestBody Map<String, String> payload, @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long id = Long.parseLong(payload.get("id"));
         String newName = payload.get("course-name");
         courseService.updateCourseDetails(id, "course-name", newName);
+        activityLogService.logActivity("Course name updated", userDetails.getUsername());
         return ResponseEntity.ok("Name updated successfully");
     }
 
     @PostMapping("/update-course-description")
-    public ResponseEntity<String> updateCourseDescription(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<String> updateCourseDescription(@RequestBody Map<String, String> payload, @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long id = Long.parseLong(payload.get("id"));
         String newDescription = payload.get("course-description");
         courseService.updateCourseDetails(id, "course-description", newDescription);
+        activityLogService.logActivity("Course description updated", userDetails.getUsername());
         return ResponseEntity.ok("Description updated successfully");
     }
 
     @PostMapping("/update-add-category")
-    public ResponseEntity<String> updateAddCategory(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<String> updateAddCategory(@RequestBody Map<String, String> payload, @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long id = Long.parseLong(payload.get("id"));
         String newCategory = payload.get("add-category");
         courseService.updateCourseDetails(id, "add-category", newCategory);
+        activityLogService.logActivity("New category added to course", userDetails.getUsername());
         return ResponseEntity.ok("New category added successfully");
     }
 
@@ -169,7 +172,8 @@ public class CourseController {
             @PathVariable("id") Long id,
             @Valid @ModelAttribute("lesson") LessonDto lesson,
             BindingResult bindingResult,
-            Model model) {
+            Model model,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         Course course = courseService.getCourseById(id);
         model.addAttribute("course", course);
@@ -180,6 +184,7 @@ public class CourseController {
 
         lessonService.addLesson(lesson, (Course) model.getAttribute("course"));
 
+        activityLogService.logActivity("New lesson created", userDetails.getUsername());
         return "redirect:/courses/" + id;
     }
 
@@ -209,28 +214,31 @@ public class CourseController {
         userService.save(user);
 
         redirectAttributes.addFlashAttribute("message", "Lesson marked as completed!");
+        activityLogService.logActivity("Completed lesson", userDetails.getUsername());
         return "redirect:/courses/" + courseId;
     }
 
     @PostMapping("/{courseId}/lessons/update-lesson-title")
-    public ResponseEntity<String> updateLessonTitle(@PathVariable Long courseId, @RequestBody Map<String, String> payload) {
+    public ResponseEntity<String> updateLessonTitle(@PathVariable Long courseId, @RequestBody Map<String, String> payload, @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long id = Long.parseLong(payload.get("id"));
         String newTitle = payload.get("lesson-title");
 
         Course course = courseService.getCourseById(courseId);
 
         lessonService.updateLessonDetails(course, id, "lesson-title", newTitle);
+        activityLogService.logActivity("Lesson title updated", userDetails.getUsername());
         return ResponseEntity.ok("Lesson title updated successfully");
     }
 
     @PostMapping("/{courseId}/lessons/update-lesson-content")
-    public ResponseEntity<String> updateLessonContent(@PathVariable Long courseId, @RequestBody Map<String, String> payload) {
+    public ResponseEntity<String> updateLessonContent(@PathVariable Long courseId, @RequestBody Map<String, String> payload, @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long id = Long.parseLong(payload.get("id"));
         String newContent = payload.get("lesson-content");
 
         Course course = courseService.getCourseById(courseId);
 
         lessonService.updateLessonDetails(course, id, "lesson-content", newContent);
+        activityLogService.logActivity("Lesson content updated", userDetails.getUsername());
         return ResponseEntity.ok("Lesson content updated successfully");
     }
 
@@ -258,6 +266,7 @@ public class CourseController {
         User user = userService.getUserByUsername(userDetails.getUsername());
         Course startedCourse = courseService.startCourse(id, user);
         userService.addStartedCourse(user, startedCourse);
+        activityLogService.logActivity("Course started", userDetails.getUsername());
         return "redirect:/courses/" + id;
     }
 

@@ -2,10 +2,10 @@ package course.spring.elearningplatform.web;
 
 import course.spring.elearningplatform.dto.AssignmentDto;
 import course.spring.elearningplatform.entity.*;
-import course.spring.elearningplatform.service.AssignmentService;
-import course.spring.elearningplatform.service.CourseService;
-import course.spring.elearningplatform.service.SolutionService;
+import course.spring.elearningplatform.service.*;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 
 import static course.spring.elearningplatform.dto.mapper.EntityMapper.mapCreateDtoToEntity;
 
-@AllArgsConstructor
 @Controller
 @RequestMapping("/assignments")
 public class AssignmentController {
@@ -31,6 +30,15 @@ public class AssignmentController {
     private final AssignmentService assignmentService;
     private final SolutionService solutionService;
     private final CourseService courseService;
+    private final ActivityLogService activityLogService;
+
+    @Autowired
+    public AssignmentController(AssignmentService assignmentService, SolutionService solutionService, CourseService courseService, ActivityLogService activityLogService) {
+        this.assignmentService = assignmentService;
+        this.solutionService = solutionService;
+        this.courseService = courseService;
+        this.activityLogService = activityLogService;
+    }
 
     @GetMapping
     public String getAllAssignments(Model model) {
@@ -95,14 +103,16 @@ public class AssignmentController {
     }
 
     @PostMapping
-    public String createAssignment(@ModelAttribute AssignmentDto assignmentDto) {
+    public String createAssignment(@ModelAttribute AssignmentDto assignmentDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
         assignmentService.saveAssignment(assignmentDto);
+        activityLogService.logActivity("New assignment created", userDetails.getUsername());
         return "redirect:/assignments";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteAssignment(@PathVariable Long id) {
+    public String deleteAssignment(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails userDetails) {
         assignmentService.deleteAssignment(id);
+        activityLogService.logActivity("Deleted assignment", userDetails.getUsername());
         return "redirect:/assignments";
     }
 
@@ -145,6 +155,8 @@ public class AssignmentController {
             solution.setAssignment(assignment);
 
             solutionService.saveSolution(solution);
+
+            activityLogService.logActivity("Assignment uploaded", user.getUsername());
 
             return "redirect:/assignments?success=true&assignmentId=" + assignmentId;
         } catch (IOException e) {

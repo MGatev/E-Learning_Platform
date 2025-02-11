@@ -74,7 +74,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Map<String, List<Course>> getCoursesGroupedByCategory() {
+    public Map<String, Set<Course>> getCoursesGroupedByCategory() {
         List<Course> allCourses = courseRepository.findAll();
         allCourses = allCourses.stream().peek(course -> {
                 Image image = course.getImage();
@@ -85,12 +85,15 @@ public class CourseServiceImpl implements CourseService {
             .toList();
 
         return allCourses.stream()
-            .flatMap(course -> course.getCategories().stream()
-                .map(category -> new AbstractMap.SimpleEntry<>(category, course)))
-            .collect(Collectors.groupingBy(
-                AbstractMap.SimpleEntry::getKey,
-                Collectors.mapping(AbstractMap.SimpleEntry::getValue, Collectors.toList())
-            ));
+                .flatMap(course -> course.getCategories().stream()
+                        .map(category -> new AbstractMap.SimpleEntry<>(category, course)))
+                .collect(Collectors.groupingBy(
+                        AbstractMap.SimpleEntry::getKey,
+                        Collectors.mapping(
+                                AbstractMap.SimpleEntry::getValue,
+                                Collectors.toSet()  // Use Set to avoid duplicates
+                        )
+                ));
     }
 
     @Override

@@ -3,11 +3,13 @@ package course.spring.elearningplatform.web;
 import course.spring.elearningplatform.entity.Role;
 import course.spring.elearningplatform.dto.ImageDto;
 import course.spring.elearningplatform.entity.User;
+import course.spring.elearningplatform.service.ActivityLogService;
 import course.spring.elearningplatform.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -30,10 +32,12 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final ActivityLogService activityLogService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ActivityLogService activityLogService) {
         this.userService = userService;
+        this.activityLogService = activityLogService;
     }
 
     @GetMapping("/profile")
@@ -60,9 +64,10 @@ public class UserController {
     }
 
     @GetMapping("/users/delete/{id}")
-    public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails userDetails) {
         redirectAttributes.addFlashAttribute("deletedUserFullName", userService.getUserById(id).getFullName());
         userService.deleteUser(userService.getUserById(id));
+        activityLogService.logActivity("User deleted", userDetails.getUsername());
         return "redirect:/admin/users";
     }
 
@@ -88,6 +93,7 @@ public class UserController {
         }
 
         userService.updateUser(user);
+        activityLogService.logActivity("User updated", user.getUsername());
         return "redirect:/admin/users";
     }
 
