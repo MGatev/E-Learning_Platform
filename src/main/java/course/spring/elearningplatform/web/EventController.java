@@ -47,7 +47,9 @@ public class EventController {
         event.setImageBase64(event.getImage().parseImage());
         EventDto eventDTO = EntityMapper.mapEntityToDto(event, EventDto.class);
         model.addAttribute("event", event);
-        model.addAttribute("loggedUser", userDetails.getUser());
+        if (userDetails != null) {
+            model.addAttribute("loggedUser", userDetails.getUser());
+        }
         return "event-detail";
     }
 
