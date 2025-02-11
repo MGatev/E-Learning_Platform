@@ -67,7 +67,7 @@
     </div>
 
     <!-- Add New Assignment Button -->
-    <div class="text-center mt-4">
+    <div class="text-center mt-4" th:if="${loggedUser.hasRole('ROLE_INSTRUCTOR')}">
         <a href="/assignments/new" class="btn btn-success btn-lg">Add New Assignment</a>
     </div>
 </div>
