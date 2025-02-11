@@ -68,12 +68,6 @@
                     </div>
 
                     <p th:text="${article.content}">Article Content</p>
-
-                    <form th:action="@{/groups/{groupId}/articles/{articleId}(groupId=${group.id}, articleId=${article.id})}"
-                          method="post">
-                        <input type="hidden" name="_method" value="delete"/>
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
                 </div>
             </li>
         </ul>
