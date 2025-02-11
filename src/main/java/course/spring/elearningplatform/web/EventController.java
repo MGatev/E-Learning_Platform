@@ -2,9 +2,11 @@ package course.spring.elearningplatform.web;
 
 import course.spring.elearningplatform.dto.EventDto;
 import course.spring.elearningplatform.dto.mapper.EntityMapper;
+import course.spring.elearningplatform.entity.CustomUserDetails;
 import course.spring.elearningplatform.entity.Event;
 import course.spring.elearningplatform.service.impl.EventServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,26 +41,29 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public String getEventById(@PathVariable Long id, Model model) {
+    public String getEventById(@PathVariable Long id, Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
         Event event = eventService.getEventById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid event Id:" + id));
         event.setImageBase64(event.getImage().parseImage());
         EventDto eventDTO = EntityMapper.mapEntityToDto(event, EventDto.class);
         model.addAttribute("event", event);
+        model.addAttribute("loggedUser", userDetails.getUser());
         return "event-detail";
     }
 
     @GetMapping("/new")
-    public String createEventForm(Model model) {
+    public String createEventForm(Model model, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         EventDto eventDto = new EventDto();
         model.addAttribute("event", eventDto);
+        model.addAttribute("loggedUser", customUserDetails.getUser());
         return "event-form";
     }
 
     @PostMapping
-    public String saveEvent(@ModelAttribute EventDto eventDTO) {
+    public String saveEvent(@ModelAttribute EventDto eventDTO, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        eventDTO.setInstructor(customUserDetails.getUsername());
         eventService.saveEvent(eventDTO);
-        return "redirect:/events";
+        return "redirect:/instructor/events";
     }
 
 
@@ -81,7 +86,7 @@ public class EventController {
     @GetMapping("/delete/{id}")
     public String deleteEvent(@PathVariable Long id) {
         eventService.deleteEvent(id);
-        return "redirect:/events";
+        return "redirect:/instructor/events";
     }
 }
 
