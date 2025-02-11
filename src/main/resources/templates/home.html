@@ -71,7 +71,7 @@
     </div>
 
     <div class="lessons-section mt-5 mb-5">
-        <h1 class="text-center">Assignments</h1>
+        <h1 class="text-center mb-5">Assignments</h1>
         <div class="container p-4" style="background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
             <div th:if="${assignments.isEmpty()}" class="text-center text-muted">
                 <p>No assignments found.</p>
@@ -100,7 +100,7 @@
             <div th:if="${upcomingEvents.isEmpty()}" class="text-center text-muted">
                 <p>No upcoming events found.</p>
             </div>
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-lg-4 col-md-6 mb-4" th:each="event : ${upcomingEvents}">
                     <div class="card h-100" style="box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
                         <img th:src="${event.getImageBase64()}" alt="Event Image" class="card-img-top" style="height: 150px; object-fit: cover;">
@@ -131,7 +131,7 @@
 
 
 </div>
-<div th:replace="~{fragments/footer :: footer}"/>
+<div class="mt-5" th:replace="~{fragments/footer :: footer}"/>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const navPills = document.querySelector(".nav-pills");
