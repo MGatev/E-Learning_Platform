@@ -4,7 +4,7 @@
         <li><a th:href="@{/admin/courses}" th:classappend="${requestURI == '/admin/courses'} ? 'active' : ''"><i class="fas fa-tachometer-alt"></i>Courses</a></li>
         <li><a th:href="@{/admin/users}" th:classappend="${requestURI == '/admin/users' || requestURI == '/admin'} ? 'active' : ''"><i class="fas fa-users"></i>Users</a></li>
         <li><a th:href="@{/admin/studentGroups}" th:classappend="${requestURI == '/admin/studentGroups'} ? 'active' : ''"><i class="fas fa-book"></i>Student Groups</a></li>
-        <li><a href="#"><i class="fas fa-chart-line"></i>Activity Log</a></li>
+        <li><a th:href="@{/admin/activity-log}" th:classappend="${requestURI == '/admin/activity-log'} ? 'active' : ''"><i class="fas fa-chart-line"></i>Activity Log</a></li>
         <li><a th:href="@{/admin/announcements}" th:classappend="${requestURI == '/admin/announcements'} ? 'active' : ''"><i class="fas fa-bullhorn"></i>Announcements</a></li>
         <li><a th:href="@{/admin/faq}" th:classappend="${requestURI == '/admin/faq'} ? 'active' : ''"><i class="fas fa-question-circle"></i>FAQ</a></li>
         <li><a th:href="@{/admin/news}" th:classappend="${requestURI == '/admin/news'} ? 'active' : ''"><i class="fas fa-newspaper"></i>News</a></li>
