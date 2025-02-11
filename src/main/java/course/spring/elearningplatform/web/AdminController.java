@@ -39,15 +39,17 @@ public class AdminController {
     private final AnnouncementService announcementService;
     private final FAQService faqService;
     private final NewsService newsService;
+    private final CourseService courseService;
 
     @Autowired
-    public AdminController(UserService userService, GroupService groupService, ArticleService articleService, AnnouncementService announcementService, FAQService faqService, NewsService newsService) {
+    public AdminController(UserService userService, GroupService groupService, ArticleService articleService, AnnouncementService announcementService, FAQService faqService, NewsService newsService, CourseService courseService) {
         this.userService = userService;
         this.groupService = groupService;
         this.articleService = articleService;
         this.announcementService = announcementService;
         this.faqService = faqService;
         this.newsService = newsService;
+        this.courseService = courseService;
     }
 
     @GetMapping
@@ -227,5 +229,12 @@ public class AdminController {
         model.addAttribute("requestURI", "/admin/news");
         model.addAttribute("newsList", newsService.getAllNews());
         return "admin-news";
+    }
+
+    @GetMapping("/courses")
+    public String showCourses(Model model) {
+        model.addAttribute("requestURI", "/admin/courses");
+        model.addAttribute("courses", courseService.getAllCourses());
+        return "admin-courses";
     }
 }
