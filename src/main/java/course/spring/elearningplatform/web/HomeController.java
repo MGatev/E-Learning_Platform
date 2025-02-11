@@ -45,6 +45,11 @@ public class HomeController {
         if (loggedUser != null && loggedUser.isAdmin()) {
             return "redirect:/admin/users";
         }
+
+        if (loggedUser != null && loggedUser.hasRole("ROLE_INSTRUCTOR")) {
+            return "redirect:/instructor/courses";
+        }
+
         List<Event> allEvents = eventService.getAllEvents();
 
         List<Event> upcomingEvents = allEvents.stream()
@@ -80,6 +85,7 @@ public class HomeController {
                 .collect(Collectors.toList());
 
         model.addAttribute("assignments", upcomingAssignments);
+        model.addAttribute("loggedUser", loggedUser);
         return "home";
     }
 }
