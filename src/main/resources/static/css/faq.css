@@ -36,7 +36,3 @@ h1 {
     border-radius: 5px;
     border-left: 4px solid #007bff;
 }
-
-button.btn-danger {
-    float: right;
-}
