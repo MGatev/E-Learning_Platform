@@ -1,0 +1,208 @@
+/* Group Container */
+.group-container {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+/* Group Title */
+.group-title {
+    color: #218838; /* Dark Green */
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Group Image */
+.group-image {
+    display: block;
+    width: 200px;  /* Smaller image */
+    height: 200px; /* Keep it square */
+    object-fit: cover; /* Crop instead of stretching */
+    border-radius: 10px;
+    margin: 15px auto;
+    border: 3px solid #218838;
+}
+
+/* Group Description */
+.group-description {
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Members & Articles Titles */
+.members-title, .articles-title {
+    color: #218838;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+/* Members & Articles Lists */
+.members-list, .articles-list {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+/* Member & Article Items */
+.member-item, .article-item {
+    background: white;
+    padding: 10px;
+    margin: 5px auto;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.08);
+    max-width: 500px;
+    font-size: 15px;
+}
+
+/* Article Links */
+.article-link {
+    color: #218838;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.article-link:hover {
+    text-decoration: underline;
+}
+
+.back-button {
+    display: block;
+    text-align: center;
+    background-color: #218838;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none; /* Remove underline by default */
+    margin: 15px auto;
+    max-width: 200px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #1c7430; /* Darker green on hover */
+    transform: scale(1.05); /* Slightly enlarge the button */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow effect */
+    color: white; /* Ensure text stays white */
+    text-decoration: none; /* Ensure underline is removed on hover */
+}
+
+/* Styling for the article list container */
+.articles-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Styling for each article item */
+.article-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.article-item:hover {
+    background-color: #eaf1e3; /* light green */
+    transform: translateY(-5px);
+}
+
+/* Container for article content */
+.article-item-container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Styling for the article content */
+.article-item-content {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Styling for the article author */
+.article-item-author {
+    font-weight: bold;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.article-item-author .author-prefix {
+    color: #4CAF50; /* green color for "By:" text */
+    font-weight: normal;
+}
+
+/* Styling for the article date */
+.article-item-date {
+    font-size: 12px;
+    color: #888;
+    text-align: right;
+}
+
+.member-item-container {
+    display: flex;
+    justify-content: space-between; /* Ensures that the username and the button are spaced out */
+    align-items: center; /* Centers the content vertically */
+}
+
+.member-username {
+    font-weight: bold; /* Make the username bold for better readability */
+}
+
+.member-item form {
+    margin: 0; /* Remove any extra margin from the form to keep it aligned properly */
+}
+
+.member-item .btn {
+    margin-left: 10px; /* Space between the username and the button */
+}
+
+/* Article item container */
+.article-item-container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Footer row for date and delete button */
+.article-footer {
+    display: flex;
+    justify-content: space-between; /* Pushes delete button left, date right */
+    align-items: center;
+    margin-top: 8px;
+}
+
+/* Delete button styling */
+.article-delete-btn {
+    background-color: #dc3545; /* Red */
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.article-delete-btn:hover {
+    background-color: #c82333; /* Darker red */
+    transform: scale(1.05);
+}
+
+/* Date styling */
+.article-item-date {
+    font-size: 12px;
+    color: #888;
+}

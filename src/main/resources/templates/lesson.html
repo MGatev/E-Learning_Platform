@@ -26,7 +26,7 @@
     <h2 class="text-center mb-5">
         <span id="lesson-title-display" th:text="${lesson.title}">Lesson Title></span>
         <input type="text" id="lesson-title-input" class="form-control d-none">
-        <button th:if="${isCreator}" type="button" id="edit-lesson-title-btn"
+        <button th:if="${isCreator || loggedUser.isAdmin()}" type="button" id="edit-lesson-title-btn"
                 class="btn btn-link btn-sm text-secondary ml-2" title="Edit Lesson Title"
                 onclick="toggleEdit('lesson-title')">
             <i class="fas fa-pencil-alt"></i>
@@ -39,7 +39,7 @@
     <p class="mt-3">
         <span id="lesson-content-display" th:text="${lesson.content}"></span>
         <input type="text" id="lesson-content-input" class="form-control d-none">
-        <button th:if="${isCreator}" type="button" id="edit-lesson-content-btn"
+        <button th:if="${isCreator || loggedUser.isAdmin()}" type="button" id="edit-lesson-content-btn"
                 class="btn btn-link btn-sm text-secondary ml-2" title="Edit Lesson Content"
                 onclick="toggleEdit('lesson-content')">
             <i class="fas fa-pencil-alt"></i>
@@ -51,12 +51,11 @@
     </p>
     <div style="display: flex; justify-content: space-between; margin-top: 1.5rem;">
         <p><strong>Created On:</strong> <span th:text="${#dates.format(lesson.createdOn, 'yyyy-MM-dd')}"></span></p>
-        <p><strong>Completed:</strong> <span
-                th:text="${#lists.contains(user.completedLessons, lesson) ? 'Yes' : 'No'}"></span></p>
+        <p th:if="${loggedUser.hasRole('ROLE_STUDENT')}"><strong>Completed:</strong> <span th:text="${#lists.contains(user.completedLessons, lesson) ? 'Yes' : 'No'}"></span></p>
     </div>
 
     <!-- Mark as Completed Button -->
-    <div style="text-align: center; margin: 20px;">
+    <div style="text-align: center; margin: 20px;" th:if="${loggedUser.hasRole('ROLE_STUDENT')}">
         <p th:if="${#lists.contains(user.completedLessons, lesson)}" class="completed-message">Already Completed</p>
         <form th:unless="${#lists.contains(user.completedLessons, lesson)}"
               th:action="@{/courses/{courseId}/lessons/{lessonId}/complete(courseId=${course.id}, lessonId=${lesson.id})}"
@@ -68,7 +67,7 @@
     </div>
 
     <!-- Back to Course Button -->
-    <div style="display: flex; justify-content: center; align-items: center; margin-top: 1.5rem;">
+    <div style="display: flex; justify-content: center; align-items: center; margin-top: 1.5rem; margin-bottom: 3.5rem;">
         <a th:href="@{/courses/{courseId}(courseId=${course.id})}" class="back-btn">
             Back to Course
         </a>

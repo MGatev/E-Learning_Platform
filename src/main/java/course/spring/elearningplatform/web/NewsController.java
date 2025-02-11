@@ -35,6 +35,7 @@ public class NewsController {
     @GetMapping("/add")
     public String addNewsForm(Model model) {
         model.addAttribute("news", new News());
+        model.addAttribute("redirectURI", "/admin/news");
         return "news-form";
     }
 
@@ -43,7 +44,7 @@ public class NewsController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         news.setPublishedDate(LocalDateTime.parse(LocalDateTime.now().format(formatter)));
         newsRepository.save(news);
-        return "redirect:/news";
+        return "redirect:/admin/news";
     }
 
     @GetMapping("/delete")
@@ -56,7 +57,7 @@ public class NewsController {
     @PostMapping("/delete/selected")
     public String deleteSelectedNews(@RequestParam("newsId") Long newsId) {
         newsService.deleteNews(newsId); // Call the service to delete the news
-        return "redirect:/news"; // Redirect to the news list after deletion
+        return "redirect:/admin/news"; // Redirect to the news list after deletion
     }
 
     @GetMapping("/{id}")

@@ -23,7 +23,7 @@
     <div class="profile-left text-center p-3">
         <div class="profile-picture-container position-relative mb-3">
             <img id="profile-picture-preview" class="profile-picture rounded-circle"
-                 th:src="${loggedInUser.getProfilePicture() != null ? loggedInUser.getProfilePicture().parseImage() : '/images/default-profile.png'}"
+                 th:src="${loggedInUser.getProfilePicture() != null ? loggedInUser.getProfilePicture().parseImage() : '/images/default-profile.jpg'}"
                  alt="Profile Picture">
             <label for="profile-picture-input" class="upload-icon position-absolute">
                 <i class="fas fa-camera"></i>

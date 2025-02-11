@@ -27,13 +27,13 @@ public class FAQController {
     @PostMapping("/help")
     public String createQuestion(@ModelAttribute FAQDto faqDto) {
         faqService.addQuestion(faqDto);
-        return "redirect:/help";
+        return "redirect:/admin/faq";
     }
 
     @PostMapping("/help/{id}")
     public String deleteQuestion(@PathVariable("id") Long id, Model model) {
         faqService.deleteQuestion(id);
         model.addAttribute("articles", faqService.getAllQuestions());
-        return "redirect:/help";
+        return "redirect:/admin/faq";
     }
 }

@@ -12,6 +12,8 @@ public interface EventService {
 
     Optional<Event> getEventById(Long id);
 
+    List<Event> getAllEventsByUser(String username);
+
     Event saveEvent(EventDto event);
 
     void deleteEvent(Long id);

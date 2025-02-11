@@ -49,11 +49,34 @@ public class CourseController {
         this.courseDashboardService = courseDashboardService;
     }
 
+    @GetMapping
+    public String showAllCourses(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        getTop3CoursesGroupedByCategory(model, courseService);
+        if (userDetails != null) {
+            model.addAttribute("loggedUser", userDetails.getUser());
+        }
+        return "courses";
+    }
+
+    static void getTop3CoursesGroupedByCategory(Model model, CourseService courseService) {
+        Map<String, List<Course>> coursesByCategory = courseService.getCoursesGroupedByCategory();
+        Map<String, List<Course>> top3CoursesByCategory = coursesByCategory.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey, // Keep the category key as it is
+                        entry -> entry.getValue().stream() // Process the list of courses
+                                .limit(3) // Limit to the first 3 courses
+                                .toList() // Collect into a new list
+                ));
+
+        model.addAttribute("top3CoursesByCategory", top3CoursesByCategory);
+    }
+
     @GetMapping("/create")
-    public String showCreateCoursePage(Model model) {
+    public String showCreateCoursePage(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
         if (!model.containsAttribute("course")) {
             model.addAttribute("course", new CourseDto());
         }
+        model.addAttribute("loggedUser", userDetails.getUser());
         return "create-course";
     }
 
@@ -100,6 +123,11 @@ public class CourseController {
     public String getCourseById(@PathVariable("id") Long id,
                                 @AuthenticationPrincipal UserDetails userDetails,
                                 Model model) {
+        if (userDetails == null) {
+            model.addAttribute("course", courseService.getCourseById(id));
+            model.addAttribute("isCreator", false);
+            return "course";
+        }
         User user = userService.getUserByUsername(userDetails.getUsername());
         Course course = courseService.getCourseById(id);
 
@@ -113,7 +141,7 @@ public class CourseController {
                         assignment -> solutionService.hasUserUploadedSolution(user.getId(), assignment.getId())
                 ));
 
-
+        model.addAttribute("loggedUser", user);
         model.addAttribute("highscores", courseService.getHighScoresForCourse(id));
         model.addAttribute("course", course);
         model.addAttribute("assignments", assignments);
@@ -129,9 +157,10 @@ public class CourseController {
     }
 
     @GetMapping("/{id}/lessons/create")
-    public String showCreateLessonPage(@PathVariable("id") Long id, Model model) {
+    public String showCreateLessonPage(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
         model.addAttribute("course", courseService.getCourseById(id));
         model.addAttribute("lesson", new LessonDto());
+        model.addAttribute("loggedUser", userDetails.user());
         return "create-lesson";
     }
 
@@ -157,15 +186,17 @@ public class CourseController {
     @GetMapping("/{courseId}/lessons/{lessonId}")
     public String getLessonById(@PathVariable("courseId") Long courseId, @PathVariable Long lessonId,
                                 @RequestParam(name = "lessonIndex", required = false) Integer lessonIndex, Model model,
-                                @AuthenticationPrincipal UserDetails userDetails) {
+                                @AuthenticationPrincipal CustomUserDetails userDetails) {
         Course course = courseService.getCourseById(courseId);
         Lesson lesson = lessonService.getLessonById(lessonId);
-        User user = userService.getUserByUsername(userDetails.getUsername());
+        User user = userDetails.getUser();
         model.addAttribute("course", course);
         model.addAttribute("lesson", lesson);
+        model.addAttribute("completedLessons", user.getCompletedLessons());
         model.addAttribute("lessonIndex", lessonIndex);
         model.addAttribute("user", user);
         model.addAttribute("isCreator", course.getCreatedBy().getId().equals(user.getId()));
+        model.addAttribute("loggedUser", user);
 
         return "lesson";
     }
@@ -228,6 +259,14 @@ public class CourseController {
         Course startedCourse = courseService.startCourse(id, user);
         userService.addStartedCourse(user, startedCourse);
         return "redirect:/courses/" + id;
+    }
+
+    @GetMapping("/student/{id}")
+    public String showStudentCourses(@PathVariable Long id, Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        model.addAttribute("startedCourses", courseService.getAllInProgressCoursesByUser(id));
+        model.addAttribute("loggedUser", userDetails.user());
+        model.addAttribute("completedCourses", courseService.findCompletedCoursesByUserId(id));
+        return "student-courses";
     }
 
     @ExceptionHandler(DuplicatedEntityException.class)

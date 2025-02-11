@@ -9,6 +9,7 @@ import course.spring.elearningplatform.service.AnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -55,8 +56,8 @@ public class AnnouncementServiceImpl implements AnnouncementService {
   }
 
   @Override
-  public void deleteAnnouncements(List<Long> ids) {
-    announcementRepository.deleteAllById(ids);
+  public void deleteAnnouncement(Long id) {
+    announcementRepository.deleteById(id);
   }
 
   private List<?> getAllActiveAnnouncements(boolean asStrings) {
@@ -69,8 +70,9 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     announcementRepository.deleteAll(allAnnouncements);
 
     if (asStrings) {
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
       return activeAnnouncements.stream().map(announcement ->
-              String.format("%s: %s! Available until: %s!", announcement.getTitle(), announcement.getContent(), announcement.getExpiresAt().toString()))
+              String.format("%s: %s! Available until: %s!", announcement.getTitle(), announcement.getContent(), announcement.getExpiresAt().format(formatter)))
               .toList();
     } else {
       return activeAnnouncements;

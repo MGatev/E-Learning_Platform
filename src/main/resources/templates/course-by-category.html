@@ -24,9 +24,9 @@
                     <img th:src="${course.getImageBase64()}" alt="Course Image" loading="lazy"
                          class="card-img-top custom-card-img">
                     <div class="card-body custom-card-body">
-                        <h5 class="card-title" th:text="${course.name}">Course Name</h5>
-                        <p class="card-text" th:text="${course.description}">Course description</p>
-                        <p class="card-text">
+                        <h5 class="card-title text-center" th:text="${course.name}">Course Name</h5>
+                        <p class="card-text text-center" th:text="${course.description}">Course description</p>
+                        <p class="card-text text-center">
                             <small class="text-muted"
                                    th:text="'Author: ' + ${course.createdBy.getFullName()}"></small>
                         </p>

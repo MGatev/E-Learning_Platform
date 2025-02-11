@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/admin-panel-nav.css}">
+    <style>
+        .role-select {
+            width: 150px;
+        }
+
+        .action-buttons a {
+            margin-right: 10px;
+        }
+
+        .table-striped > tbody > tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        .role-select {
+            font-size: 0.9rem;
+            padding: 0.4rem;
+        }
+
+        .btn-sm i {
+            margin-right: 5px;
+        }
+
+        /* Pagination Container */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        /* Page Item */
+        .page-item {
+            margin: 0 5px;
+        }
+
+        /* Default Page Link */
+        .page-link {
+            display: block;
+            padding: 10px 15px;
+            border: 1px solid #28a745; /* Green border */
+            border-radius: 5px;
+            color: #28a745; /* Green text */
+            text-decoration: none;
+            background-color: #fff;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+
+        /* Hover Effect */
+        .page-link:hover {
+            background-color: rgba(40, 167, 69, 0.1); /* Light green tint background */
+            color: #28a745; /* Keep the green text */
+            box-shadow: 0 0 8px rgba(40, 167, 69, 0.3); /* Subtle glowing border */
+            border-color: #28a745; /* Keep the green border */
+        }
+
+        /* Active Page */
+        .page-item.active .page-link {
+            background-color: #28a745; /* Green background */
+            color: #fff; /* White text */
+            border-color: #28a745; /* Keep consistent border */
+            cursor: default; /* Indicate it's not clickable */
+            font-weight: bold; /* Optional: Make it stand out more */
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.6); /* Subtle glow effect */
+        }
+
+        /* Disabled Pagination (if necessary) */
+        .page-item.disabled .page-link {
+            background-color: #e9ecef; /* Light gray background */
+            color: #6c757d; /* Gray text */
+            border-color: #e9ecef;
+            pointer-events: none;
+        }
+
+        .btn {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05); /* Slightly larger */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Add depth */
+        }
+    </style>
+</head>
+<body>
+<div class="custom-flex">
+    <div th:replace="~{fragments/admin-nav :: admin-nav}"/>
+    <div class="custom-content">
+        <h1 class="mb-4">User Management</h1>
+
+        <p th:if="${deletedUserFullName != null}" class="container alert alert-success text-center"
+           th:text="'User: ' + ${deletedUserFullName} + ' successfully deleted!'"></p>
+
+        <div class="mb-3 d-flex justify-content-between">
+            <form th:action="@{/admin/users}" method="get" class="d-flex">
+                <input type="text" name="search" class="form-control me-2"
+                       th:value="${searchQuery}" placeholder="Search Users...">
+                <button type="submit" class="btn btn-success">Search</button>
+            </form>
+            <a th:href="@{/admin/register}" class="btn btn-success">+ Add User</a>
+        </div>
+
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${users.isEmpty()}">
+                <td colspan="6" class="text-center">No users found matching your search.</td>
+            </tr>
+            <tr th:each="user, stat : ${users}">
+                <td th:text="${startIndex + stat.index + 1}"></td>
+                <td th:text="${user.fullName}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.email}"></td>
+                <td>
+                    <span th:each="role : ${user.roles}"
+                          th:text="${#strings.replace(role, 'ROLE_', '')}"
+                          class="badge rounded-pill me-1"
+                          style="background-color: #a8d5a2; color: black;"></span>
+
+                </td>
+                <td class="action-buttons">
+                    <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-primary btn-sm"
+                       style="background-color: #28a745; border-color: #28a745;">
+                        <i class="fas fa-eye"></i> View
+                    </a>
+                    <a th:href="@{'/users/edit/' + ${user.id}}" class="btn btn-warning btn-sm">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a th:href="@{/users/delete/{id}(id=${user.id})}"
+                       class="btn btn-danger btn-sm"
+                       data-bs-toggle="modal"
+                       data-bs-target="#deleteConfirmationModal"
+                       th:onclick="|setDeleteAction('@{/users/delete/{id}(id=${user.id})}')|">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+
+                    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
+                         aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color: #d4edda; color: #155724;">
+                                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this user? This action cannot be undone.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel
+                                    </button>
+                                    <a id="confirmDeleteButton" href="#" class="btn btn-success">Confirm</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{'/admin/users?page=' + ${currentPage - 1} + ${searchParam}}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" th:each="page : ${pages}" th:classappend="${page == currentPage} ? 'active' : ''">
+                    <a class="page-link" style="background-color: white; color: black;"
+                       th:href="@{'/admin/users?page=' + ${page} + ${searchParam}}"
+                       th:text="${page}"></a>
+                </li>
+                <li class="page-item"
+                    th:classappend="${currentPage == totalPages || totalPages == 0} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{'/admin/users?page=' + ${currentPage + 1} + ${searchParam}}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function setDeleteAction(deleteUrl) {
+        const confirmButton = document.getElementById('confirmDeleteButton');
+        confirmButton.setAttribute('href', deleteUrl);
+    }
+</script>
+</body>
+</html>

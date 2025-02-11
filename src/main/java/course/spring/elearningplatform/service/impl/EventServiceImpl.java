@@ -54,6 +54,11 @@ public class EventServiceImpl implements EventService {
         return eventOptional;
     }
 
+    @Override
+    public List<Event> getAllEventsByUser(String username) {
+        return eventRepository.findByInstructor(username);
+    }
+
 
     @Override
     public Event saveEvent(EventDto eventDto) {

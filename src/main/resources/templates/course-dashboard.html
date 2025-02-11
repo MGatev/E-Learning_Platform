@@ -20,6 +20,10 @@
         <h1>Dashboard for Course</h1>
     </div>
 
+    <div th:if="${userProgress.isEmpty()}">
+        <div class="alert alert-warning" role="alert">There are no participants in the course yet.</div>
+    </div>
+
     <div class="user-progress-list">
         <div th:each="entry : ${userProgress}">
             <div class="user-item">

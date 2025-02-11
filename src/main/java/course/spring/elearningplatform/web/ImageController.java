@@ -41,7 +41,7 @@ public class ImageController {
     }
 
     private byte[] loadDefaultImage() {
-        try (InputStream is = getClass().getResourceAsStream("/static/images/default-profile.png")) {
+        try (InputStream is = getClass().getResourceAsStream("/static/images/default-profile.jpg")) {
             return is != null ? is.readAllBytes() : new byte[0];
         } catch (IOException e) {
             throw new RuntimeException("Failed to load default profile picture", e);

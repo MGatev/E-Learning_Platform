@@ -13,6 +13,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="/js/announcements.js" defer></script>
+    <style>
+        .form-inline {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            gap: 1rem;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="~{fragments/home-nav :: home-nav}"></div>
@@ -35,56 +43,16 @@
                  class="accordion-collapse collapse"
                  data-bs-parent="#faqAccordion">
                 <div class="accordion-body">
-                    <p th:text="${faq.answer}">Sample Answer</p>
-                    <button class="btn btn-danger btn-sm mt-2" th:onclick="|deleteQuestion(${faq.id})|">Delete</button>
+                    <p class="mb-0" th:text="${faq.answer}">Sample Answer</p>
                 </div>
             </div>
         </div>
     </div>
 
     <div th:if="${faqs.size() == 0}" class="text-center">
-        <p>No questions available yet. Add a new question below!</p>
+        <p>No questions available yet.</p>
     </div>
-
-    <form action="/help" method="post" class="mt-5">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-        <h2>Add a Question</h2>
-        <div class="mb-3">
-            <label for="question" class="form-label">Question:</label>
-            <input type="text" name="question" id="question" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label for="answer" class="form-label">Answer:</label>
-            <textarea name="answer" id="answer" class="form-control" rows="4" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Question</button>
-    </form>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
-
-<script>
-    function deleteQuestion(id) {
-        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-        fetch(`/help/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                [csrfHeader]: csrfToken
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    location.reload();
-                } else {
-                    alert("Error deleting question.");
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
-    }
-</script>
 </body>
 </html>

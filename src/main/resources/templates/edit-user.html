@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Edit</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/admin-panel-nav.css}">
+    <style>
+        .badge {
+            padding: 0.5em 0.75em;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .badge + .badge {
+            margin-left: 0.5em;
+        }
+
+        .modal-body label {
+            font-weight: bold;
+        }
+
+        .alert {
+            font-size: 1rem;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+
+        .alert-dismissible .btn-close {
+            padding: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+<div class="custom-flex">
+    <div th:replace="~{fragments/admin-nav :: admin-nav}"/>
+    <div class="custom-content">
+        <form class="container" method="POST" th:action="@{/users/edit/{id}(id=${user.id})}">
+            <input type="hidden" name="id" th:value="${user.id}">
+            <input type="hidden" name="password" th:value="${user.password}">
+            <div class="form-group mb-3">
+                <label for="username">Username</label>
+                <input type="text" class="form-control disabled" id="username" name="username" th:value="${user.username}"
+                       readonly>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" id="firstName" name="firstName" th:value="${user.firstName}">
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName" name="lastName" th:value="${user.lastName}">
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" th:value="${user.email}">
+            </div>
+
+            <div class="form-group mb-3">
+                <label>Current Roles</label>
+                <div id="currentRoles" class="d-flex flex-wrap">
+                    <span th:each="role : ${user.roles}" class="badge bg-success me-2 d-flex align-items-center">
+            <span th:text="${role}"></span>
+            <button type="button" class="btn-close ms-2" aria-label="Remove"
+                    onclick="removeRole(this, '${role}')"></button>
+            </span>
+                </div>
+            </div>
+
+            <div id="errorContainer" class="mt-3"></div>
+
+            <button type="button" class="btn btn-primary mb-3" onclick="showAddRoleModal()">Add Role</button>
+
+            <input type="hidden" id="rolesInput" name="roles" th:value="${#strings.setJoin(user.roles, ',')}">
+
+            <div class="modal" id="addRoleModal" tabindex="-1" aria-labelledby="addRoleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addRoleModalLabel">Add Roles</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="availableRoles">Available Roles:</label>
+                            <select multiple class="form-control" id="availableRoles">
+                                <option th:each="role : ${allRoles}" th:value="${role.getDescription()}" th:text="${role.getDescription()}"
+                                        th:if="${!user.roles.contains(role.getDescription())}"></option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-success" onclick="addSelectedRoles()">Add Selected
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-success">Save Changes</button>
+                <a th:href="@{/admin/users}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function showAddRoleModal() {
+        const modal = new bootstrap.Modal(document.getElementById('addRoleModal'));
+        modal.show();
+    }
+
+    function addSelectedRoles() {
+        const availableRolesSelect = document.getElementById('availableRoles');
+        const selectedOptions = Array.from(availableRolesSelect.selectedOptions);
+        const currentRolesContainer = document.getElementById('currentRoles');
+        const rolesInput = document.getElementById('rolesInput');
+
+        selectedOptions.forEach(option => {
+            const role = option.value;
+
+            const badge = document.createElement('span');
+            badge.className = 'badge bg-success me-2 d-flex align-items-center';
+            badge.innerHTML = `
+            <span>${role}</span>
+            <button type="button" class="btn-close ms-2" aria-label="Remove"
+                    onclick="removeRole(this, '${role}')"></button>
+        `;
+
+            currentRolesContainer.appendChild(badge);
+
+            const roles = new Set(rolesInput.value.split(',').filter(r => r));
+            roles.add(role);
+            rolesInput.value = Array.from(roles).join(',');
+        });
+
+        selectedOptions.forEach(option => option.remove());
+    }
+
+    function removeRole(button, role) {
+        const rolesContainer = document.getElementById('currentRoles');
+        const errorContainer = document.getElementById('errorContainer');
+
+        const badgeCount = rolesContainer.querySelectorAll('.badge').length;
+
+        if (badgeCount === 1) {
+            errorContainer.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                A user must have at least one role.
+            </div>
+        `;
+
+            setTimeout(() => {
+                errorContainer.innerHTML = '';
+            }, 3000);
+
+            return;
+        }
+
+        button.parentElement.remove();
+
+        const rolesInput = document.getElementById('rolesInput');
+        const roles = Array.from(rolesContainer.querySelectorAll('.badge')).map(span => span.textContent.trim());
+        rolesInput.value = roles.join(',');
+
+        const availableRolesSelect = document.getElementById('availableRoles');
+        const option = document.createElement('option');
+        option.value = role;
+        option.textContent = role;
+        availableRolesSelect.appendChild(option);
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

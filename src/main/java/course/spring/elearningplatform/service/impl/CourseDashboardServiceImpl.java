@@ -34,7 +34,7 @@ public class CourseDashboardServiceImpl implements CourseDashboardService {
         Map<User, ProgressInfo> userProgress = new HashMap<>();
 
         // Loop over each student
-        for (User student : userRepository.findAll()) {
+        for (User student : course.getParticipants()) {
             Set<Lesson> studentLessons = student.getCompletedLessons();
 
             // Get the lessons that are part of the course
