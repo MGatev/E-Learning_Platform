@@ -9,11 +9,11 @@
 <div th:replace="~{fragments/announcements :: announcement-banner}"/>
 <div class="container mt-4">
     <div class="news-header">
-        <h1>Latest News !</h1>
-        <p class="lead">Stay updated with the latest happenings!</p>
+        <h1 class="text-center">Latest News !</h1>
+        <p class="lead text-center">Stay updated with the latest happenings!</p>
     </div>
 
-    <div class="row">
+    <div class="row justify-content-center">
         <div th:each="news : ${newsList}" class="col-md-6 col-lg-4 mb-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-body d-flex flex-column">
@@ -27,11 +27,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="text-center mt-4">
-        <a href="/news/add" class="btn btn-add-news mx-2">Add News</a>
-        <a href="/news/delete" class="btn btn-delete-news mx-2">Delete News</a>
     </div>
 </div>
 
