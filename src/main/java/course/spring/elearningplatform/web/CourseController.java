@@ -49,6 +49,28 @@ public class CourseController {
         this.courseDashboardService = courseDashboardService;
     }
 
+    @GetMapping
+    public String showAllCourses(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        getTop3CoursesGroupedByCategory(model, courseService);
+        if (userDetails != null) {
+            model.addAttribute("loggedUser", userDetails.getUser());
+        }
+        return "courses";
+    }
+
+    static void getTop3CoursesGroupedByCategory(Model model, CourseService courseService) {
+        Map<String, List<Course>> coursesByCategory = courseService.getCoursesGroupedByCategory();
+        Map<String, List<Course>> top3CoursesByCategory = coursesByCategory.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey, // Keep the category key as it is
+                        entry -> entry.getValue().stream() // Process the list of courses
+                                .limit(3) // Limit to the first 3 courses
+                                .toList() // Collect into a new list
+                ));
+
+        model.addAttribute("top3CoursesByCategory", top3CoursesByCategory);
+    }
+
     @GetMapping("/create")
     public String showCreateCoursePage(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
         if (!model.containsAttribute("course")) {
@@ -101,6 +123,11 @@ public class CourseController {
     public String getCourseById(@PathVariable("id") Long id,
                                 @AuthenticationPrincipal UserDetails userDetails,
                                 Model model) {
+        if (userDetails == null) {
+            model.addAttribute("course", courseService.getCourseById(id));
+            model.addAttribute("isCreator", false);
+            return "course";
+        }
         User user = userService.getUserByUsername(userDetails.getUsername());
         Course course = courseService.getCourseById(id);
 

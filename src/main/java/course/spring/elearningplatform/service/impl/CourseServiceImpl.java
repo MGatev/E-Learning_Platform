@@ -234,7 +234,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> getAllCourses() {
-        return courseRepository.findAll();
+        return courseRepository.findAll().stream()
+                .peek(course -> {
+                    Image image = course.getImage();
+                    if (image != null) {
+                        course.setImageBase64(image.parseImage());
+                    }
+                }).toList();
     }
 
     @Override
