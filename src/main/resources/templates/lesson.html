@@ -51,13 +51,16 @@
     </p>
     <div style="display: flex; justify-content: space-between; margin-top: 1.5rem;">
         <p><strong>Created On:</strong> <span th:text="${#dates.format(lesson.createdOn, 'yyyy-MM-dd')}"></span></p>
-        <p th:if="${loggedUser.hasRole('ROLE_STUDENT')}"><strong>Completed:</strong> <span th:text="${#lists.contains(user.completedLessons, lesson) ? 'Yes' : 'No'}"></span></p>
+        <div th:if="${loggedUser.hasRole('ROLE_STUDENT')}">
+            <p th:if="${completedLessons != null && !completedLessons.isEmpty() && completedLessons.contains(lesson)}"><strong>Completed:</strong> Yes</p>
+            <p th:if="${completedLessons == null || completedLessons.isEmpty() || !completedLessons.contains(lesson)}"><strong>Completed:</strong> No</p>
+        </div>
     </div>
 
     <!-- Mark as Completed Button -->
     <div style="text-align: center; margin: 20px;" th:if="${loggedUser.hasRole('ROLE_STUDENT')}">
-        <p th:if="${#lists.contains(user.completedLessons, lesson)}" class="completed-message">Already Completed</p>
-        <form th:unless="${#lists.contains(user.completedLessons, lesson)}"
+        <p th:if="${#lists.contains(completedLessons, lesson)}" class="completed-message">Already Completed</p>
+        <form th:unless="${#lists.contains(completedLessons, lesson)}"
               th:action="@{/courses/{courseId}/lessons/{lessonId}/complete(courseId=${course.id}, lessonId=${lesson.id})}"
               method="POST">
             <button class="completed-btn">
