@@ -39,15 +39,18 @@ public class HomeController {
         this.assignmentService = assignmentService;
     }
 
-    @GetMapping("/home")
+    @GetMapping({"/", "/home"})
     public String homePage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        User loggedUser = userService.getUserByUsername(userDetails.getUsername());
-        if (loggedUser != null && loggedUser.isAdmin()) {
-            return "redirect:/admin/users";
-        }
+        if (userDetails != null) {
+            User loggedUser = userService.getUserByUsername(userDetails.getUsername());
+            if (loggedUser != null && loggedUser.isAdmin()) {
+                return "redirect:/admin/users";
+            }
 
-        if (loggedUser != null && loggedUser.hasRole("ROLE_INSTRUCTOR")) {
-            return "redirect:/instructor/courses";
+            if (loggedUser != null && loggedUser.hasRole("ROLE_INSTRUCTOR")) {
+                return "redirect:/instructor/courses";
+            }
+            model.addAttribute("loggedUser", loggedUser);
         }
 
         List<Event> allEvents = eventService.getAllEvents();
@@ -61,16 +64,7 @@ public class HomeController {
         model.addAttribute("events", allEvents);
         model.addAttribute("upcomingEvents", upcomingEvents);
 
-        Map<String, List<Course>> coursesByCategory = courseService.getCoursesGroupedByCategory();
-        Map<String, List<Course>> top3CoursesByCategory = coursesByCategory.entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey, // Keep the category key as it is
-                        entry -> entry.getValue().stream() // Process the list of courses
-                                .limit(3) // Limit to the first 3 courses
-                                .toList() // Collect into a new list
-                ));
-
-        model.addAttribute("top3CoursesByCategory", top3CoursesByCategory);
+        CourseController.getTop3CoursesGroupedByCategory(model, courseService);
 
         List<AssignmentDto> assignmentDtos = assignmentService.getAllAssignments();
 
@@ -85,7 +79,10 @@ public class HomeController {
                 .collect(Collectors.toList());
 
         model.addAttribute("assignments", upcomingAssignments);
-        model.addAttribute("loggedUser", loggedUser);
+        if (userDetails == null) {
+            return "redirect:/courses";
+        }
+
         return "home";
     }
 }

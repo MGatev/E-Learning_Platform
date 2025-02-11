@@ -16,14 +16,15 @@ public class SecurityConfig {
     private static final String REGISTER_PAGE = "/register";
     private static final String STATIC_RESOURCES = "/css/**";
     private static final String HOME_PAGE = "/home";
-    private static final String LOGOUT_SUCCESS_URL = "/login?logout";
+    private static final String LOGOUT_SUCCESS_URL = "/home";
     private static final String IMAGES = "/images/**";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(REGISTER_PAGE, LOGIN_PAGE, STATIC_RESOURCES, IMAGES).permitAll()
+                        .requestMatchers("/", HOME_PAGE, REGISTER_PAGE, LOGIN_PAGE, STATIC_RESOURCES, IMAGES).permitAll()
+                        .requestMatchers("/news/**", "/events/**", "/help/**", "/courses/**").permitAll()
                         .requestMatchers(LOGOUT_PAGE).authenticated()
                         .requestMatchers("/quizzes/submit").permitAll()
                         .requestMatchers("/admin/**", "/users/{id}", "/users/edit/{id}").hasRole("ADMIN")
@@ -41,7 +42,7 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+                        .logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT_PAGE, "GET"))
                 )
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(customAccessDeniedHandler())
