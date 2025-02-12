@@ -50,7 +50,7 @@ public class GroupController {
 
         model.addAttribute("group", groupService.getGroupById(id));
         model.addAttribute("articles", articleService.getAllArticlesForAGroup(id));
-        model.addAttribute("loggedInUser", loggedInUser.getUsername());
+        model.addAttribute("loggedInUser", loggedInUser);
         return "group";
     }
 
