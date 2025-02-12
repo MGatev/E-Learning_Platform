@@ -2,11 +2,7 @@ package course.spring.elearningplatform.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor(force = true)
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(exclude = {"groups", "courses", "startedCourses", "completedCourses", "tickets", "completedLessons", "certificates"})
 public class User {
 
     public static final String ROLE_STUDENT = "STUDENT";
